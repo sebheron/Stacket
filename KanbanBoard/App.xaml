@@ -4,7 +4,6 @@
              xmlns:local="clr-namespace:KanbanBoard"
              StartupUri="Board.xaml">
     <Application.Resources>
-        <!--Border brushes for creating a 3D effect-->
         <LinearGradientBrush x:Key="FlatReverse3DBorderBrush"
                          StartPoint="0.499,1" EndPoint="0.501,0" Opacity="0.7">
             <GradientStop Color="#FFF" Offset="0" />
@@ -12,8 +11,6 @@
             <GradientStop Color="#AAA" Offset="0.99" />
             <GradientStop Color="#888" Offset="1" />
         </LinearGradientBrush>
-
-        <!--Flat button without blue border-->
         <Style x:Key="TransparentRoundFlat3DButton" TargetType="{x:Type Button}">
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Template">
@@ -42,9 +39,9 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
         <Style x:Key="TransparentRoundFlat3DToggleButton" TargetType="{x:Type ToggleButton}">
             <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontFamily" Value="Marlett"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ToggleButton">
@@ -52,9 +49,12 @@
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsChecked" Value="False">
+                            <Trigger Property="IsPressed" Value="True">
                                 <Setter TargetName="border" Property="Background" Value="#6BB8B8B8"/>
                                 <Setter TargetName="border" Property="BorderThickness" Value="3"/>
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="False">
+                                <Setter Property="Content" Value="6"/>
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="border" Property="Background" Value="#6BE6E6E6"/>
@@ -63,15 +63,13 @@
                                 <Setter Property="Button.FontWeight" Value="ExtraBold" />
                             </Trigger>
                             <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="Transparent" />
-                                <Setter TargetName="border" Property="BorderThickness" Value="0"/>
+                                <Setter Property="Content" Value="5"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
-
         <Style x:Key="LeftHiddenButton" TargetType="{x:Type Button}">
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Template">
@@ -184,7 +182,6 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-
         <Style x:Key="HiddenTextBox" TargetType="TextBox">
             <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="BorderThickness" Value="0"/>
@@ -217,7 +214,7 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
-        <Style x:Key="HiddenComboBox" TargetType="TextBox">
+        <Style x:Key="TransparentRoundComboBox" TargetType="TextBox">
             <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Background" Value="Transparent"/>
@@ -232,9 +229,6 @@
                         </Setter.Value>
                     </Setter>
                 </DataTrigger>
-                <EventTrigger RoutedEvent="Loaded">
-
-                </EventTrigger>
             </Style.Triggers>
         </Style>
         <Style x:Key="ScrollThumbs" TargetType="{x:Type Thumb}">
@@ -255,8 +249,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
-        <!--ScrollBars-->
         <Style x:Key="{x:Type ScrollBar}" TargetType="{x:Type ScrollBar}">
             <Setter Property="Stylus.IsFlicksEnabled" Value="false" />
             <Setter Property="Foreground" Value="#8C8C8C" />

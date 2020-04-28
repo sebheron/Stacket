@@ -6,6 +6,8 @@ using System.Reflection;
 
 namespace KanbanBoard.Objects {
    public class BoardInformation {
+      public static ObservableCollection<string> ItemTypes { get; set; } 
+
       public string FilePath { get; }
 
       public ObservableCollection<ColumnInformation> Columns { get; }
@@ -21,10 +23,12 @@ namespace KanbanBoard.Objects {
 
       public BoardInformation(string filePath) {
          Columns = new ObservableCollection<ColumnInformation>();
+         ItemTypes = new ObservableCollection<string>();
          if (File.Exists(filePath)) {
-            // For each version in future releases migration will occur here!
+            // For each version in future releases migration will occur here! Via Assembly information check.
             string[] lines = File.ReadAllLines(filePath);
-            for (int i = 1; i < lines.Length; i++) {
+            ItemTypes = new ObservableCollection<string>(lines[1].Split(new char[] { ',' }));
+            for (int i = 2; i < lines.Length; i++) {
                Columns.Add(ColumnInformation.Load(lines[i]));
             }
          }
@@ -34,6 +38,7 @@ namespace KanbanBoard.Objects {
       public void Save(string filePath) {
          List<string> boardData = new List<string>();
          boardData.Add(Assembly.GetExecutingAssembly().GetName().Version.ToString());
+         boardData.Add(string.Join(",", ItemTypes));
          foreach (ColumnInformation columnInformation in Columns) {
             boardData.Add(columnInformation.ToString());
          }
@@ -43,6 +48,7 @@ namespace KanbanBoard.Objects {
       public void Save() {
          List<string> boardData = new List<string>();
          boardData.Add(Assembly.GetExecutingAssembly().GetName().Version.ToString());
+         boardData.Add(string.Join(",", ItemTypes));
          foreach (ColumnInformation columnInformation in Columns) {
             boardData.Add(columnInformation.ToString());
          }

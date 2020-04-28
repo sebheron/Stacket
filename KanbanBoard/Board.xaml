@@ -7,6 +7,8 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:con="clr-namespace:KanbanBoard.Converters;assembly=KanbanBoard.Converters"
         xmlns:beh="clr-namespace:KanbanBoard.Behaviors;assembly=KanbanBoard.Behaviors"
+        xmlns:obj="clr-namespace:KanbanBoard.Objects;assembly=KanbanBoard.Objects"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:KanbanBoard"
         mc:Ignorable="d"
         Title="Board" WindowState="Maximized"
@@ -21,6 +23,11 @@
             <MenuItem Header="Settings" Command="{Binding ShowSettingsCommand}"/>
             <MenuItem Header="Exit" Click="Exit_Click" />
         </ContextMenu>
+        <ObjectDataProvider x:Key="ItemTypes" MethodName="GetValues" ObjectType="{x:Type system:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="obj:ItemTypes"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
         <ToolTip x:Key="TrayToolTip">
             <Label Margin="0" Padding="0" Content="Kanban Board"/>
         </ToolTip>
@@ -94,8 +101,6 @@
                                     </Grid>
 
                                     <ToggleButton x:Name="ItemListToggle" Grid.Column="2" Style="{StaticResource TransparentRoundFlat3DToggleButton}" VerticalAlignment="Top" Height="30"
-                                        FontFamily="Marlett"
-                                        Content="5"
                                         IsChecked="True"
                                         FocusVisualStyle="{x:Null}">
                                     </ToggleButton>
@@ -129,6 +134,7 @@
                                                         <Grid>
                                                             <Grid.ColumnDefinitions>
                                                                 <ColumnDefinition/>
+                                                                <ColumnDefinition Width="90"/>
                                                                 <ColumnDefinition Width="30"/>
                                                             </Grid.ColumnDefinitions>
 
@@ -144,11 +150,12 @@
                                                                 </Grid.ColumnDefinitions>
                                                                 <TextBox MaxLines="3" Grid.Column="1" Grid.Row="1" Style="{StaticResource HiddenTextBox}" Text="{Binding ItemTitle}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left">
                                                                     <i:Interaction.Behaviors>
-                                                                        <beh:TextBoxFocusBehavior/>
+                                                                        <beh:TextBoxFocusBehavior/> 
                                                                     </i:Interaction.Behaviors>
                                                                 </TextBox>
                                                             </Grid>
-                                                            <Button Content="r" FontFamily="Marlett" Grid.Column="1" Style="{StaticResource TransparentRoundFlat3DButton}"
+                                                            <ComboBox Grid.Column="1" SelectedValue="{Binding ItemType}" ItemsSource="{Binding Source={StaticResource ItemTypes}}"/>
+                                                            <Button Content="r" FontFamily="Marlett" Grid.Column="2" Style="{StaticResource TransparentRoundFlat3DButton}"
                                                                     Command="{Binding ElementName=MainGrid,  Path=DataContext.DeleteItemCommand}"
                                                                     CommandParameter="{Binding}" FocusVisualStyle="{x:Null}"/>
                                                         </Grid>

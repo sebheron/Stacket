@@ -31,40 +31,13 @@ namespace KanbanBoard {
       }
 
       //The width of the window.
-      public double WindowWidth {
-         get {
-            if (Settings.Default.WindowWidth <= 0) {
-               Settings.Default.WindowWidth = (int)SystemParameters.MaximizedPrimaryScreenWidth;
-               Settings.Default.Save();
-            }
-            return Settings.Default.WindowWidth;
-         }
-         set {
-            Settings.Default.WindowWidth = (int)value;
-            Settings.Default.Save();
-         }
-      }
+      public double WindowWidth => SystemParameters.MaximizedPrimaryScreenWidth;
 
       //The height of the window.
-      public double WindowHeight {
-         get {
-            if (Settings.Default.WindowHeight <= 0) {
-               Settings.Default.WindowHeight = (int)SystemParameters.MaximizedPrimaryScreenHeight;
-               Settings.Default.Save();
-            }
-            return Settings.Default.WindowHeight;
-         }
-         set => Settings.Default.WindowHeight = (int)value;
-      }
+      public double WindowHeight => SystemParameters.MaximizedPrimaryScreenHeight;
 
-      private double itemHeight = 80;
-
+      //The height of an item.
       public double ItemWidth => (WindowWidth - 120) / Math.Max(5, BoardInformation.Columns.Count);
-
-      public double ItemHeight {
-         get => itemHeight;
-         set => SetProperty<double>(ref itemHeight, value);
-      }
 
       //The top position of the window.
       public double WindowTop {

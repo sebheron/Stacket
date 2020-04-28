@@ -1,23 +1,55 @@
+using Prism.Mvvm;
 using System;
 using System.Text;
 using System.Windows.Media;
 
 namespace KanbanBoard.Objects {
-   public class ItemInformation {
+   public class ItemInformation : BindableBase {
       public Guid ItemID { get; set; }
       public string ItemTitle { get; set; }
       public string ItemDescription { get; set; }
-      public ItemTypes ItemType { get; set; }
       public DateTime ItemDueDate { get; set; }
-      public Color ItemColor { get; set; }
+
+      private Color itemColor;
+      public Color ItemColor {
+         get => itemColor;
+         set {
+            SetProperty(ref itemColor, value);
+         }
+      }
+
+      private ItemTypes itemType;
+      public ItemTypes ItemType {
+         get => itemType;
+         set {
+            SetColor(value);
+            SetProperty(ref itemType, value);
+         }
+      }
+
+      private void SetColor(ItemTypes itemType) {
+         switch (itemType) {
+            case ItemTypes.Bug:
+               ItemColor = Color.FromArgb(255, 241, 60, 31);
+               break;
+            case ItemTypes.Investigation:
+               ItemColor = Color.FromArgb(255, 64, 86, 161);
+               break;
+            case ItemTypes.Item:
+               ItemColor = Color.FromArgb(255, 147, 158, 196);
+               break;
+            case ItemTypes.ProofOfConcept:
+               ItemColor = Color.FromArgb(255, 215, 153, 34);
+               break;
+         }
+      }
 
       public ItemInformation(string itemTitle) {
          ItemID = Guid.NewGuid();
          ItemTitle = itemTitle;
          ItemDescription = string.Empty;
-         ItemType = ItemTypes.Bug;
+         ItemType = ItemTypes.Item;
          ItemDueDate = DateTime.Now.Date;
-         ItemColor = Color.FromArgb(255, 255, 0, 0);
       }
 
       public ItemInformation(Guid itemId, string itemTitle, string itemDescription, ItemTypes itemType, DateTime itemDueDate, Color itemColor) {
@@ -26,7 +58,6 @@ namespace KanbanBoard.Objects {
          ItemDescription = itemDescription;
          ItemType = itemType;
          ItemDueDate = itemDueDate.Date;
-         ItemColor = itemColor;
       }
 
       public static ItemInformation Load(string parsedItem) {

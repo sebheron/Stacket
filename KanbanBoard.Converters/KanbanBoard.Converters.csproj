@@ -50,5 +50,11 @@
     <Compile Include="ColorToScreenColorConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\KanbanBoard.Objects\KanbanBoard.Objects.csproj">
+      <Project>{f35ceddf-8fee-401d-b4f3-686f802989ac}</Project>
+      <Name>KanbanBoard.Objects</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
