@@ -35,8 +35,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ControlzEx, Version=3.0.2.4, Culture=neutral, processorArchitecture=MSIL">
@@ -120,14 +119,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Res\TrayIcon\board.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Res\Symbols\Minus.png" />
-    <Resource Include="Res\Symbols\Plus.png" />
-    <Resource Include="Res\Symbols\Settings.png" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\KanbanBoard.Behaviors\KanbanBoard.Behaviors.csproj">
       <Project>{0c8c8920-f4d9-409a-9e9b-176bf36a8639}</Project>
       <Name>KanbanBoard.Behaviors</Name>
@@ -144,6 +135,9 @@
       <Project>{f35ceddf-8fee-401d-b4f3-686f802989ac}</Project>
       <Name>KanbanBoard.Objects</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

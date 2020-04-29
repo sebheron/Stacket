@@ -19,7 +19,9 @@
         xmlns:tb="http://www.hardcodet.net/taskbar" Background="Transparent" SizeToContent="Height">
     <Window.Resources>
         <ContextMenu x:Key="TrayMenu" x:Shared="true">
-            <MenuItem Header="Settings" Command="{Binding ShowSettingsCommand}"/>
+            <!--<MenuItem Header="Settings" Command="{Binding ShowSettingsCommand}"/>-->
+            <MenuItem Header="Load" Command="{Binding LoadBoardCommand}"/>
+            <MenuItem Header="Save" Command="{Binding SaveBoardCommand}"/>
             <MenuItem Header="Exit" Click="Exit_Click" />
         </ContextMenu>
         <ObjectDataProvider x:Key="ItemTypes" MethodName="GetValues" ObjectType="{x:Type system:Enum}">
@@ -40,13 +42,13 @@
         </Grid.RowDefinitions>
         <Grid HorizontalAlignment="Center">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="45"/>
                 <ColumnDefinition Width="90"/>
-                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="45"/>
             </Grid.ColumnDefinitions>
-            <Button Content="L" Style="{StaticResource RoundFlat3DButton}" Visibility="{Binding IsChecked, ElementName=MainWindowToggle, Converter={StaticResource BooleanToVisibilityConverter}}" FocusVisualStyle="{x:Null}" Command="{Binding LoadBoardCommand}"/>
+            <!--<Button Style="{StaticResource RoundFlat3DButton}" Content="1" FontFamily="Wingdings" Visibility="{Binding IsChecked, ElementName=MainWindowToggle, Converter={StaticResource BooleanToVisibilityConverter}}" FocusVisualStyle="{x:Null}" Command="{Binding LoadBoardCommand}"/>-->
             <ToggleButton x:Name="MainWindowToggle" Grid.Column="1" Style="{StaticResource RoundFlat3DToggleButton}" IsChecked="True" FocusVisualStyle="{x:Null}"/>
-            <Button Grid.Column="2" Content="S" Style="{StaticResource RoundFlat3DButton}" Visibility="{Binding IsChecked, ElementName=MainWindowToggle, Converter={StaticResource BooleanToVisibilityConverter}}" FocusVisualStyle="{x:Null}" Command="{Binding ShowSettingsCommand}"/>
+            <!--<Button Grid.Column="2" Style="{StaticResource RoundFlat3DButton}" Content="&lt;" FontFamily="Wingdings" Visibility="{Binding IsChecked, ElementName=MainWindowToggle, Converter={StaticResource BooleanToVisibilityConverter}}" FocusVisualStyle="{x:Null}" Command="{Binding SaveBoardCommand}"/>-->
         </Grid>
         
         <StackPanel Visibility="{Binding IsChecked, ElementName=MainWindowToggle, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Row="1" HorizontalAlignment="Center" Orientation="Horizontal" x:Name="MainGrid" Margin="15,0,15,15">
@@ -56,7 +58,7 @@
             <tb:TaskbarIcon x:Name="myNotifyIcon"
                     Visibility="Visible"
                     ToolTipText="Kanban Board"
-                    IconSource="/Res/TrayIcon/board.ico"
+                    IconSource="icon.ico"
                     ContextMenu="{StaticResource TrayMenu}"
                     MenuActivation="LeftOrRightClick"
                     TrayToolTip="{StaticResource TrayToolTip}"/>

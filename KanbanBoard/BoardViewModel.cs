@@ -12,7 +12,13 @@ using System.Windows.Input;
 namespace KanbanBoard {
    public class BoardViewModel : BindableBase {
 
-      private bool Changed;
+      private bool changed;
+      public bool Changed {
+         get => changed;
+         set {
+            SetProperty(ref changed, value);
+         }
+      }
 
       private BoardInformation boardInformation;
       public BoardInformation BoardInformation {
@@ -53,8 +59,9 @@ namespace KanbanBoard {
       // Show settings command.
       public ICommand ShowSettingsCommand => new DelegateCommand(ShowSettings, delegate () { return true; });
 
-      // Load board command.
+      // Board command.
       public ICommand LoadBoardCommand => new DelegateCommand(LoadBoard, delegate () { return true; });
+      public ICommand SaveBoardCommand => new DelegateCommand(SaveBoard, CanSave).ObservesProperty(() => Changed);
 
       // Column commands.
       public ICommand AddColumnLeftCommand => new DelegateCommand<object>(AddColumnLeft, delegate (object arg) { return true; });
@@ -82,6 +89,15 @@ namespace KanbanBoard {
             Settings.Default.Save();
             Changed = false;
          }
+      }
+
+      public void SaveBoard() {
+         BoardInformation.Save();
+         Changed = false;
+      }
+
+      public bool CanSave() {
+         return Changed;
       }
 
       private void AddColumnLeft(object arg) {
