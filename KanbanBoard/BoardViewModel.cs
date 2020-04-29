@@ -4,6 +4,7 @@ using KanbanBoard.Properties;
 using Prism.Commands;
 using Prism.Mvvm;
 using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 
@@ -83,24 +84,25 @@ namespace KanbanBoard {
 
       private void DeleteColumn(object arg) {
          if (arg is ColumnInformation columnInformation) {
-            bool? remove = DialogBoxService.Show("Are you sure you want to remove this column?", "Remove Column");
-            if (remove.Value) {
-               if (BoardInformation.ColumnCount > 1 && columnInformation.Items.Count > 0) {
-                  bool? saveItems = DialogBoxService.Show("Should all the items within the column be saved? If so they will be moved to the leftmost column.", "Remove Column");
-                  if (saveItems.Value) {
-                     BoardInformation.MigrateItemsToLeftMost(columnInformation);
-                  }
-               }
-               BoardInformation.RemoveColumn(columnInformation);
-               RaisePropertyChanged(nameof(ItemWidth));
+            if (BoardInformation.ColumnCount <= 1 || !DialogBoxService.Show("Are you sure you want to remove this column?", "Remove Column").Value) {
+               return;
             }
+            if (columnInformation.Items.Count > 0) {
+
+               bool? saveItems = DialogBoxService.Show("Should all the items within the column be saved? If so they will be moved to the leftmost column.", "Remove Column");
+               if (saveItems.Value) {
+                  BoardInformation.MigrateItemsToLeftMost(columnInformation);
+               }
+            }
+            BoardInformation.RemoveColumn(columnInformation);
+            RaisePropertyChanged(nameof(ItemWidth));
          }
       }
 
       private void DeleteItem(object arg) {
          if (arg is ItemInformation itemInformation) {
-            bool? remove = DialogBoxService.Show("Are you sure you want to remove this item?", "Remove Item");
-            if (remove.Value)
+            bool remove = itemInformation.Unchanged() || DialogBoxService.Show("Are you sure you want to remove this item?", "Remove Item").Value;
+            if (remove)
                BoardInformation.Columns[BoardInformation.GetItemsColumnIndex(itemInformation)].Items.Remove(itemInformation);
          }
       }
@@ -108,6 +110,10 @@ namespace KanbanBoard {
       private void AddItem(object arg) {
          if (arg is ColumnInformation columnInformation)
             columnInformation.Items.Add(new ItemInformation("New Item"));
+      }
+
+      public void OnClosing(object sender, CancelEventArgs e) {
+         BoardInformation.Save();
       }
    }
 }

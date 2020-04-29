@@ -30,7 +30,7 @@ namespace KanbanBoard.Objects {
       private void SetColor(ItemTypes itemType) {
          switch (itemType) {
             case ItemTypes.Bug:
-               ItemColor = Color.FromArgb(255, 241, 60, 31);
+               ItemColor = Color.FromArgb(255, 255, 159, 26);
                break;
             case ItemTypes.Investigation:
                ItemColor = Color.FromArgb(255, 64, 86, 161);
@@ -38,8 +38,8 @@ namespace KanbanBoard.Objects {
             case ItemTypes.Item:
                ItemColor = Color.FromArgb(255, 147, 158, 196);
                break;
-            case ItemTypes.ProofOfConcept:
-               ItemColor = Color.FromArgb(255, 215, 153, 34);
+            case ItemTypes.Parked:
+               ItemColor = Color.FromArgb(255, 241, 60, 31);
                break;
          }
       }
@@ -86,6 +86,13 @@ namespace KanbanBoard.Objects {
          itemData.Append("$%<NEWITEMDATA>%$");
          itemData.Append(ItemColor.ToString());
          return itemData.ToString();
+      }
+
+      public bool Unchanged() {
+         bool sameTitle = ItemTitle == "New Item";
+         bool sameDescription = ItemDescription == string.Empty;
+         bool sameType = ItemType == ItemTypes.Item;
+         return sameTitle & sameDescription & sameType;
       }
    }
 }

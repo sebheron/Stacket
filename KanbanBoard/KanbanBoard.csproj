@@ -80,7 +80,6 @@
     </ApplicationDefinition>
     <Compile Include="BoardHandling.cs" />
     <Compile Include="BoardViewModel.cs" />
-    <Compile Include="WindowSinker.cs" />
     <Page Include="Board.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

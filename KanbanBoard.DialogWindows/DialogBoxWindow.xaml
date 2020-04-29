@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d"
+        mc:Ignorable="d" Topmost="True"
         Title="DialogBox" Height="120" Width="350" WindowStyle="None" Background="Transparent" AllowsTransparency="True" WindowStartupLocation="CenterScreen">
-    <Border CornerRadius="15" Background="#A7D3D3D3">
+    <Border CornerRadius="15" Background="#BFD3D3D3">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="310*"/>
@@ -15,7 +15,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
                 <RowDefinition/>
-                <RowDefinition Height="30"/>
+                <RowDefinition Height="35"/>
             </Grid.RowDefinitions>
             <Border Background="DarkGray" CornerRadius="5" Grid.ColumnSpan="3" Margin="0,0,0,0.4">
                 <Grid>
@@ -33,8 +33,8 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <Button Content="Yes" Margin="3" Style="{StaticResource TransparentRoundFlat3DButton}" Command="{Binding YesButtonCommand}"/>
-                <Button Content="No" Grid.Column="1" Margin="3" Style="{StaticResource TransparentRoundFlat3DButton}" Command="{Binding NoButtonCommand}"/>
+                <Button Content="Yes" Margin="3,1,3,3" Style="{StaticResource TransparentRoundFlat3DButton}" Command="{Binding YesButtonCommand}"/>
+                <Button Content="No" Grid.Column="1" Margin="3,1,3,3" Style="{StaticResource TransparentRoundFlat3DButton}" Command="{Binding NoButtonCommand}"/>
             </Grid>
         </Grid>
     </Border>

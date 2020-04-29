@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 namespace KanbanBoard.Objects {
    public enum ItemTypes {
       Item,
-      ProofOfConcept,
       Bug,
-      Investigation
+      Investigation,
+      Parked
    }
 }
