@@ -31,8 +31,12 @@ namespace KanbanBoard {
       public DelegateCommand NewButtonCommand => new DelegateCommand(NewButton, delegate () { return true; });
       public DelegateCommand OpenButtonCommand => new DelegateCommand(OpenButton, CanOpen).ObservesProperty(() => SelectedBoard);
 
-      public BoardSelectorViewModel(Window window) {
-         BoardFiles = new ObservableCollection<string>(Directory.GetFiles(BoardHandling.BoardFileStorageLocation));
+      private IEnumerable<string> GetFileNames(string currentBoard) {
+         return Directory.GetFiles(BoardHandling.BoardFileStorageLocation).Where(x => x != currentBoard).Select(x => Path.GetFileNameWithoutExtension(x));
+      }
+
+      public BoardSelectorViewModel(Window window, string currentBoard) {
+         BoardFiles = new ObservableCollection<string>(GetFileNames(currentBoard));
          RaisePropertyChanged(nameof(BoardFiles));
          dialogWindow = window;
       }
@@ -54,7 +58,7 @@ namespace KanbanBoard {
       }
 
       public void OpenButton() {
-         dialogWindow.Tag = SelectedBoard;
+         dialogWindow.Tag = Path.Combine(BoardHandling.BoardFileStorageLocation, SelectedBoard + BoardHandling.BoardFileExtension);
          dialogWindow.DialogResult = true;
          dialogWindow.Close();
       }

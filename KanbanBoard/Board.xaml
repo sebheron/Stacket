@@ -19,7 +19,6 @@
         xmlns:tb="http://www.hardcodet.net/taskbar" Background="Transparent" SizeToContent="Height">
     <Window.Resources>
         <ContextMenu x:Key="TrayMenu" x:Shared="true">
-            <MenuItem Header="Show" IsCheckable="true" IsChecked="{Binding Enabled, Mode=TwoWay}"/>
             <MenuItem Header="Settings" Command="{Binding ShowSettingsCommand}"/>
             <MenuItem Header="Exit" Click="Exit_Click" />
         </ContextMenu>
@@ -39,7 +38,17 @@
             <RowDefinition Height="30"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <ToggleButton x:Name="MainWindowToggle" Grid.Column="2" Style="{StaticResource RoundFlat3DToggleButton}" Height="22" HorizontalAlignment="Center" Width="90" IsChecked="True" FocusVisualStyle="{x:Null}"/>
+        <Grid HorizontalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="90"/>
+                <ColumnDefinition Width="30"/>
+            </Grid.ColumnDefinitions>
+            <Button Content="L" Style="{StaticResource RoundFlat3DButton}" Visibility="{Binding IsChecked, ElementName=MainWindowToggle, Converter={StaticResource BooleanToVisibilityConverter}}" FocusVisualStyle="{x:Null}" Command="{Binding LoadBoardCommand}"/>
+            <ToggleButton x:Name="MainWindowToggle" Grid.Column="1" Style="{StaticResource RoundFlat3DToggleButton}" IsChecked="True" FocusVisualStyle="{x:Null}"/>
+            <Button Grid.Column="2" Content="S" Style="{StaticResource RoundFlat3DButton}" Visibility="{Binding IsChecked, ElementName=MainWindowToggle, Converter={StaticResource BooleanToVisibilityConverter}}" FocusVisualStyle="{x:Null}" Command="{Binding ShowSettingsCommand}"/>
+        </Grid>
+        
         <StackPanel Visibility="{Binding IsChecked, ElementName=MainWindowToggle, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Row="1" HorizontalAlignment="Center" Orientation="Horizontal" x:Name="MainGrid" Margin="15,0,15,15">
             <StackPanel.Effect>
                 <DropShadowEffect Direction="275"  Color="Gray" Opacity="0.5" />

@@ -17,9 +17,9 @@ namespace KanbanBoard {
    /// Interaction logic for BoardSelectorWindow.xaml
    /// </summary>
    public partial class BoardSelectorWindow : Window {
-      public BoardSelectorWindow() {
+      public BoardSelectorWindow(string currentBoard) {
          InitializeComponent();
-         this.DataContext = new BoardSelectorViewModel(this);
+         this.DataContext = new BoardSelectorViewModel(this, currentBoard);
       }
 
       private void WindowMouseDown(object sender, MouseButtonEventArgs e) {

@@ -13,6 +13,36 @@
             <GradientStop Color="#AAA" Offset="0.99" />
             <GradientStop Color="#888" Offset="1" />
         </LinearGradientBrush>
+        <Style x:Key="RoundFlat3DButton" TargetType="{x:Type Button}">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border" Background="#4FE6E6E6" BorderBrush="{StaticResource FlatReverse3DBorderBrush}" BorderThickness="0" CornerRadius="8" Margin="3">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#6BB8B8B8"/>
+                                <Setter TargetName="border" Property="BorderThickness" Value="3"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#6BE6E6E6"/>
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="Button.FontWeight" Value="ExtraBold" />
+                            </Trigger>
+                            <Trigger Property="IsDefaulted" Value="True">
+                                <Setter TargetName="border" Property="BorderThickness" Value="0"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="border" Property="Background" Value="#6BB8B8B8"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <Style x:Key="TransparentRoundFlat3DButton" TargetType="{x:Type Button}">
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="Template">

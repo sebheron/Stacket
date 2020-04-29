@@ -30,8 +30,8 @@ namespace KanbanBoard.DialogWindows {
          return (string)dialog.Tag;
       }
 
-      public static string SelectBoard() {
-         BoardSelectorWindow dialog = new BoardSelectorWindow();
+      public static string SelectBoard(string currentBoard) {
+         BoardSelectorWindow dialog = new BoardSelectorWindow(currentBoard);
          dialog.ShowDialog();
          if (dialog.DialogResult == null || dialog.DialogResult.Value == false) {
             return string.Empty;
