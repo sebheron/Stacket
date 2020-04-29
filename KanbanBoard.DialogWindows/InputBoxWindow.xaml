@@ -29,7 +29,7 @@
                 </Grid.RowDefinitions>
                 <TextBlock Text="{Binding Text}" Margin="10,4,10,3" TextWrapping="Wrap"/>
                 <Border Grid.Row="1" Margin="10,14" BorderBrush="#B05E5E5E" BorderThickness="1">
-                    <TextBox Grid.Row="1" Style="{StaticResource HiddenTextBox}" Text="{Binding Input, Mode=TwoWay}" AcceptsReturn="False" FocusManager.FocusedElement="{Binding RelativeSource={RelativeSource Self}}">
+                    <TextBox Grid.Row="1" Style="{StaticResource HiddenTextBox}" Text="{Binding Input, Mode=TwoWay}" AcceptsReturn="False" >
                         <TextBox.InputBindings>
                             <KeyBinding Key="Enter" Command="{Binding EnterPressedCommand}" CommandParameter="{Binding Path=Text, RelativeSource={RelativeSource AncestorType={x:Type TextBox}}}"/>
                         </TextBox.InputBindings>

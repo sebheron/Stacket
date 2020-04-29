@@ -260,7 +260,7 @@
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="TextBox">
-                                <TextBlock beh:MaxLinesBehavior.MaxLines="3" TextWrapping="Wrap" TextTrimming="WordEllipsis" Text="{TemplateBinding Text}"  Background="Transparent"/>
+                                <TextBlock beh:MaxLinesBehavior.MaxLines="3" MinWidth="90" TextWrapping="Wrap" TextTrimming="WordEllipsis" Text="{TemplateBinding Text}"  Background="Transparent"/>
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
@@ -276,7 +276,7 @@
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="TextBox">
-                                <TextBlock Text="{TemplateBinding Text}" TextWrapping="Wrap" TextTrimming="WordEllipsis" MaxHeight="180"  Background="Transparent" />
+                                <TextBlock Text="{TemplateBinding Text}" MinWidth="90" TextWrapping="Wrap" TextTrimming="WordEllipsis" MaxHeight="180"  Background="Transparent" />
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>

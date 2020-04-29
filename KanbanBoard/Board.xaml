@@ -57,7 +57,7 @@
             </StackPanel.Effect>
             <tb:TaskbarIcon x:Name="myNotifyIcon"
                     Visibility="Visible"
-                    ToolTipText="Kanban Board"
+                    ToolTipText="Stacket"
                     IconSource="icon.ico"
                     ContextMenu="{StaticResource TrayMenu}"
                     MenuActivation="LeftOrRightClick"
