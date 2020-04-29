@@ -6,22 +6,37 @@ using System.Threading.Tasks;
 
 namespace KanbanBoard.DialogWindows {
    public class DialogBoxService {
-      public static bool? Show(string text) {
-         DialogBoxWindow dialog = new DialogBoxWindow(text, "Kanban Board");
-         dialog.ShowDialog();
-         if (dialog.DialogResult == null) {
-            dialog.DialogResult = false;
-         }
-         return dialog.DialogResult;
-      }
-
-      public static bool? Show(string text, string caption) {
+      public static bool ShowYesNo(string text, string caption) {
          DialogBoxWindow dialog = new DialogBoxWindow(text, caption);
          dialog.ShowDialog();
          if (dialog.DialogResult == null) {
-            dialog.DialogResult = false;
+            return false;
          }
-         return dialog.DialogResult;
+         return dialog.DialogResult.Value;
+      }
+
+      public static bool Show(string text, string caption) {
+         MessageBoxWindow dialog = new MessageBoxWindow(text, caption);
+         dialog.ShowDialog();
+         return true;
+      }
+
+      public static string GetInput(string text, string caption) {
+         InputBoxWindow dialog = new InputBoxWindow(text, caption);
+         dialog.ShowDialog();
+         if (dialog.DialogResult == null || !dialog.DialogResult.Value || dialog.Tag == null) {
+            return string.Empty;
+         }
+         return (string)dialog.Tag;
+      }
+
+      public static string SelectBoard() {
+         BoardSelectorWindow dialog = new BoardSelectorWindow();
+         dialog.ShowDialog();
+         if (dialog.DialogResult == null || dialog.DialogResult.Value == false) {
+            return string.Empty;
+         }
+         return dialog.Tag.ToString();
       }
    }
 }

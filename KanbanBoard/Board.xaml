@@ -15,7 +15,7 @@
         WindowStyle="None" AllowsTransparency="True" ResizeMode="NoResize"
         ShowInTaskbar="False"
         Topmost="True"
-        MaxHeight="{Binding WindowHeight}" MaxWidth="{Binding WindowWidth}" Left="{Binding WindowLeft}" Top="{Binding WindowTop}"
+        MaxHeight="{Binding WindowHeight}" MaxWidth="{Binding WindowWidth}"
         xmlns:tb="http://www.hardcodet.net/taskbar" Background="Transparent" SizeToContent="Height">
     <Window.Resources>
         <ContextMenu x:Key="TrayMenu" x:Shared="true">

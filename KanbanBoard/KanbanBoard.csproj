@@ -78,7 +78,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="BoardHandling.cs" />
     <Compile Include="BoardViewModel.cs" />
     <Page Include="Board.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -18,7 +18,14 @@ namespace KanbanBoard {
       public BoardViewModel() {
          enabled = true;
          BoardHandling.Setup();
-         BoardInformation = new BoardInformation(@"C:\Users\Sebhe\source\repos\KanbanBoard\KanbanBoard\bin\Debug\Boards\test.txt");
+         if (Settings.Default.CurrentBoard == null || Settings.Default.CurrentBoard == string.Empty) {
+            Settings.Default.CurrentBoard = DialogBoxService.SelectBoard();
+            if (Settings.Default.CurrentBoard == null || Settings.Default.CurrentBoard == string.Empty) {
+               Application.Current.Shutdown();
+            }
+            Settings.Default.Save();
+         }
+         BoardInformation = new BoardInformation(Settings.Default.CurrentBoard);
       }
 
       //The visibility of the window.
@@ -39,22 +46,6 @@ namespace KanbanBoard {
 
       //The height of an item.
       public double ItemWidth => (WindowWidth - 120) / Math.Max(5, BoardInformation.Columns.Count);
-
-      //The top position of the window.
-      public double WindowTop {
-         get => Settings.Default.WindowTop;
-         set {
-            Settings.Default.WindowTop = (int)value;
-         }
-      }
-
-      //The left position of the window.
-      public double WindowLeft {
-         get => Settings.Default.WindowLeft;
-         set {
-            Settings.Default.WindowLeft = (int)value;
-         }
-      }
 
       // Show settings command.
       public ICommand ShowSettingsCommand => new DelegateCommand(ShowSettings, delegate () { return true; } );
@@ -84,13 +75,17 @@ namespace KanbanBoard {
 
       private void DeleteColumn(object arg) {
          if (arg is ColumnInformation columnInformation) {
-            if (BoardInformation.ColumnCount <= 1 || !DialogBoxService.Show("Are you sure you want to remove this column?", "Remove Column").Value) {
+            if (BoardInformation.ColumnCount <= 1) {
+               DialogBoxService.Show("This is the last column and cannot be removed.", "Remove column");
+               return;
+            }
+            if (!DialogBoxService.ShowYesNo("Are you sure you want to remove this column?", "Remove Column")) {
                return;
             }
             if (columnInformation.Items.Count > 0) {
 
-               bool? saveItems = DialogBoxService.Show("Should all the items within the column be saved? If so they will be moved to the leftmost column.", "Remove Column");
-               if (saveItems.Value) {
+               bool saveItems = DialogBoxService.ShowYesNo("Should all the items within the column be saved? If so they will be moved to the leftmost column.", "Remove Column");
+               if (saveItems) {
                   BoardInformation.MigrateItemsToLeftMost(columnInformation);
                }
             }
@@ -101,7 +96,7 @@ namespace KanbanBoard {
 
       private void DeleteItem(object arg) {
          if (arg is ItemInformation itemInformation) {
-            bool remove = itemInformation.Unchanged() || DialogBoxService.Show("Are you sure you want to remove this item?", "Remove Item").Value;
+            bool remove = itemInformation.Unchanged() || DialogBoxService.ShowYesNo("Are you sure you want to remove this item?", "Remove Item");
             if (remove)
                BoardInformation.Columns[BoardInformation.GetItemsColumnIndex(itemInformation)].Items.Remove(itemInformation);
          }
@@ -113,7 +108,9 @@ namespace KanbanBoard {
       }
 
       public void OnClosing(object sender, CancelEventArgs e) {
-         BoardInformation.Save();
+         if (BoardInformation.FilePath != null && BoardInformation.FilePath != string.Empty) {
+            BoardInformation.Save();
+         }
       }
    }
 }

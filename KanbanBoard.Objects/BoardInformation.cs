@@ -31,6 +31,10 @@ namespace KanbanBoard.Objects {
             for (int i = 2; i < lines.Length; i++) {
                Columns.Add(ColumnInformation.Load(lines[i]));
             }
+         } else {
+            Columns.Add(new ColumnInformation("New"));
+            Columns.Add(new ColumnInformation("In Progress"));
+            Columns.Add(new ColumnInformation("Done"));
          }
          FilePath = filePath;
       }

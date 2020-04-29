@@ -25,78 +25,13 @@ namespace KanbanBoard.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::System.Collections.Specialized.StringCollection ColumnTitles {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string CurrentBoard {
             get {
-                return ((global::System.Collections.Specialized.StringCollection)(this["ColumnTitles"]));
+                return ((string)(this["CurrentBoard"]));
             }
             set {
-                this["ColumnTitles"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
-<ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
-  <string>Investigation</string>
-  <string>Item</string>
-  <string>Bug</string>
-  <string>Note</string>
-</ArrayOfString>")]
-        public global::System.Collections.Specialized.StringCollection ItemTypes {
-            get {
-                return ((global::System.Collections.Specialized.StringCollection)(this["ItemTypes"]));
-            }
-            set {
-                this["ItemTypes"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int WindowWidth {
-            get {
-                return ((int)(this["WindowWidth"]));
-            }
-            set {
-                this["WindowWidth"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int WindowHeight {
-            get {
-                return ((int)(this["WindowHeight"]));
-            }
-            set {
-                this["WindowHeight"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int WindowTop {
-            get {
-                return ((int)(this["WindowTop"]));
-            }
-            set {
-                this["WindowTop"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int WindowLeft {
-            get {
-                return ((int)(this["WindowLeft"]));
-            }
-            set {
-                this["WindowLeft"] = value;
+                this["CurrentBoard"] = value;
             }
         }
     }
