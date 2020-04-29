@@ -17,6 +17,7 @@ namespace KanbanBoard {
       public string Input { get; set; }
 
       public DelegateCommand OkButtonCommand => new DelegateCommand(OkButton, delegate () { return true; });
+      public DelegateCommand<string> EnterPressedCommand => new DelegateCommand<string>(EnterPressed, delegate (string arg) { return true; });
       public DelegateCommand CancelButtonCommand => new DelegateCommand(CancelButton, delegate () { return true; });
 
       public InputBoxViewModel(Window window, string text, string caption) {
@@ -27,6 +28,12 @@ namespace KanbanBoard {
 
       public void OkButton() {
          dialogWindow.Tag = Input;
+         dialogWindow.DialogResult = true;
+         dialogWindow.Close();
+      }
+
+      public void EnterPressed(string input) {
+         dialogWindow.Tag = input;
          dialogWindow.DialogResult = true;
          dialogWindow.Close();
       }

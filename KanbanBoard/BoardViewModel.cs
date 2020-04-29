@@ -5,6 +5,7 @@ using Prism.Commands;
 using Prism.Mvvm;
 using System;
 using System.ComponentModel;
+using System.IO;
 using System.Windows;
 using System.Windows.Input;
 
@@ -19,6 +20,13 @@ namespace KanbanBoard {
          enabled = true;
          BoardHandling.Setup();
          if (Settings.Default.CurrentBoard == null || Settings.Default.CurrentBoard == string.Empty) {
+            Settings.Default.CurrentBoard = DialogBoxService.SelectBoard();
+            if (Settings.Default.CurrentBoard == null || Settings.Default.CurrentBoard == string.Empty) {
+               Application.Current.Shutdown();
+            }
+            Settings.Default.Save();
+         } else if (!File.Exists(Settings.Default.CurrentBoard)) {
+            DialogBoxService.Show("The board " + Path.GetFileName(Settings.Default.CurrentBoard) + " is missing.", "Missing Board File");
             Settings.Default.CurrentBoard = DialogBoxService.SelectBoard();
             if (Settings.Default.CurrentBoard == null || Settings.Default.CurrentBoard == string.Empty) {
                Application.Current.Shutdown();
@@ -79,7 +87,7 @@ namespace KanbanBoard {
                DialogBoxService.Show("This is the last column and cannot be removed.", "Remove column");
                return;
             }
-            if (!DialogBoxService.ShowYesNo("Are you sure you want to remove this column?", "Remove Column")) {
+            if (!columnInformation.Unchanged() && !DialogBoxService.ShowYesNo("Are you sure you want to remove this column?", "Remove Column")) {
                return;
             }
             if (columnInformation.Items.Count > 0) {

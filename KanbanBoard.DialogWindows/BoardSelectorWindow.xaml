@@ -17,7 +17,7 @@
                 <RowDefinition/>
                 <RowDefinition Height="35"/>
             </Grid.RowDefinitions>
-            <Border Background="DarkGray" CornerRadius="5" Grid.ColumnSpan="3" Margin="0,0,0,0.4">
+            <Border MouseDown="WindowMouseDown"  Background="DarkGray" CornerRadius="5" Grid.ColumnSpan="3" Margin="0,0,0,0.4">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -27,7 +27,7 @@
                     <TextBlock Margin="5" Text="Open Board"/>
                 </Grid>
             </Border>
-            <ListBox SelectedItem="{Binding SelectedBoard, Mode=TwoWay}" ItemsSource="{Binding BoardFiles}" Grid.Row="1" Grid.ColumnSpan="3" Margin="10,9.6"/>
+            <ListBox Background="#BFD3D3D3" SelectedItem="{Binding SelectedBoard, Mode=TwoWay}" ItemsSource="{Binding BoardFiles}" Grid.Row="1" Grid.ColumnSpan="3" Margin="10,9.6"/>
             <Grid Grid.Row="2" Grid.ColumnSpan="3" Margin="0,0.4,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>

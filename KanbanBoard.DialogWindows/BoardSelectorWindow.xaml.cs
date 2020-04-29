@@ -21,5 +21,11 @@ namespace KanbanBoard {
          InitializeComponent();
          this.DataContext = new BoardSelectorViewModel(this);
       }
+
+      private void WindowMouseDown(object sender, MouseButtonEventArgs e) {
+         if (e.LeftButton == MouseButtonState.Pressed) {
+            this.DragMove();
+         }
+      }
    }
 }

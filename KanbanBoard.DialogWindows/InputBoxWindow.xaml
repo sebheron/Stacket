@@ -12,7 +12,7 @@
                 <RowDefinition/>
                 <RowDefinition Height="35"/>
             </Grid.RowDefinitions>
-            <Border Background="DarkGray" CornerRadius="5" Grid.ColumnSpan="3" Margin="0,0,0,0.4">
+            <Border MouseDown="WindowMouseDown" Background="DarkGray" CornerRadius="5" Grid.ColumnSpan="3" Margin="0,0,0,0.4">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -29,7 +29,11 @@
                 </Grid.RowDefinitions>
                 <TextBlock Text="{Binding Text}" Margin="10,4,10,3" TextWrapping="Wrap"/>
                 <Border Grid.Row="1" Margin="10,14" BorderBrush="#B05E5E5E" BorderThickness="1">
-                    <TextBox Grid.Row="1" Style="{StaticResource HiddenTextBox}" Text="{Binding Input, Mode=TwoWay}"/>
+                    <TextBox Grid.Row="1" Style="{StaticResource HiddenTextBox}" Text="{Binding Input, Mode=TwoWay}" AcceptsReturn="False" FocusManager.FocusedElement="{Binding RelativeSource={RelativeSource Self}}">
+                        <TextBox.InputBindings>
+                            <KeyBinding Key="Enter" Command="{Binding EnterPressedCommand}" CommandParameter="{Binding Path=Text, RelativeSource={RelativeSource AncestorType={x:Type TextBox}}}"/>
+                        </TextBox.InputBindings>
+                    </TextBox>
                 </Border>
             </Grid>
             <Grid Grid.Row="2" Grid.ColumnSpan="3" Margin="0,0.4,0,0">
@@ -37,8 +41,8 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <Button Content="Ok" Margin="3,1,3,3" Style="{StaticResource TransparentRoundFlat3DButton}" Command="{Binding OkButtonCommand}" IsDefault="True"/>
-                <Button Content="Cancel" Grid.Column="1" Margin="3,1,3,3" Style="{StaticResource TransparentRoundFlat3DButton}" Command="{Binding CancelButtonCommand}" IsCancel="True"/>
+                <Button Content="Ok" Margin="3,1,3,3" Style="{StaticResource TransparentRoundFlat3DButton}" Command="{Binding OkButtonCommand}"/>
+                <Button Content="Cancel" Grid.Column="1" Margin="3,1,3,3" Style="{StaticResource TransparentRoundFlat3DButton}" Command="{Binding CancelButtonCommand}"/>
             </Grid>
         </Grid>
     </Border>

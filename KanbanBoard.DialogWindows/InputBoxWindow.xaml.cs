@@ -22,5 +22,11 @@ namespace KanbanBoard {
          InitializeComponent();
          this.DataContext = new InputBoxViewModel(this, text, caption);
       }
+
+      private void WindowMouseDown(object sender, MouseButtonEventArgs e) {
+         if (e.LeftButton == MouseButtonState.Pressed) {
+            this.DragMove();
+         }
+      }
    }
 }

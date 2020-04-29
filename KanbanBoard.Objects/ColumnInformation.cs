@@ -48,5 +48,9 @@ namespace KanbanBoard.Objects {
          }
          return columnData.ToString();
       }
+
+      public bool Unchanged() {
+         return ColumnTitle == "New Column" && Items.Count <= 0;
+      }
    }
 }
