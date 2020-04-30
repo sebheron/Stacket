@@ -17,6 +17,10 @@
         Topmost="True" Tag="MainWindow"
         MaxHeight="{Binding WindowHeight}" MaxWidth="{Binding WindowWidth}"
         xmlns:tb="http://www.hardcodet.net/taskbar" Background="Transparent" SizeToContent="Height">
+    <Window.InputBindings>
+        <KeyBinding Modifiers="Ctrl" Key="S" Command="{Binding SaveBoardCommand}"/>
+        <KeyBinding Modifiers="Ctrl" Key="O" Command="{Binding LoadBoardCommand}"/>
+    </Window.InputBindings>
     <Window.Resources>
         <ContextMenu x:Key="TrayMenu" x:Shared="true">
             <!--<MenuItem Header="Settings" Command="{Binding ShowSettingsCommand}"/>-->
@@ -172,8 +176,8 @@
                                                                         </i:Interaction.Behaviors>
                                                                     </TextBox>
                                                                 </Grid>
-                                                                <ComboBox Style="{StaticResource TransparentRoundComboBox}" Grid.Column="1" SelectedValue="{Binding ItemType}" ItemsSource="{Binding Source={StaticResource ItemTypes}}"/>
-                                                                <Button Content="r" FontFamily="Marlett" Grid.Column="2" Style="{StaticResource TransparentRoundFlat3DButton}"
+                                                                <ComboBox Style="{StaticResource TransparentRoundComboBox}" Grid.Column="1" SelectedValue="{Binding ItemType}" ItemsSource="{Binding Source={StaticResource ItemTypes}}" VerticalAlignment="Top" Height="30"/>
+                                                                <Button Content="r" FontFamily="Marlett" Grid.Column="2" Style="{StaticResource TransparentRoundFlat3DButton}" VerticalAlignment="Top" Height="30"
                                                                     Command="{Binding ElementName=MainGrid,  Path=DataContext.DeleteItemCommand}"
                                                                     CommandParameter="{Binding}" FocusVisualStyle="{x:Null}"/>
                                                             </Grid>
