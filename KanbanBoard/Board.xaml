@@ -88,8 +88,8 @@
                             VerticalAlignment="Top"
                             Background="#BFD3D3D3"
                             FocusVisualStyle="{x:Null}">
-                            <StackPanel>
-                                <Border CornerRadius="8" MinHeight="30" Margin="0,3,0,3">
+                            <DockPanel>
+                                <Border CornerRadius="8" MinHeight="30" Margin="0,3,0,3" DockPanel.Dock="Top">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="30"/>
@@ -147,7 +147,7 @@
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <Border Background="LightGray" CornerRadius="15" Margin="10,5" FocusVisualStyle="{x:Null}">
-                                                    <StackPanel>
+                                                    <StackPanel MinHeight="90">
                                                         <Border Background="{Binding ItemColor, Converter={StaticResource ColorToScreenColor}}" CornerRadius="4" MinHeight="30" FocusVisualStyle="{x:Null}">
                                                             <Grid>
                                                                 <Grid.ColumnDefinitions>
@@ -200,12 +200,12 @@
                                         </ItemsControl.ItemTemplate>
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
-                                                <StackPanel VerticalAlignment="Top" Orientation="Vertical"/>
+                                                <StackPanel VerticalAlignment="Top" Orientation="Vertical" />
                                             </ItemsPanelTemplate>
                                         </ItemsControl.ItemsPanel>
                                     </ItemsControl>
                                 </ScrollViewer>
-                            </StackPanel>
+                            </DockPanel>
                         </Border>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
