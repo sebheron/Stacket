@@ -28,6 +28,22 @@ namespace KanbanBoard {
          }
       }
 
+      private bool loadEnabled = true;
+      public bool LoadEnabled {
+         get => loadEnabled;
+         set {
+            SetProperty(ref loadEnabled, value);
+         }
+      }
+
+      private bool newEnabled = true;
+      public bool NewEnabled {
+         get => newEnabled;
+         set {
+            SetProperty(ref newEnabled, value);
+         }
+      }
+
       public BoardViewModel() {
          BoardHandling.Setup();
          if (Settings.Default.CurrentBoard == null || Settings.Default.CurrentBoard == string.Empty) {
@@ -60,6 +76,7 @@ namespace KanbanBoard {
       public ICommand ShowSettingsCommand => new DelegateCommand(ShowSettings, delegate () { return true; });
 
       // Board command.
+      public ICommand NewBoardCommand => new DelegateCommand(NewBoard, delegate () { return true; });
       public ICommand LoadBoardCommand => new DelegateCommand(LoadBoard, delegate () { return true; });
       public ICommand SaveBoardCommand => new DelegateCommand(SaveBoard, CanSave).ObservesProperty(() => Changed);
 
@@ -76,11 +93,34 @@ namespace KanbanBoard {
          //Show settings
       }
 
+      public void NewBoard() {
+         if (BoardInformation.FilePath != null && BoardInformation.FilePath != string.Empty && Changed && DialogBoxService.ShowYesNo("Do you want to save changes to the current board?", "Save Changes")) {
+            SaveBoard();
+         }
+         NewEnabled = false;
+         LoadEnabled = false;
+         string input = DialogBoxService.GetInput("Name for the new board:", "New Board");
+         NewEnabled = true;
+         LoadEnabled = true;
+         if (input == string.Empty || input == null) {
+            return;
+         } else {
+            Settings.Default.CurrentBoard = Path.Combine(BoardHandling.BoardFileStorageLocation, input + BoardHandling.BoardFileExtension);
+            BoardInformation = new BoardInformation(Settings.Default.CurrentBoard);
+            Settings.Default.Save();
+            Changed = false;
+         }
+      }
+
       private void LoadBoard() {
          if (Changed && DialogBoxService.ShowYesNo("Do you want to save changes to the current board?", "Save Changes")) {
             BoardInformation.Save();
          }
+         NewEnabled = false;
+         LoadEnabled = false;
          string newBoard = DialogBoxService.SelectBoard(Settings.Default.CurrentBoard);
+         NewEnabled = true;
+         LoadEnabled = true;
          if (newBoard == null || newBoard == string.Empty) {
             return;
          } else {
@@ -154,6 +194,10 @@ namespace KanbanBoard {
       public void OnClosing(object sender, CancelEventArgs e) {
          if (BoardInformation.FilePath != null && BoardInformation.FilePath != string.Empty && Changed && DialogBoxService.ShowYesNo("Do you want to save changes to the current board?", "Save Changes")) {
             BoardInformation.Save();
+         }
+         foreach (Window item in Application.Current.Windows) {
+            if (item.Tag == null || item.Tag.ToString() != "MainWindow")
+               item.Close();
          }
       }
    }

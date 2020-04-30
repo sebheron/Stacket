@@ -14,13 +14,14 @@
         Title="Board" WindowState="Maximized"
         WindowStyle="None" AllowsTransparency="True" ResizeMode="NoResize"
         ShowInTaskbar="False"
-        Topmost="True"
+        Topmost="True" Tag="MainWindow"
         MaxHeight="{Binding WindowHeight}" MaxWidth="{Binding WindowWidth}"
         xmlns:tb="http://www.hardcodet.net/taskbar" Background="Transparent" SizeToContent="Height">
     <Window.Resources>
         <ContextMenu x:Key="TrayMenu" x:Shared="true">
             <!--<MenuItem Header="Settings" Command="{Binding ShowSettingsCommand}"/>-->
-            <MenuItem Header="Load" Command="{Binding LoadBoardCommand}"/>
+            <MenuItem Header="New" Command="{Binding NewBoardCommand}" IsEnabled="{Binding NewEnabled}"/>
+            <MenuItem Header="Load" Command="{Binding LoadBoardCommand}" IsEnabled="{Binding LoadEnabled}"/>
             <MenuItem Header="Save" Command="{Binding SaveBoardCommand}"/>
             <MenuItem Header="Exit" Click="Exit_Click" />
         </ContextMenu>
