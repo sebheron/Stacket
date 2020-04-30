@@ -152,7 +152,7 @@ namespace KanbanBoard {
       }
 
       public void OnClosing(object sender, CancelEventArgs e) {
-         if (BoardInformation.FilePath != null && BoardInformation.FilePath != string.Empty) {
+         if (BoardInformation.FilePath != null && BoardInformation.FilePath != string.Empty && Changed && DialogBoxService.ShowYesNo("Do you want to save changes to the current board?", "Save Changes")) {
             BoardInformation.Save();
          }
       }

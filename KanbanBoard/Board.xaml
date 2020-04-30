@@ -30,7 +30,7 @@
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
         <ToolTip x:Key="TrayToolTip">
-            <Label Margin="0" Padding="0" Content="Kanban Board"/>
+            <Label Margin="0" Padding="0" Content="Stacket"/>
         </ToolTip>
         <con:ColorToScreenColorConverter x:Key="ColorToScreenColor"/>
         <con:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>

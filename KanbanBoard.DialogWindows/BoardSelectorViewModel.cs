@@ -29,7 +29,8 @@ namespace KanbanBoard {
 
       public DelegateCommand CancelButtonCommand => new DelegateCommand(CancelButton, delegate () { return true; });
       public DelegateCommand NewButtonCommand => new DelegateCommand(NewButton, delegate () { return true; });
-      public DelegateCommand OpenButtonCommand => new DelegateCommand(OpenButton, CanOpen).ObservesProperty(() => SelectedBoard);
+      public DelegateCommand OpenButtonCommand => new DelegateCommand(OpenButton, IsFileSelected).ObservesProperty(() => SelectedBoard);
+      public DelegateCommand DeleteButtonCommand => new DelegateCommand(DeleteButton, IsFileSelected).ObservesProperty(() => SelectedBoard);
 
       private IEnumerable<string> GetFileNames(string currentBoard) {
          return Directory.GetFiles(BoardHandling.BoardFileStorageLocation).Where(x => x != currentBoard).Select(x => Path.GetFileNameWithoutExtension(x));
@@ -63,7 +64,14 @@ namespace KanbanBoard {
          dialogWindow.Close();
       }
 
-      public bool CanOpen() {
+      public void DeleteButton() {
+         if (DialogBoxService.ShowYesNo("Are you sure want to delete this board?", "Delete board")) {
+            File.Delete(Path.Combine(BoardHandling.BoardFileStorageLocation, SelectedBoard + BoardHandling.BoardFileExtension));
+            BoardFiles.Remove(SelectedBoard);
+         }
+      }
+
+      public bool IsFileSelected() {
          return BoardFiles.Count > 0 && SelectedBoard != null;
       }
    }

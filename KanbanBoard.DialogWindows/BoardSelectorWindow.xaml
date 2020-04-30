@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KanbanBoard"
-        mc:Ignorable="d" Topmost="True"
+        mc:Ignorable="d" Topmost="True" ShowInTaskbar="False"
         Title="BoardSelectorWindow" Height="250" Width="400" WindowStyle="None" Background="Transparent" AllowsTransparency="True" WindowStartupLocation="CenterScreen">
     <Border CornerRadius="15" Background="#BFD3D3D3">
         <Grid>
@@ -32,9 +32,11 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
+                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Button Content="New" Margin="3,1,3,3" Style="{StaticResource TransparentRoundFlat3DButton}" Command="{Binding NewButtonCommand}"/>
                 <Button Content="Open" Grid.Column="1" Margin="3,1,3,3" Style="{StaticResource TransparentRoundFlat3DButton}" Command="{Binding OpenButtonCommand}"/>
+                <Button Content="Delete" Grid.Column="2" Margin="3,1,3,3" Style="{StaticResource TransparentRoundFlat3DButton}" Command="{Binding DeleteButtonCommand}"/>
             </Grid>
         </Grid>
     </Border>
