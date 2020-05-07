@@ -12,20 +12,22 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace KanbanBoard {
-   /// <summary>
-   /// Interaction logic for BoardSelectorWindow.xaml
-   /// </summary>
-   public partial class BoardSelectorWindow : Window {
-      public BoardSelectorWindow(string currentBoard) {
-         InitializeComponent();
-         this.DataContext = new BoardSelectorViewModel(this, currentBoard);
-      }
+namespace KanbanBoard
+{
+    /// <summary>
+    /// Interaction logic for BoardSelectorWindow.xaml
+    /// </summary>
+    public partial class BoardSelectorWindow : Window
+    {
+        public BoardSelectorWindow(string currentBoard) {
+            InitializeComponent();
+            this.DataContext = new BoardSelectorViewModel(this, currentBoard);
+        }
 
-      private void WindowMouseDown(object sender, MouseButtonEventArgs e) {
-         if (e.LeftButton == MouseButtonState.Pressed) {
-            this.DragMove();
-         }
-      }
-   }
+        private void WindowMouseDown(object sender, MouseButtonEventArgs e) {
+            if (e.LeftButton == MouseButtonState.Pressed) {
+                this.DragMove();
+            }
+        }
+    }
 }

@@ -55,7 +55,7 @@
             <ToggleButton x:Name="MainWindowToggle" Grid.Column="1" Style="{StaticResource RoundFlat3DToggleButton}" IsChecked="True" FocusVisualStyle="{x:Null}"/>
             <!--<Button Grid.Column="2" Style="{StaticResource RoundFlat3DButton}" Content="&lt;" FontFamily="Wingdings" Visibility="{Binding IsChecked, ElementName=MainWindowToggle, Converter={StaticResource BooleanToVisibilityConverter}}" FocusVisualStyle="{x:Null}" Command="{Binding SaveBoardCommand}"/>-->
         </Grid>
-        
+
         <StackPanel Visibility="{Binding IsChecked, ElementName=MainWindowToggle, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Row="1" HorizontalAlignment="Center" Orientation="Horizontal" x:Name="MainGrid" Margin="15,0,15,15">
             <StackPanel.Effect>
                 <DropShadowEffect Direction="275"  Color="Gray" Opacity="0.5" />
@@ -122,8 +122,8 @@
                                             </TextBox>
                                         </Grid>
 
-                                        <ToggleButton x:Name="ItemListToggle" Grid.Column="2" Style="{StaticResource TransparentRoundFlat3DToggleButton}" VerticalAlignment="Top" Height="30"
-                                        IsChecked="True"
+                                        <ToggleButton Grid.Column="2" Style="{StaticResource MinimizeFlat3DToggleButton}" VerticalAlignment="Top" Height="30"
+                                        IsChecked="{Binding ColumnVisible, Mode=TwoWay}"
                                         FocusVisualStyle="{x:Null}">
                                         </ToggleButton>
 
@@ -136,7 +136,7 @@
                                         </Button>
                                     </Grid>
                                 </Border>
-                                <ScrollViewer Visibility="{Binding IsChecked, ElementName=ItemListToggle, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                                <ScrollViewer Visibility="{Binding ColumnVisible, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                                     <ItemsControl Background="#01000000" ItemsSource="{Binding Items}"
                                           dd:DragDrop.IsDragSource="True"
                                           dd:DragDrop.IsDropTarget="True"
@@ -151,11 +151,12 @@
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
                                                 <Border Background="LightGray" CornerRadius="15" Margin="10,5" FocusVisualStyle="{x:Null}">
-                                                    <StackPanel MinHeight="90">
+                                                    <StackPanel>
                                                         <Border Background="{Binding ItemColor, Converter={StaticResource ColorToScreenColor}}" CornerRadius="4" MinHeight="30" FocusVisualStyle="{x:Null}">
                                                             <Grid>
                                                                 <Grid.ColumnDefinitions>
                                                                     <ColumnDefinition/>
+                                                                    <ColumnDefinition Width="30"/>
                                                                     <ColumnDefinition Width="30"/>
                                                                     <ColumnDefinition Width="30"/>
                                                                 </Grid.ColumnDefinitions>
@@ -176,13 +177,17 @@
                                                                         </i:Interaction.Behaviors>
                                                                     </TextBox>
                                                                 </Grid>
-                                                                <ComboBox Style="{StaticResource TransparentRoundComboBox}" Grid.Column="1" SelectedValue="{Binding ItemType}" ItemsSource="{Binding Source={StaticResource ItemTypes}}" VerticalAlignment="Top" Height="30"/>
-                                                                <Button Content="r" FontFamily="Marlett" Grid.Column="2" Style="{StaticResource TransparentRoundFlat3DButton}" VerticalAlignment="Top" Height="30"
+                                                                <ToggleButton Grid.Column="1" Style="{StaticResource MinimizeFlat3DToggleButton}" VerticalAlignment="Top" Height="30"
+                                                                IsChecked="{Binding ItemDescriptionVisible, Mode=TwoWay}"
+                                                                FocusVisualStyle="{x:Null}">
+                                                                </ToggleButton>
+                                                                <ComboBox Style="{StaticResource TransparentRoundComboBox}" Grid.Column="2" SelectedValue="{Binding ItemType}" ItemsSource="{Binding Source={StaticResource ItemTypes}}" VerticalAlignment="Top" Height="30"/>
+                                                                <Button Content="r" FontFamily="Marlett" Grid.Column="3" Style="{StaticResource TransparentRoundFlat3DButton}" VerticalAlignment="Top" Height="30"
                                                                     Command="{Binding ElementName=MainGrid,  Path=DataContext.DeleteItemCommand}"
                                                                     CommandParameter="{Binding}" FocusVisualStyle="{x:Null}"/>
                                                             </Grid>
                                                         </Border>
-                                                        <Grid Grid.Row="1" MinHeight="60">
+                                                        <Grid Visibility="{Binding ItemDescriptionVisible, Converter={StaticResource BooleanToVisibilityConverter}}" MinHeight="60">
                                                             <Grid.RowDefinitions>
                                                                 <RowDefinition Height="6"/>
                                                                 <RowDefinition/>

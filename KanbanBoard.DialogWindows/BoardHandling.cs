@@ -1,14 +1,16 @@
 using System;
 using System.IO;
 
-namespace KanbanBoard {
-   public static class BoardHandling {
+namespace KanbanBoard
+{
+    public static class BoardHandling
+    {
 
-      public static string BoardFileStorageLocation => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Boards");
-      public static string BoardFileExtension => ".brd";
+        public static string BoardFileStorageLocation => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Boards");
+        public static string BoardFileExtension => ".brd";
 
-      public static void Setup() {
-         Directory.CreateDirectory(BoardFileStorageLocation);
-      }
-   }
+        public static void Setup() {
+            Directory.CreateDirectory(BoardFileStorageLocation);
+        }
+    }
 }

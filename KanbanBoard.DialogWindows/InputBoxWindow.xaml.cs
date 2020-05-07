@@ -12,21 +12,23 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace KanbanBoard {
-   /// <summary>
-   /// Interaction logic for InputBox.xaml
-   /// </summary>
-   public partial class InputBoxWindow : Window {
+namespace KanbanBoard
+{
+    /// <summary>
+    /// Interaction logic for InputBox.xaml
+    /// </summary>
+    public partial class InputBoxWindow : Window
+    {
 
-      public InputBoxWindow(string text, string caption) {
-         InitializeComponent();
-         this.DataContext = new InputBoxViewModel(this, text, caption);
-      }
+        public InputBoxWindow(string text, string caption) {
+            InitializeComponent();
+            this.DataContext = new InputBoxViewModel(this, text, caption);
+        }
 
-      private void WindowMouseDown(object sender, MouseButtonEventArgs e) {
-         if (e.LeftButton == MouseButtonState.Pressed) {
-            this.DragMove();
-         }
-      }
-   }
+        private void WindowMouseDown(object sender, MouseButtonEventArgs e) {
+            if (e.LeftButton == MouseButtonState.Pressed) {
+                this.DragMove();
+            }
+        }
+    }
 }

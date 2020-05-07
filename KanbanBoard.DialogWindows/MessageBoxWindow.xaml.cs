@@ -12,20 +12,22 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace KanbanBoard {
-   /// <summary>
-   /// Interaction logic for MessageBoxWindow.xaml
-   /// </summary>
-   public partial class MessageBoxWindow : Window {
-      public MessageBoxWindow(string text, string caption) {
-         InitializeComponent();
-         this.DataContext = new DialogBoxViewModel(this, text, caption);
-      }
+namespace KanbanBoard
+{
+    /// <summary>
+    /// Interaction logic for MessageBoxWindow.xaml
+    /// </summary>
+    public partial class MessageBoxWindow : Window
+    {
+        public MessageBoxWindow(string text, string caption) {
+            InitializeComponent();
+            this.DataContext = new DialogBoxViewModel(this, text, caption);
+        }
 
-      private void WindowMouseDown(object sender, MouseButtonEventArgs e) {
-         if (e.LeftButton == MouseButtonState.Pressed) {
-            this.DragMove();
-         }
-      }
-   }
+        private void WindowMouseDown(object sender, MouseButtonEventArgs e) {
+            if (e.LeftButton == MouseButtonState.Pressed) {
+                this.DragMove();
+            }
+        }
+    }
 }

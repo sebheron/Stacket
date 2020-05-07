@@ -12,19 +12,21 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace KanbanBoard {
-   /// <summary>
-   /// Interaction logic for AboutWindow.xaml
-   /// </summary>
-   public partial class AboutWindow : Window {
-      public AboutWindow() {
-         InitializeComponent();
-      }
+namespace KanbanBoard
+{
+    /// <summary>
+    /// Interaction logic for AboutWindow.xaml
+    /// </summary>
+    public partial class AboutWindow : Window
+    {
+        public AboutWindow() {
+            InitializeComponent();
+        }
 
-      private void WindowMouseDown(object sender, MouseButtonEventArgs e) {
-         if (e.LeftButton == MouseButtonState.Pressed) {
-            this.DragMove();
-         }
-      }
-   }
+        private void WindowMouseDown(object sender, MouseButtonEventArgs e) {
+            if (e.LeftButton == MouseButtonState.Pressed) {
+                this.DragMove();
+            }
+        }
+    }
 }
