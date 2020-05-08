@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.28307.1082
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KanbanBoard", "KanbanBoard\KanbanBoard.csproj", "{867081CE-8D9B-413B-ABC8-C31F745C7BE3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KanbanBoard.Tests", "KanbanBoardTests\KanbanBoard.Tests.csproj", "{FF4018C0-4779-4D3A-9AC5-852A9AD7E9C2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KanbanBoard.Tests", "KanbanBoard.Tests\KanbanBoard.Tests.csproj", "{FF4018C0-4779-4D3A-9AC5-852A9AD7E9C2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KanbanBoard.DialogWindows", "KanbanBoard.DialogWindows\KanbanBoard.DialogWindows.csproj", "{82C88C3B-13DF-440C-9FB7-A61FA0E3E76B}"
 EndProject

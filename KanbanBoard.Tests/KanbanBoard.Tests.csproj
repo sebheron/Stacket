@@ -8,8 +8,8 @@
     <ProjectGuid>{FF4018C0-4779-4D3A-9AC5-852A9AD7E9C2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>KanbanBoardTests</RootNamespace>
-    <AssemblyName>KanbanBoardTests</AssemblyName>
+    <RootNamespace>KanbanBoard.Tests</RootNamespace>
+    <AssemblyName>KanbanBoard.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
