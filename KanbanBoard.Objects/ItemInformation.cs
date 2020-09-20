@@ -12,7 +12,7 @@ namespace KanbanBoard.Objects
         public string ItemDescription { get; set; }
         public DateTime ItemDueDate { get; set; }
 
-        private bool itemDescriptionVisible = false;
+        private bool itemDescriptionVisible;
         public bool ItemDescriptionVisible {
             get => itemDescriptionVisible;
             set {
@@ -60,7 +60,7 @@ namespace KanbanBoard.Objects
             ItemDescription = string.Empty;
             ItemType = ItemTypes.Item;
             ItemDueDate = DateTime.Now.Date;
-            itemDescriptionVisible = true;
+            ItemDescriptionVisible = false;
         }
 
         public ItemInformation(Guid itemId, string itemTitle, string itemDescription, ItemTypes itemType, DateTime itemDueDate, Color itemColor) {
@@ -69,7 +69,7 @@ namespace KanbanBoard.Objects
             ItemDescription = itemDescription;
             ItemType = itemType;
             ItemDueDate = itemDueDate.Date;
-            itemDescriptionVisible = true;
+            ItemDescriptionVisible = false;
         }
 
         public static ItemInformation Load(string parsedItem) {
