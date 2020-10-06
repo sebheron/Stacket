@@ -9,6 +9,7 @@ namespace KanbanBoard
             var boardViewModel = new BoardViewModel();
             this.Closing += boardViewModel.OnClosing;
             this.DataContext = boardViewModel;
+
             this.InitializeComponent();
         }
 
