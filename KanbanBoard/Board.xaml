@@ -52,7 +52,7 @@
                 <ColumnDefinition Width="45"/>
             </Grid.ColumnDefinitions>
             <!--<Button Style="{StaticResource RoundFlat3DButton}" Content="1" FontFamily="Wingdings" Visibility="{Binding IsChecked, ElementName=MainWindowToggle, Converter={StaticResource BooleanToVisibilityConverter}}" FocusVisualStyle="{x:Null}" Command="{Binding LoadBoardCommand}"/>-->
-            <ToggleButton x:Name="MainWindowToggle" Grid.Column="1" Style="{StaticResource RoundFlat3DToggleButton}" IsChecked="True" FocusVisualStyle="{x:Null}"/>
+            <ToggleButton x:Name="MainWindowToggle" Grid.Column="1" Style="{StaticResource RoundFlat3DToggleButton}" IsChecked="True" FocusVisualStyle="{x:Null}" ContextMenu="{StaticResource TrayMenu}" />
             <!--<Button Grid.Column="2" Style="{StaticResource RoundFlat3DButton}" Content="&lt;" FontFamily="Wingdings" Visibility="{Binding IsChecked, ElementName=MainWindowToggle, Converter={StaticResource BooleanToVisibilityConverter}}" FocusVisualStyle="{x:Null}" Command="{Binding SaveBoardCommand}"/>-->
         </Grid>
 

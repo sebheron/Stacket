@@ -1,110 +1,113 @@
-using Prism.Mvvm;
 using System;
-using System.Text;
 using System.Windows.Media;
+using Prism.Mvvm;
 
 namespace KanbanBoard.Objects
 {
     public class ItemInformation : BindableBase
     {
-        public Guid ItemID { get; set; }
-        public string ItemTitle { get; set; }
-        public string ItemDescription { get; set; }
-        public DateTime ItemDueDate { get; set; }
-
-        private bool itemDescriptionVisible;
-        public bool ItemDescriptionVisible {
-            get => itemDescriptionVisible;
-            set {
-                SetProperty(ref itemDescriptionVisible, value);
-            }
-        }
+        private const string NewItemData = "$%<NEWITEMDATA>%$";
 
         private Color itemColor;
-        public Color ItemColor {
-            get => itemColor;
-            set {
-                SetProperty(ref itemColor, value);
-            }
-        }
-
+        private bool itemDescriptionVisible;
         private ItemTypes itemType;
-        public ItemTypes ItemType {
+
+        public ItemInformation(string itemTitle)
+        {
+            this.ItemId = Guid.NewGuid();
+            this.ItemTitle = itemTitle;
+            this.ItemDescription = string.Empty;
+            this.ItemType = ItemTypes.Item;
+            this.ItemDueDate = DateTime.Now.Date;
+            this.ItemDescriptionVisible = false;
+        }
+
+        public ItemInformation(Guid itemId, string itemTitle, string itemDescription, ItemTypes itemType,
+            DateTime itemDueDate)
+        {
+            this.ItemId = itemId;
+            this.ItemTitle = itemTitle;
+            this.ItemDescription = itemDescription;
+            this.ItemType = itemType;
+            this.ItemDueDate = itemDueDate.Date;
+            this.ItemDescriptionVisible = false;
+        }
+
+        public Guid ItemId { get; set; }
+
+        public string ItemTitle { get; set; }
+
+        public string ItemDescription { get; set; }
+
+        public DateTime ItemDueDate { get; set; }
+
+        public bool ItemDescriptionVisible
+        {
+            get => this.itemDescriptionVisible;
+            set => this.SetProperty(ref this.itemDescriptionVisible, value);
+        }
+
+        public Color ItemColor
+        {
+            get => this.itemColor;
+            set => this.SetProperty(ref this.itemColor, value);
+        }
+
+        public ItemTypes ItemType
+        {
             get => itemType;
-            set {
-                SetColor(value);
-                SetProperty(ref itemType, value);
+            set
+            {
+                this.SetColor(value);
+                this.SetProperty(ref this.itemType, value);
             }
         }
 
-        private void SetColor(ItemTypes itemType) {
-            switch (itemType) {
+        private void SetColor(ItemTypes item)
+        {
+            switch (item)
+            {
                 case ItemTypes.Bug:
-                    ItemColor = Color.FromArgb(255, 255, 159, 26);
+                    this.ItemColor = Color.FromArgb(255, 255, 159, 26);
                     break;
                 case ItemTypes.Investigation:
-                    ItemColor = Color.FromArgb(255, 64, 86, 161);
+                    this.ItemColor = Color.FromArgb(255, 64, 86, 161);
                     break;
                 case ItemTypes.Item:
-                    ItemColor = Color.FromArgb(255, 147, 158, 196);
+                    this.ItemColor = Color.FromArgb(255, 147, 158, 196);
                     break;
                 case ItemTypes.Parked:
-                    ItemColor = Color.FromArgb(255, 241, 60, 31);
+                    this.ItemColor = Color.FromArgb(255, 241, 60, 31);
+                    break;
+                default:
+                    this.ItemColor = Color.FromArgb(255, 147, 158, 196);
                     break;
             }
         }
 
-        public ItemInformation(string itemTitle) {
-            ItemID = Guid.NewGuid();
-            ItemTitle = itemTitle;
-            ItemDescription = string.Empty;
-            ItemType = ItemTypes.Item;
-            ItemDueDate = DateTime.Now.Date;
-            ItemDescriptionVisible = false;
+        public static ItemInformation Load(string parsedItem)
+        {
+            var itemData = parsedItem.Split(new[] { NewItemData }, StringSplitOptions.None);
+            var itemId = Guid.Parse(itemData[0]);
+            var itemTitle = itemData[1];
+            var itemDescription = itemData[2];
+            var itemType = (ItemTypes) Enum.Parse(typeof(ItemTypes), itemData[3]);
+            var itemDueDate = DateTime.Parse(itemData[4]).Date;
+
+            return new ItemInformation(itemId, itemTitle, itemDescription, itemType, itemDueDate);
         }
 
-        public ItemInformation(Guid itemId, string itemTitle, string itemDescription, ItemTypes itemType, DateTime itemDueDate, Color itemColor) {
-            ItemID = itemId;
-            ItemTitle = itemTitle;
-            ItemDescription = itemDescription;
-            ItemType = itemType;
-            ItemDueDate = itemDueDate.Date;
-            ItemDescriptionVisible = false;
+        public override string ToString()
+        {
+            return this.ItemId + NewItemData + this.ItemTitle + NewItemData + this.ItemDescription 
+                   + NewItemData + this.ItemType + NewItemData + this.ItemDueDate + NewItemData + this.ItemColor;
         }
 
-        public static ItemInformation Load(string parsedItem) {
-            string[] itemData = parsedItem.Split(new string[] { "$%<NEWITEMDATA>%$" }, StringSplitOptions.None);
-            Guid itemId = Guid.Parse(itemData[0]);
-            string itemTitle = itemData[1];
-            string itemDescription = itemData[2];
-            ItemTypes itemType = (ItemTypes)Enum.Parse(typeof(ItemTypes), itemData[3]);
-            DateTime itemDueDate = DateTime.Parse(itemData[4]).Date;
-            Color itemColor = (Color)ColorConverter.ConvertFromString(itemData[5]);
-
-            return new ItemInformation(itemId, itemTitle, itemDescription, itemType, itemDueDate, itemColor);
-        }
-
-        public override string ToString() {
-            StringBuilder itemData = new StringBuilder();
-            itemData.Append(ItemID);
-            itemData.Append("$%<NEWITEMDATA>%$");
-            itemData.Append(ItemTitle);
-            itemData.Append("$%<NEWITEMDATA>%$");
-            itemData.Append(ItemDescription);
-            itemData.Append("$%<NEWITEMDATA>%$");
-            itemData.Append(ItemType.ToString());
-            itemData.Append("$%<NEWITEMDATA>%$");
-            itemData.Append(ItemDueDate.ToString());
-            itemData.Append("$%<NEWITEMDATA>%$");
-            itemData.Append(ItemColor.ToString());
-            return itemData.ToString();
-        }
-
-        public bool Unchanged() {
-            bool sameTitle = ItemTitle == "New Item";
-            bool sameDescription = ItemDescription == string.Empty;
-            bool sameType = ItemType == ItemTypes.Item;
-            return sameTitle & sameDescription & sameType;
+        public bool Unchanged()
+        {
+            return this.ItemTitle == "New Item" 
+                   && this.ItemDescription == string.Empty
+                   && this.ItemType == ItemTypes.Item;
         }
     }
 }

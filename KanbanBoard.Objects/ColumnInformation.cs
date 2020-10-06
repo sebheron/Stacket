@@ -1,62 +1,71 @@
-using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using Prism.Mvvm;
 
 namespace KanbanBoard.Objects
 {
     public class ColumnInformation : BindableBase
     {
-        public Guid ColumnID { get; set; }
+        private const string NewItemBreak = "#&<NEWITEM>&#";
 
-        public ColumnInformation This => this;
+        private bool columnVisible = true;
+
+        public ColumnInformation(string columnTitle)
+        {
+            this.ColumnId = Guid.NewGuid();
+            this.ColumnTitle = columnTitle;
+            this.Items = new ObservableCollection<ItemInformation>();
+        }
+
+        public ColumnInformation(Guid columnId, string columnTitle, List<ItemInformation> items)
+        {
+            this.ColumnId = columnId;
+            this.ColumnTitle = columnTitle;
+            this.Items = new ObservableCollection<ItemInformation>(items);
+        }
+
+        public Guid ColumnId { get; set; }
 
         public string ColumnTitle { get; set; }
 
         public ObservableCollection<ItemInformation> Items { get; }
 
-        private bool columnVisible = true;
-        public bool ColumnVisible {
+        public bool ColumnVisible
+        {
             get => columnVisible;
-            set {
-                SetProperty(ref columnVisible, value);
-            }
+            set => SetProperty(ref columnVisible, value);
         }
 
-        public ColumnInformation(string columnTitle) {
-            ColumnID = Guid.NewGuid();
-            ColumnTitle = columnTitle;
-            Items = new ObservableCollection<ItemInformation>();
-        }
-
-        public ColumnInformation(Guid columnId, string columnTitle, List<ItemInformation> items) {
-            ColumnID = columnId;
-            ColumnTitle = columnTitle;
-            Items = new ObservableCollection<ItemInformation>(items);
-        }
-
-        public static ColumnInformation Load(string parsedColumn) {
-            string[] columnData = parsedColumn.Split(new string[] { "#&<NEWITEM>&#" }, StringSplitOptions.None);
-            List<ItemInformation> items = new List<ItemInformation>();
-            for (int i = 2; i < columnData.Length - 1; i++) {
+        public static ColumnInformation Load(string parsedColumn)
+        {
+            var columnData = parsedColumn.Split(new[] { NewItemBreak }, StringSplitOptions.None);
+            var items = new List<ItemInformation>();
+            for (var i = 2; i < columnData.Length - 1; i++)
+            {
                 items.Add(ItemInformation.Load(columnData[i]));
             }
+
             return new ColumnInformation(Guid.Parse(columnData[0]), columnData[1], items);
         }
 
-        public override string ToString() {
-            StringBuilder columnData = new StringBuilder();
-            columnData.Append(ColumnID + "#&<NEWITEM>&#");
-            columnData.Append(ColumnTitle + "#&<NEWITEM>&#");
-            foreach (ItemInformation item in Items) {
-                columnData.Append(item.ToString() + "#&<NEWITEM>&#");
+        public override string ToString()
+        {
+            var columnData = new StringBuilder();
+            columnData.Append(ColumnId + NewItemBreak);
+            columnData.Append(ColumnTitle + NewItemBreak);
+            foreach (var item in Items)
+            {
+                columnData.Append(item + NewItemBreak);
             }
+
             return columnData.ToString();
         }
 
-        public bool Unchanged() {
-            return ColumnTitle == "New Column" && Items.Count <= 0;
+        public bool Unchanged()
+        {
+            return this.ColumnTitle == "New Column" && this.Items.Count <= 0;
         }
     }
 }
