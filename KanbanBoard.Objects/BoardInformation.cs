@@ -8,7 +8,37 @@ namespace KanbanBoard.Objects
 {
     public class BoardInformation
     {
-        public static ObservableCollection<string> ItemTypes { get; set; }
+        public BoardInformation(string filePath, List<ColumnInformation> columns)
+        {
+            this.FilePath = filePath;
+            this.Columns = new ObservableCollection<ColumnInformation>(columns);
+        }
+
+        public BoardInformation(string filePath)
+        {
+            this.Columns = new ObservableCollection<ColumnInformation>();
+            this.ItemTypes = new ObservableCollection<string>();
+            if (File.Exists(filePath))
+            {
+                // For each version in future releases migration will occur here! Via Assembly information check.
+                var lines = File.ReadAllLines(filePath);
+                this.ItemTypes = new ObservableCollection<string>(lines[1].Split(','));
+                for (var i = 2; i < lines.Length; i++)
+                {
+                    this.Columns.Add(ColumnInformation.Load(lines[i]));
+                }
+            }
+            else
+            {
+                this.Columns.Add(new ColumnInformation("New"));
+                this.Columns.Add(new ColumnInformation("In Progress"));
+                this.Columns.Add(new ColumnInformation("Done"));
+            }
+
+            this.FilePath = filePath;
+        }
+
+        public ObservableCollection<string> ItemTypes { get; set; }
 
         public string FilePath { get; }
 
@@ -16,85 +46,65 @@ namespace KanbanBoard.Objects
 
         public int ColumnCount => Columns.Count;
 
-        public List<string> ColumnTitles => Columns.Select(x => x.ColumnTitle).ToList();
+        public void Save()
+        {
+            var boardData = new List<string>
+            {
+                Assembly.GetExecutingAssembly().GetName().Version.ToString(), string.Join(",", this.ItemTypes)
+            };
 
-        public BoardInformation(string filePath, List<ColumnInformation> columns) {
-            FilePath = filePath;
-            Columns = new ObservableCollection<ColumnInformation>(columns);
+            boardData.AddRange(this.Columns.Select(columnInformation => columnInformation.ToString()));
+
+            File.WriteAllLines(this.FilePath, boardData.ToArray());
         }
 
-        public BoardInformation(string filePath) {
-            Columns = new ObservableCollection<ColumnInformation>();
-            ItemTypes = new ObservableCollection<string>();
-            if (File.Exists(filePath)) {
-                // For each version in future releases migration will occur here! Via Assembly information check.
-                string[] lines = File.ReadAllLines(filePath);
-                ItemTypes = new ObservableCollection<string>(lines[1].Split(new char[] { ',' }));
-                for (int i = 2; i < lines.Length; i++) {
-                    Columns.Add(ColumnInformation.Load(lines[i]));
-                }
-            } else {
-                Columns.Add(new ColumnInformation("New"));
-                Columns.Add(new ColumnInformation("In Progress"));
-                Columns.Add(new ColumnInformation("Done"));
-            }
-            FilePath = filePath;
-        }
-
-        public void Save(string filePath) {
-            List<string> boardData = new List<string>();
-            boardData.Add(Assembly.GetExecutingAssembly().GetName().Version.ToString());
-            boardData.Add(string.Join(",", ItemTypes));
-            foreach (ColumnInformation columnInformation in Columns) {
-                boardData.Add(columnInformation.ToString());
-            }
-            File.WriteAllLines(filePath, boardData.ToArray());
-        }
-
-        public void Save() {
-            List<string> boardData = new List<string>();
-            boardData.Add(Assembly.GetExecutingAssembly().GetName().Version.ToString());
-            boardData.Add(string.Join(",", ItemTypes));
-            foreach (ColumnInformation columnInformation in Columns) {
-                boardData.Add(columnInformation.ToString());
-            }
-            File.WriteAllLines(FilePath, boardData.ToArray());
-        }
-
-        public void RemoveColumn(ColumnInformation columnInformation) {
-            if (Columns.Remove(columnInformation) == false)
-                Columns.Remove(Columns.First(x => x.ColumnID == columnInformation.ColumnID));
-        }
-
-        public void AddBlankColumn(string title) {
-            Columns.Add(new ColumnInformation(title));
-        }
-
-        public void InsertBlankColumn(string title) {
-            Columns.Insert(0, new ColumnInformation(title));
-        }
-
-        public void MigrateItemsToLeftMost(ColumnInformation column) {
-            int newColumnIndex = GetNewLeftMost(column);
-            foreach (ItemInformation itemInformation in column.Items) {
-                Columns[newColumnIndex].Items.Add(itemInformation);
+        public void RemoveColumn(ColumnInformation columnInformation)
+        {
+            if (!this.Columns.Remove(columnInformation))
+            {
+                this.Columns.Remove(this.Columns.First(x => x.ColumnId == columnInformation.ColumnId));
             }
         }
 
-        public int GetColumnIndex(ColumnInformation columnInformation) {
-            return Columns.IndexOf(Columns.First(x => x.ColumnID == columnInformation.ColumnID));
+        public void AddBlankColumn(string title)
+        {
+            this.Columns.Add(new ColumnInformation(title));
         }
 
-        public int GetNewLeftMost(ColumnInformation columnInformation) {
-            return Columns.IndexOf(Columns.First(x => x.ColumnID != columnInformation.ColumnID));
+        public void InsertBlankColumn(string title)
+        {
+            this.Columns.Insert(0, new ColumnInformation(title));
         }
 
-        public int GetItemsColumnIndex(ItemInformation itemInformation) {
-            foreach (ColumnInformation columnInformation in Columns) {
-                if (columnInformation.Items.Contains(itemInformation)) {
-                    return GetColumnIndex(columnInformation);
+        public void MigrateItemsToLeftMost(ColumnInformation column)
+        {
+            var newColumnIndex = this.GetNewLeftMost(column);
+            foreach (var itemInformation in column.Items)
+            {
+                this.Columns[newColumnIndex].Items.Add(itemInformation);
+            }
+        }
+
+        public int GetColumnIndex(ColumnInformation columnInformation)
+        {
+            return this.Columns.IndexOf(this.Columns.First(x => x.ColumnId == columnInformation.ColumnId));
+        }
+
+        public int GetNewLeftMost(ColumnInformation columnInformation)
+        {
+            return this.Columns.IndexOf(this.Columns.First(x => x.ColumnId != columnInformation.ColumnId));
+        }
+
+        public int GetItemsColumnIndex(ItemInformation itemInformation)
+        {
+            foreach (var columnInformation in Columns)
+            {
+                if (columnInformation.Items.Contains(itemInformation))
+                {
+                    return this.GetColumnIndex(columnInformation);
                 }
             }
+                
             return -1;
         }
     }

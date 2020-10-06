@@ -1,39 +1,40 @@
+using System.Windows;
+using System.Windows.Input;
 using Prism.Commands;
 using Prism.Mvvm;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 
-namespace KanbanBoard
+namespace KanbanBoard.DialogWindows
 {
     public class DialogBoxViewModel : BindableBase
     {
+        private readonly Window dialogWindow;
 
-        private Window dialogWindow;
+        public DialogBoxViewModel(Window window, string text, string caption)
+        {
+            this.dialogWindow = window;
+            this.Text = text;
+            this.Caption = caption;
+
+            this.YesButtonCommand = new DelegateCommand(YesButton, () => true);
+            this.NoButtonCommand = new DelegateCommand(NoButton, () => true);
+        }
 
         public string Caption { get; }
         public string Text { get; }
 
-        public DelegateCommand YesButtonCommand => new DelegateCommand(YesButton, delegate () { return true; });
-        public DelegateCommand NoButtonCommand => new DelegateCommand(NoButton, delegate () { return true; });
+        public ICommand YesButtonCommand { get; }
+        public ICommand NoButtonCommand { get; }
 
-        public DialogBoxViewModel(Window window, string text, string caption) {
-            dialogWindow = window;
-            Text = text;
-            Caption = caption;
+        public void YesButton()
+        {
+            this.dialogWindow.DialogResult = true;
+            this.dialogWindow.Close();
         }
 
-        public void YesButton() {
-            dialogWindow.DialogResult = true;
-            dialogWindow.Close();
-        }
-
-        public void NoButton() {
-            dialogWindow.DialogResult = false;
-            dialogWindow.Close();
+        public void NoButton()
+        {
+            this.dialogWindow.DialogResult = false;
+            this.dialogWindow.Close();
         }
     }
 }

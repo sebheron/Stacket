@@ -1,31 +1,23 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
-namespace KanbanBoard
+namespace KanbanBoard.DialogWindows
 {
     /// <summary>
-    /// Interaction logic for MessageBoxWindow.xaml
+    ///     Interaction logic for MessageBoxWindow.xaml
     /// </summary>
     public partial class MessageBoxWindow : Window
     {
-        public MessageBoxWindow(string text, string caption) {
-            InitializeComponent();
+        public MessageBoxWindow(string text, string caption)
+        {
+            this.InitializeComponent();
             this.DataContext = new DialogBoxViewModel(this, text, caption);
         }
 
-        private void WindowMouseDown(object sender, MouseButtonEventArgs e) {
-            if (e.LeftButton == MouseButtonState.Pressed) {
+        private void WindowMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
                 this.DragMove();
             }
         }

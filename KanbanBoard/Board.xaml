@@ -17,10 +17,12 @@
         Topmost="True" Tag="MainWindow"
         MaxHeight="{Binding WindowHeight}" MaxWidth="{Binding WindowWidth}"
         xmlns:tb="http://www.hardcodet.net/taskbar" Background="Transparent" SizeToContent="Height">
+
     <Window.InputBindings>
         <KeyBinding Modifiers="Ctrl" Key="S" Command="{Binding SaveBoardCommand}"/>
         <KeyBinding Modifiers="Ctrl" Key="O" Command="{Binding LoadBoardCommand}"/>
     </Window.InputBindings>
+
     <Window.Resources>
         <ContextMenu x:Key="TrayMenu" x:Shared="true">
             <!--<MenuItem Header="Settings" Command="{Binding ShowSettingsCommand}"/>-->
@@ -29,17 +31,21 @@
             <MenuItem Header="Save" Command="{Binding SaveBoardCommand}"/>
             <MenuItem Header="Exit" Click="Exit_Click" />
         </ContextMenu>
+
         <ObjectDataProvider x:Key="ItemTypes" MethodName="GetValues" ObjectType="{x:Type system:Enum}">
             <ObjectDataProvider.MethodParameters>
                 <x:Type TypeName="obj:ItemTypes"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
+
         <ToolTip x:Key="TrayToolTip">
             <Label Margin="0" Padding="0" Content="Stacket"/>
         </ToolTip>
+
         <con:ColorToScreenColorConverter x:Key="ColorToScreenColor"/>
         <con:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </Window.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
@@ -51,15 +57,15 @@
                 <ColumnDefinition Width="90"/>
                 <ColumnDefinition Width="45"/>
             </Grid.ColumnDefinitions>
-            <!--<Button Style="{StaticResource RoundFlat3DButton}" Content="1" FontFamily="Wingdings" Visibility="{Binding IsChecked, ElementName=MainWindowToggle, Converter={StaticResource BooleanToVisibilityConverter}}" FocusVisualStyle="{x:Null}" Command="{Binding LoadBoardCommand}"/>-->
-            <ToggleButton x:Name="MainWindowToggle" Grid.Column="1" Style="{StaticResource RoundFlat3DToggleButton}" IsChecked="True" FocusVisualStyle="{x:Null}"/>
-            <!--<Button Grid.Column="2" Style="{StaticResource RoundFlat3DButton}" Content="&lt;" FontFamily="Wingdings" Visibility="{Binding IsChecked, ElementName=MainWindowToggle, Converter={StaticResource BooleanToVisibilityConverter}}" FocusVisualStyle="{x:Null}" Command="{Binding SaveBoardCommand}"/>-->
+            
+            <ToggleButton x:Name="MainWindowToggle" Grid.Column="1" Style="{StaticResource RoundFlat3DToggleButton}" Height="25" IsChecked="True" FocusVisualStyle="{x:Null}" ContextMenu="{StaticResource TrayMenu}" />
         </Grid>
 
         <StackPanel Visibility="{Binding IsChecked, ElementName=MainWindowToggle, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Row="1" HorizontalAlignment="Center" Orientation="Horizontal" x:Name="MainGrid" Margin="15,0,15,15">
             <StackPanel.Effect>
                 <DropShadowEffect Direction="275"  Color="Gray" Opacity="0.5" />
             </StackPanel.Effect>
+
             <tb:TaskbarIcon x:Name="myNotifyIcon"
                     Visibility="Visible"
                     ToolTipText="Stacket"
@@ -67,6 +73,7 @@
                     ContextMenu="{StaticResource TrayMenu}"
                     MenuActivation="LeftOrRightClick"
                     TrayToolTip="{StaticResource TrayToolTip}"/>
+
             <Grid Width="30" Height="45" VerticalAlignment="Top">
                 <Button Content="+" FontSize="18" FontFamily="Arial Black"
                     VerticalAlignment="Center" HorizontalAlignment="Left"
@@ -74,6 +81,7 @@
                     Width="30" Height="30" Margin="15 0 0 0"
                     Command="{Binding AddColumnLeftCommand}"/>
             </Grid>
+
             <ItemsControl ItemsSource="{Binding BoardInformation.Columns}" Focusable="False"
                       dd:DragDrop.IsDragSource="True"
                       dd:DragDrop.IsDropTarget="True"
@@ -101,20 +109,17 @@
                                             <ColumnDefinition Width="30"/>
                                             <ColumnDefinition Width="30"/>
                                         </Grid.ColumnDefinitions>
+
                                         <Button Style="{StaticResource TransparentRoundFlat3DButton}" VerticalAlignment="Top" Height="30"
-                                        Command="{Binding ElementName=MainGrid,  Path=DataContext.AddItemCommand}"
-                                        CommandParameter="{Binding}"
-                                        FontFamily="Arial Black"
-                                        FontSize="16"
-                                        Content="+"
-                                        FocusVisualStyle="{x:Null}">
-                                        </Button>
+                                                Command="{Binding ElementName=MainGrid,  Path=DataContext.AddItemCommand}"
+                                                CommandParameter="{Binding}" FontFamily="Arial Black" FontSize="16" Content="+" FocusVisualStyle="{x:Null}" />
 
                                         <Grid Grid.Column="1" HorizontalAlignment="Left">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="6"/>
                                                 <RowDefinition/>
                                             </Grid.RowDefinitions>
+
                                             <TextBox MaxLines="3" Grid.Row="1" Style="{StaticResource HiddenTextBox}" Text="{Binding ColumnTitle}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left">
                                                 <i:Interaction.Behaviors>
                                                     <beh:TextBoxFocusBehavior/>
@@ -123,17 +128,12 @@
                                         </Grid>
 
                                         <ToggleButton Grid.Column="2" Style="{StaticResource MinimizeFlat3DToggleButton}" VerticalAlignment="Top" Height="30"
-                                        IsChecked="{Binding ColumnVisible, Mode=TwoWay}"
-                                        FocusVisualStyle="{x:Null}">
+                                                      IsChecked="{Binding ColumnVisible, Mode=TwoWay}" FocusVisualStyle="{x:Null}">
                                         </ToggleButton>
 
                                         <Button Grid.Column="3" Style="{StaticResource TransparentRoundFlat3DButton}" VerticalAlignment="Top" Height="30"
-                                        Command="{Binding ElementName=MainGrid,  Path=DataContext.DeleteColumnCommand}"
-                                        CommandParameter="{Binding}"
-                                        FontFamily="Marlett"
-                                        Content="r"
-                                        FocusVisualStyle="{x:Null}">
-                                        </Button>
+                                                Command="{Binding ElementName=MainGrid,  Path=DataContext.DeleteColumnCommand}"
+                                                CommandParameter="{Binding}" FontFamily="Marlett" Content="r" FocusVisualStyle="{x:Null}" />
                                     </Grid>
                                 </Border>
                                 <ScrollViewer Visibility="{Binding ColumnVisible, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
@@ -171,20 +171,22 @@
                                                                         <ColumnDefinition Width="5"/>
                                                                         <ColumnDefinition/>
                                                                     </Grid.ColumnDefinitions>
+
                                                                     <TextBox MaxLines="3" Grid.Column="1" Grid.Row="1" Style="{StaticResource HiddenTextBox}" Text="{Binding ItemTitle}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left">
                                                                         <i:Interaction.Behaviors>
                                                                             <beh:TextBoxFocusBehavior/>
                                                                         </i:Interaction.Behaviors>
                                                                     </TextBox>
                                                                 </Grid>
+
                                                                 <ToggleButton Grid.Column="1" Style="{StaticResource MinimizeFlat3DToggleButton}" VerticalAlignment="Top" Height="30"
-                                                                IsChecked="{Binding ItemDescriptionVisible, Mode=TwoWay}"
-                                                                FocusVisualStyle="{x:Null}">
-                                                                </ToggleButton>
+                                                                              IsChecked="{Binding ItemDescriptionVisible, Mode=TwoWay}" FocusVisualStyle="{x:Null}" />
+
                                                                 <ComboBox Style="{StaticResource TransparentRoundComboBox}" Grid.Column="2" SelectedValue="{Binding ItemType}" ItemsSource="{Binding Source={StaticResource ItemTypes}}" VerticalAlignment="Top" Height="30"/>
+                                                                
                                                                 <Button Content="r" FontFamily="Marlett" Grid.Column="3" Style="{StaticResource TransparentRoundFlat3DButton}" VerticalAlignment="Top" Height="30"
-                                                                    Command="{Binding ElementName=MainGrid,  Path=DataContext.DeleteItemCommand}"
-                                                                    CommandParameter="{Binding}" FocusVisualStyle="{x:Null}"/>
+                                                                        Command="{Binding ElementName=MainGrid, Path=DataContext.DeleteItemCommand}"
+                                                                        CommandParameter="{Binding}" FocusVisualStyle="{x:Null}"/>
                                                             </Grid>
                                                         </Border>
                                                         <Grid Visibility="{Binding ItemDescriptionVisible, Converter={StaticResource BooleanToVisibilityConverter}}" MinHeight="60">
@@ -197,6 +199,7 @@
                                                                 <ColumnDefinition Width="5"/>
                                                                 <ColumnDefinition/>
                                                             </Grid.ColumnDefinitions>
+
                                                             <TextBox Grid.Column="1" Grid.Row="1" Style="{StaticResource HiddenTextBoxWithTrimming}" Text="{Binding ItemDescription}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left">
                                                                 <i:Interaction.Behaviors>
                                                                     <beh:TextBoxFocusBehavior/>
@@ -207,6 +210,7 @@
                                                 </Border>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
+
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <StackPanel VerticalAlignment="Top" Orientation="Vertical" />
@@ -218,19 +222,18 @@
                         </Border>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
+
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal"/>
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
             </ItemsControl>
+
             <Grid Width="30" Height="45" VerticalAlignment="Top">
-                <Button Content="+" FontSize="16" FontFamily="Arial Black"
-                    VerticalAlignment="Center" HorizontalAlignment="Right"
-                    Style="{StaticResource RightHiddenButton}"
-                    Width="30" Height="30" Margin="0 0 15 0"
-                    Command="{Binding AddColumnRightCommand}"
-                    FocusVisualStyle="{x:Null}"/>
+                <Button Content="+" FontSize="16" FontFamily="Arial Black" VerticalAlignment="Center" HorizontalAlignment="Right"
+                        Style="{StaticResource RightHiddenButton}" Width="30" Height="30" Margin="0 0 15 0"
+                        Command="{Binding AddColumnRightCommand}" FocusVisualStyle="{x:Null}"/>
             </Grid>
         </StackPanel>
     </Grid>

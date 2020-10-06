@@ -1,22 +1,20 @@
-using System;
-using System.Runtime.InteropServices;
 using System.Windows;
-using System.Windows.Interop;
 
 namespace KanbanBoard
 {
-
     public partial class Board : Window
     {
-
-        public Board() {
-            BoardViewModel boardViewModel = new BoardViewModel();
+        public Board()
+        {
+            var boardViewModel = new BoardViewModel();
             this.Closing += boardViewModel.OnClosing;
             this.DataContext = boardViewModel;
-            InitializeComponent();
+
+            this.InitializeComponent();
         }
 
-        private void Exit_Click(object sender, RoutedEventArgs e) {
+        private void Exit_Click(object sender, RoutedEventArgs e)
+        {
             this.Close();
         }
     }

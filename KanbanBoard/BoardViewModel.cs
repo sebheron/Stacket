@@ -1,68 +1,86 @@
-using KanbanBoard.DialogWindows;
-using KanbanBoard.Objects;
-using KanbanBoard.Properties;
-using Prism.Commands;
-using Prism.Mvvm;
 using System;
 using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
+using KanbanBoard.DialogWindows;
+using KanbanBoard.Objects;
+using KanbanBoard.Properties;
+using Prism.Commands;
+using Prism.Mvvm;
 
 namespace KanbanBoard
 {
     public class BoardViewModel : BindableBase
     {
+        private BoardInformation boardInformation;
 
         private bool changed;
-        public bool Changed {
-            get => changed;
-            set {
-                SetProperty(ref changed, value);
-            }
-        }
-
-        private BoardInformation boardInformation;
-        public BoardInformation BoardInformation {
-            get => boardInformation;
-            set {
-                SetProperty(ref boardInformation, value);
-            }
-        }
 
         private bool loadEnabled = true;
-        public bool LoadEnabled {
-            get => loadEnabled;
-            set {
-                SetProperty(ref loadEnabled, value);
-            }
-        }
 
         private bool newEnabled = true;
-        public bool NewEnabled {
-            get => newEnabled;
-            set {
-                SetProperty(ref newEnabled, value);
-            }
-        }
 
-        public BoardViewModel() {
+        public BoardViewModel()
+        {
             BoardHandling.Setup();
-            if (Settings.Default.CurrentBoard == null || Settings.Default.CurrentBoard == string.Empty) {
+            if (string.IsNullOrEmpty(Settings.Default.CurrentBoard))
+            {
                 Settings.Default.CurrentBoard = DialogBoxService.SelectBoard(Settings.Default.CurrentBoard);
-                if (Settings.Default.CurrentBoard == null || Settings.Default.CurrentBoard == string.Empty) {
+                if (string.IsNullOrEmpty(Settings.Default.CurrentBoard))
+                {
                     Application.Current.Shutdown();
                 }
+                    
                 Settings.Default.Save();
-            } else if (!File.Exists(Settings.Default.CurrentBoard)) {
+            }
+            else if (!File.Exists(Settings.Default.CurrentBoard))
+            {
                 DialogBoxService.Show("The board " + Path.GetFileName(Settings.Default.CurrentBoard) + " is missing.", "Missing Board File");
                 Settings.Default.CurrentBoard = DialogBoxService.SelectBoard(Settings.Default.CurrentBoard);
-                if (Settings.Default.CurrentBoard == null || Settings.Default.CurrentBoard == string.Empty) {
+                if (string.IsNullOrEmpty(Settings.Default.CurrentBoard))
+                {
                     Application.Current.Shutdown();
                 }
+                    
                 Settings.Default.Save();
             }
-            BoardInformation = new BoardInformation(Settings.Default.CurrentBoard);
+
+            this.BoardInformation = new BoardInformation(Settings.Default.CurrentBoard);
+
+            this.ShowSettingsCommand = new DelegateCommand(ShowSettings, () => true);
+            this.NewBoardCommand = new DelegateCommand(NewBoard, () => true);
+            this.LoadBoardCommand = new DelegateCommand(LoadBoard, () => true);
+            this.SaveBoardCommand = new DelegateCommand(SaveBoard, CanSave).ObservesProperty(() => Changed);
+            this.AddColumnLeftCommand = new DelegateCommand<object>(AddColumnLeft, arg => true);
+            this.AddColumnRightCommand = new DelegateCommand<object>(AddColumnRight, arg => true);
+            this.DeleteColumnCommand = new DelegateCommand<object>(DeleteColumn, arg => true);
+            this.AddItemCommand = new DelegateCommand<object>(AddItem, arg => true);
+            this.DeleteItemCommand = new DelegateCommand<object>(DeleteItem, arg => true);
+        }
+
+        public bool Changed
+        {
+            get => this.changed;
+            set => SetProperty(ref this.changed, value);
+        }
+
+        public BoardInformation BoardInformation
+        {
+            get => this.boardInformation;
+            set => SetProperty(ref this.boardInformation, value);
+        }
+
+        public bool LoadEnabled
+        {
+            get => this.loadEnabled;
+            set => SetProperty(ref this.loadEnabled, value);
+        }
+
+        public bool NewEnabled
+        {
+            get => this.newEnabled;
+            set => SetProperty(ref this.newEnabled, value);
         }
 
         //The width of the window.
@@ -75,131 +93,163 @@ namespace KanbanBoard
         public double ItemWidth => (WindowWidth - 120) / Math.Max(5, BoardInformation.Columns.Count);
 
         // Show settings command.
-        public ICommand ShowSettingsCommand => new DelegateCommand(ShowSettings, delegate () { return true; });
+        public ICommand ShowSettingsCommand { get; }
 
         // Board command.
-        public ICommand NewBoardCommand => new DelegateCommand(NewBoard, delegate () { return true; });
-        public ICommand LoadBoardCommand => new DelegateCommand(LoadBoard, delegate () { return true; });
-        public ICommand SaveBoardCommand => new DelegateCommand(SaveBoard, CanSave).ObservesProperty(() => Changed);
+        public ICommand NewBoardCommand { get; }
+        public ICommand LoadBoardCommand { get; }
+        public ICommand SaveBoardCommand { get; }
 
         // Column commands.
-        public ICommand AddColumnLeftCommand => new DelegateCommand<object>(AddColumnLeft, delegate (object arg) { return true; });
-        public ICommand AddColumnRightCommand => new DelegateCommand<object>(AddColumnRight, delegate (object arg) { return true; });
-        public ICommand DeleteColumnCommand => new DelegateCommand<object>(DeleteColumn, delegate (object arg) { return true; });
+        public ICommand AddColumnLeftCommand { get; }
+        public ICommand AddColumnRightCommand { get; }
+        public ICommand DeleteColumnCommand { get; }
 
         // Item commands.
-        public ICommand AddItemCommand => new DelegateCommand<object>(AddItem, delegate (object arg) { return true; });
-        public ICommand DeleteItemCommand => new DelegateCommand<object>(DeleteItem, delegate (object arg) { return true; });
+        public ICommand AddItemCommand { get; }
+        public ICommand DeleteItemCommand { get; }
 
-        private void ShowSettings() {
+        private void ShowSettings()
+        {
             //Show settings
         }
 
-        public void NewBoard() {
-            if (BoardInformation.FilePath != null && BoardInformation.FilePath != string.Empty && Changed && DialogBoxService.ShowYesNo("Do you want to save changes to the current board?", "Save Changes")) {
+        public void NewBoard()
+        {
+            if (!string.IsNullOrEmpty(this.BoardInformation.FilePath) 
+                && this.Changed 
+                && DialogBoxService.ShowYesNo("Do you want to save changes to the current board?", "Save Changes"))
+            {
                 SaveBoard();
             }
-            NewEnabled = false;
-            LoadEnabled = false;
-            string input = DialogBoxService.GetInput("Name for the new board:", "New Board");
-            NewEnabled = true;
-            LoadEnabled = true;
-            if (input == string.Empty || input == null) {
+                
+            this.NewEnabled = false;
+            this.LoadEnabled = false;
+
+            var input = DialogBoxService.GetInput("Name for the new board:", "New Board");
+            this.NewEnabled = true;
+            this.LoadEnabled = true;
+
+            if (string.IsNullOrEmpty(input)) return;
+
+            Settings.Default.CurrentBoard = Path.Combine(BoardHandling.BoardFileStorageLocation,
+                input + BoardHandling.BoardFileExtension);
+            this.BoardInformation = new BoardInformation(Settings.Default.CurrentBoard);
+            Settings.Default.Save();
+            this.Changed = false;
+        }
+
+        private void LoadBoard()
+        {
+            if (this.Changed && DialogBoxService.ShowYesNo("Do you want to save changes to the current board?", "Save Changes"))
+            {
+                this.BoardInformation.Save();
+            }
+
+
+            this.NewEnabled = false;
+            this.LoadEnabled = false;
+            var newBoard = DialogBoxService.SelectBoard(Settings.Default.CurrentBoard);
+            this.NewEnabled = true;
+            this.LoadEnabled = true;
+
+            if (string.IsNullOrEmpty(newBoard)) return;
+
+            Settings.Default.CurrentBoard = newBoard;
+            this.BoardInformation = new BoardInformation(Settings.Default.CurrentBoard);
+            Settings.Default.Save();
+            this.Changed = false;
+        }
+
+        public void SaveBoard()
+        {
+            this.BoardInformation.Save();
+            this.Changed = false;
+        }
+
+        public bool CanSave()
+        {
+            return this.Changed;
+        }
+
+        private void AddColumnLeft(object arg)
+        {
+            this.BoardInformation.InsertBlankColumn("New Column");
+            this.RaisePropertyChanged(nameof(this.ItemWidth));
+            this.Changed = true;
+        }
+
+        private void AddColumnRight(object arg)
+        {
+            this.BoardInformation.AddBlankColumn("New Column");
+            RaisePropertyChanged(nameof(this.ItemWidth));
+            this.Changed = true;
+        }
+
+        private void DeleteColumn(object arg)
+        {
+            if (!(arg is ColumnInformation columnInformation)) return;
+
+            if (this.BoardInformation.ColumnCount <= 1)
+            {
+                DialogBoxService.Show("This is the last column and cannot be removed.", "Remove column");
                 return;
-            } else {
-                Settings.Default.CurrentBoard = Path.Combine(BoardHandling.BoardFileStorageLocation, input + BoardHandling.BoardFileExtension);
-                BoardInformation = new BoardInformation(Settings.Default.CurrentBoard);
-                Settings.Default.Save();
-                Changed = false;
             }
-        }
 
-        private void LoadBoard() {
-            if (Changed && DialogBoxService.ShowYesNo("Do you want to save changes to the current board?", "Save Changes")) {
-                BoardInformation.Save();
+            if (!columnInformation.Unchanged() && !DialogBoxService.ShowYesNo("Are you sure you want to remove this column?", "Remove Column")) return;
+
+            if (columnInformation.Items.Count > 0)
+            {
+                var saveItems = DialogBoxService.ShowYesNo(
+                    "Should all the items within the column be saved? If so they will be moved to the leftmost column.",
+                    "Remove Column");
+                if (saveItems) BoardInformation.MigrateItemsToLeftMost(columnInformation);
             }
-            NewEnabled = false;
-            LoadEnabled = false;
-            string newBoard = DialogBoxService.SelectBoard(Settings.Default.CurrentBoard);
-            NewEnabled = true;
-            LoadEnabled = true;
-            if (newBoard == null || newBoard == string.Empty) {
-                return;
-            } else {
-                Settings.Default.CurrentBoard = newBoard;
-                BoardInformation = new BoardInformation(Settings.Default.CurrentBoard);
-                Settings.Default.Save();
-                Changed = false;
-            }
+
+            this.BoardInformation.RemoveColumn(columnInformation);
+            this.RaisePropertyChanged(nameof(this.ItemWidth));
+            this.Changed = true;
         }
 
-        public void SaveBoard() {
-            BoardInformation.Save();
-            Changed = false;
-        }
-
-        public bool CanSave() {
-            return Changed;
-        }
-
-        private void AddColumnLeft(object arg) {
-            BoardInformation.InsertBlankColumn("New Column");
-            RaisePropertyChanged(nameof(ItemWidth));
-            Changed = true;
-        }
-
-        private void AddColumnRight(object arg) {
-            BoardInformation.AddBlankColumn("New Column");
-            RaisePropertyChanged(nameof(ItemWidth));
-            Changed = true;
-        }
-
-        private void DeleteColumn(object arg) {
-            if (arg is ColumnInformation columnInformation) {
-                if (BoardInformation.ColumnCount <= 1) {
-                    DialogBoxService.Show("This is the last column and cannot be removed.", "Remove column");
-                    return;
-                }
-                if (!columnInformation.Unchanged() && !DialogBoxService.ShowYesNo("Are you sure you want to remove this column?", "Remove Column")) {
-                    return;
-                }
-                if (columnInformation.Items.Count > 0) {
-
-                    bool saveItems = DialogBoxService.ShowYesNo("Should all the items within the column be saved? If so they will be moved to the leftmost column.", "Remove Column");
-                    if (saveItems) {
-                        BoardInformation.MigrateItemsToLeftMost(columnInformation);
-                    }
-                }
-                BoardInformation.RemoveColumn(columnInformation);
-                RaisePropertyChanged(nameof(ItemWidth));
-                Changed = true;
-            }
-        }
-
-        private void DeleteItem(object arg) {
-            if (arg is ItemInformation itemInformation) {
-                bool remove = itemInformation.Unchanged() || DialogBoxService.ShowYesNo("Are you sure you want to remove this item?", "Remove Item");
-                if (remove) {
-                    BoardInformation.Columns[BoardInformation.GetItemsColumnIndex(itemInformation)].Items.Remove(itemInformation);
-                    Changed = true;
+        private void DeleteItem(object arg)
+        {
+            if (arg is ItemInformation itemInformation)
+            {
+                var remove = itemInformation.Unchanged() ||
+                             DialogBoxService.ShowYesNo("Are you sure you want to remove this item?", "Remove Item");
+                if (remove)
+                {
+                    this.BoardInformation.Columns[BoardInformation.GetItemsColumnIndex(itemInformation)].Items
+                        .Remove(itemInformation);
+                    this.Changed = true;
                 }
             }
         }
 
-        private void AddItem(object arg) {
-            if (arg is ColumnInformation columnInformation) {
+        private void AddItem(object arg)
+        {
+            if (arg is ColumnInformation columnInformation)
+            {
                 columnInformation.Items.Add(new ItemInformation("New Item"));
-                Changed = true;
+                this.Changed = true;
             }
         }
 
-        public void OnClosing(object sender, CancelEventArgs e) {
-            if (BoardInformation.FilePath != null && BoardInformation.FilePath != string.Empty && Changed && DialogBoxService.ShowYesNo("Do you want to save changes to the current board?", "Save Changes")) {
+        public void OnClosing(object sender, CancelEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(this.BoardInformation.FilePath)
+                && this.Changed
+                && DialogBoxService.ShowYesNo("Do you want to save changes to the current board?", "Save Changes"))
+            {
                 BoardInformation.Save();
             }
-            foreach (Window item in Application.Current.Windows) {
+
+            foreach (Window item in Application.Current.Windows)
+            {
                 if (item.Tag == null || item.Tag.ToString() != "MainWindow")
+                {
                     item.Close();
+                }
             }
         }
     }
