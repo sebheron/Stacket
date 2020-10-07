@@ -89,6 +89,8 @@
                       dd:DragDrop.UseDefaultEffectDataTemplate="False"
                       dd:DragDrop.DefaultDragAdornerOpacity="1"
                       dd:DragDrop.UseVisualSourceItemSizeForDragAdorner="True"
+                      dd:DragDrop.DragMouseAnchorPoint="{Binding ElementName=MainGrid, Path=DataContext.DragHandler.DragPosition}"
+                      dd:DragDrop.DragHandler="{Binding ElementName=MainGrid, Path=DataContext.DragHandler}"
                       FocusVisualStyle="{x:Null}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
@@ -120,7 +122,7 @@
                                                 <RowDefinition/>
                                             </Grid.RowDefinitions>
 
-                                            <TextBox MaxLines="3" Grid.Row="1" Style="{StaticResource HiddenTextBox}" Text="{Binding ColumnTitle}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left">
+                                            <TextBox MaxLines="3" Grid.Row="1" dd:DragDrop.IsDropTarget="True" Style="{StaticResource HiddenTextBox}" Text="{Binding ColumnTitle}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left">
                                                 <i:Interaction.Behaviors>
                                                     <beh:TextBoxFocusBehavior/>
                                                 </i:Interaction.Behaviors>
@@ -136,6 +138,7 @@
                                                 CommandParameter="{Binding}" FontFamily="Marlett" Content="r" FocusVisualStyle="{x:Null}" />
                                     </Grid>
                                 </Border>
+                                
                                 <ScrollViewer Visibility="{Binding ColumnVisible, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                                     <ItemsControl Background="#01000000" ItemsSource="{Binding Items}"
                                           dd:DragDrop.IsDragSource="True"
@@ -144,6 +147,8 @@
                                           dd:DragDrop.UseDefaultEffectDataTemplate="False"
                                           dd:DragDrop.DefaultDragAdornerOpacity="1"
                                           dd:DragDrop.UseVisualSourceItemSizeForDragAdorner="True"
+                                          dd:DragDrop.DragMouseAnchorPoint="{Binding ElementName=MainGrid, Path=DataContext.DragHandler.DragPosition}"
+                                          dd:DragDrop.DragHandler="{Binding ElementName=MainGrid, Path=DataContext.DragHandler}"
                                           MinHeight="40"
                                           Focusable="False"
                                           Padding="0,0,0,10"
@@ -172,7 +177,7 @@
                                                                         <ColumnDefinition/>
                                                                     </Grid.ColumnDefinitions>
 
-                                                                    <TextBox MaxLines="3" Grid.Column="1" Grid.Row="1" Style="{StaticResource HiddenTextBox}" Text="{Binding ItemTitle}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left">
+                                                                    <TextBox MaxLines="3" Grid.Column="1" Grid.Row="1" dd:DragDrop.IsDropTarget="True" Style="{StaticResource HiddenTextBox}" Text="{Binding ItemTitle}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left">
                                                                         <i:Interaction.Behaviors>
                                                                             <beh:TextBoxFocusBehavior/>
                                                                         </i:Interaction.Behaviors>
@@ -189,6 +194,7 @@
                                                                         CommandParameter="{Binding}" FocusVisualStyle="{x:Null}"/>
                                                             </Grid>
                                                         </Border>
+                                                        
                                                         <Grid Visibility="{Binding ItemDescriptionVisible, Converter={StaticResource BooleanToVisibilityConverter}}" MinHeight="60">
                                                             <Grid.RowDefinitions>
                                                                 <RowDefinition Height="6"/>
@@ -200,7 +206,7 @@
                                                                 <ColumnDefinition/>
                                                             </Grid.ColumnDefinitions>
 
-                                                            <TextBox Grid.Column="1" Grid.Row="1" Style="{StaticResource HiddenTextBoxWithTrimming}" Text="{Binding ItemDescription}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left">
+                                                            <TextBox Grid.Column="1" Grid.Row="1" dd:DragDrop.IsDropTarget="True" Style="{StaticResource HiddenTextBoxWithTrimming}" Text="{Binding ItemDescription}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left">
                                                                 <i:Interaction.Behaviors>
                                                                     <beh:TextBoxFocusBehavior/>
                                                                 </i:Interaction.Behaviors>

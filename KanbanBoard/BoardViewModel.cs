@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
+using KanbanBoard.Behaviors;
 using KanbanBoard.DialogWindows;
 using KanbanBoard.Objects;
 using KanbanBoard.Properties;
@@ -14,11 +15,8 @@ namespace KanbanBoard
     public class BoardViewModel : BindableBase
     {
         private BoardInformation boardInformation;
-
         private bool changed;
-
         private bool loadEnabled = true;
-
         private bool newEnabled = true;
 
         public BoardViewModel()
@@ -47,6 +45,8 @@ namespace KanbanBoard
             }
 
             this.BoardInformation = new BoardInformation(Settings.Default.CurrentBoard);
+            this.DragHandler = new DragHandleBehavior();
+            this.DragHandler.DragStarted += () => this.RaisePropertyChanged(nameof(this.DragHandler));
 
             this.ShowSettingsCommand = new DelegateCommand(ShowSettings, () => true);
             this.NewBoardCommand = new DelegateCommand(NewBoard, () => true);
@@ -58,6 +58,8 @@ namespace KanbanBoard
             this.AddItemCommand = new DelegateCommand<object>(AddItem, arg => true);
             this.DeleteItemCommand = new DelegateCommand<object>(DeleteItem, arg => true);
         }
+
+        public DragHandleBehavior DragHandler { get; }
 
         public bool Changed
         {
@@ -120,7 +122,7 @@ namespace KanbanBoard
                 && this.Changed 
                 && DialogBoxService.ShowYesNo("Do you want to save changes to the current board?", "Save Changes"))
             {
-                SaveBoard();
+                this.SaveBoard();
             }
                 
             this.NewEnabled = false;
