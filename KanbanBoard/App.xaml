@@ -306,7 +306,7 @@
             </Style.Triggers>
         </Style>
 
-        <Style x:Key="HiddenTextBox" TargetType="TextBox">
+        <Style x:Key="CappedHiddenTextBox" TargetType="TextBox">
             <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Background" Value="Transparent"/>
@@ -316,7 +316,12 @@
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="TextBox">
-                                <TextBlock beh:MaxLinesBehavior.MaxLines="3" MinWidth="90" TextWrapping="Wrap" TextTrimming="WordEllipsis" Text="{TemplateBinding Text}"  Background="Transparent"/>
+                                <TextBlock x:Name="HiddenTextBlock" beh:MaxLinesBehavior.MaxLines="3" MinWidth="90" TextWrapping="Wrap" TextTrimming="WordEllipsis" Text="{TemplateBinding Text}"/>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="HiddenTextBlock" Property="TextDecorations" Value="Underline"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
@@ -324,7 +329,7 @@
             </Style.Triggers>
         </Style>
 
-        <Style x:Key="HiddenTextBoxWithTrimming" TargetType="TextBox">
+        <Style x:Key="HiddenTextBox" TargetType="TextBox">
             <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Background" Value="Transparent"/>
