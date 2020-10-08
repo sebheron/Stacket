@@ -316,7 +316,7 @@
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="TextBox">
-                                <TextBlock x:Name="HiddenTextBlock" beh:MaxLinesBehavior.MaxLines="3" MinWidth="90" TextWrapping="Wrap" TextTrimming="WordEllipsis" Text="{TemplateBinding Text}"/>
+                                <TextBlock x:Name="HiddenTextBlock" beh:MaxLinesBehavior.MaxLines="3" TextWrapping="Wrap" TextTrimming="WordEllipsis" Text="{TemplateBinding Text}"/>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
                                         <Setter TargetName="HiddenTextBlock" Property="TextDecorations" Value="Underline"/>
