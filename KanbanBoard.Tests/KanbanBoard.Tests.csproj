@@ -66,9 +66,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\KanbanBoard.Objects\KanbanBoard.Objects.csproj">
-      <Project>{f35ceddf-8fee-401d-b4f3-686f802989ac}</Project>
-      <Name>KanbanBoard.Objects</Name>
+    <ProjectReference Include="..\KanbanBoard.Logic\KanbanBoard.Logic.csproj">
+      <Project>{F35CEDDF-8FEE-401D-B4F3-686F802989AC}</Project>
+      <Name>KanbanBoard.Logic</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

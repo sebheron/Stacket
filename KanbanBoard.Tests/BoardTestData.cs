@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using KanbanBoard.Objects;
+using KanbanBoard.Logic.BoardDataTypes;
+using KanbanBoard.Logic.Enums;
 
 namespace KanbanBoard.Tests
 {
