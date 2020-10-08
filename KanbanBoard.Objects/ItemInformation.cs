@@ -8,8 +8,12 @@ namespace KanbanBoard.Objects
     {
         private const string NewItemData = "$%<NEWITEMDATA>%$";
 
+        private String itemTitle;
+
         private Color itemColor;
+        
         private bool itemDescriptionVisible;
+        
         private ItemTypes itemType;
 
         public ItemInformation(string itemTitle)
@@ -35,7 +39,14 @@ namespace KanbanBoard.Objects
 
         public Guid ItemId { get; set; }
 
-        public string ItemTitle { get; set; }
+        public string ItemTitle {
+            get => itemTitle;
+            set {
+                if (!string.IsNullOrEmpty(value)) {
+                    SetProperty(ref itemTitle, value);
+                }
+            }
+        }
 
         public string ItemDescription { get; set; }
 
