@@ -1,4 +1,4 @@
-using KanbanBoard.Objects;
+using KanbanBoard.Logic.BoardDataTypes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace KanbanBoard.Tests
