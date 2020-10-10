@@ -1,0 +1,42 @@
+<Window x:Class="KanbanBoard.Presentation.Dialogs.DialogBoxWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" Topmost="True" ShowInTaskbar="False"
+        Title="DialogBox" Height="120" Width="350" WindowStyle="None" Background="Transparent" AllowsTransparency="True" WindowStartupLocation="CenterScreen">
+
+    <Border CornerRadius="15" Background="#BFD3D3D3">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition/>
+                <RowDefinition Height="35"/>
+            </Grid.RowDefinitions>
+
+            <Border MouseDown="WindowMouseDown" Background="DarkGray" CornerRadius="5" Grid.ColumnSpan="3" Margin="0,0,0,0.4">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="30"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.Column="1" Style="{StaticResource TransparentRoundFlat3DButton}" FontFamily="Marlett" Content="r" Command="{Binding NoButtonCommand}"/>
+                    <TextBlock Grid.Column="0" Margin="5" Text="{Binding Caption}"/>
+                </Grid>
+            </Border>
+
+            <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Text="{Binding Text}" Margin="10,9.6" TextWrapping="Wrap"/>
+
+            <Grid Grid.Row="2" Grid.ColumnSpan="3" Margin="0,0.4,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Button Content="Yes" Margin="3,1,3,3" Style="{StaticResource TransparentRoundFlat3DButton}" Command="{Binding YesButtonCommand}"/>
+                <Button Content="No" Grid.Column="1" Margin="3,1,3,3" Style="{StaticResource TransparentRoundFlat3DButton}" Command="{Binding NoButtonCommand}"/>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>
