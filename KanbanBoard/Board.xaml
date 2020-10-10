@@ -122,7 +122,7 @@
                                                 <RowDefinition/>
                                             </Grid.RowDefinitions>
 
-                                            <TextBox MaxLines="3" Grid.Row="1" dd:DragDrop.IsDropTarget="True" Style="{StaticResource HiddenTextBox}" Text="{Binding ColumnTitle}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left">
+                                            <TextBox MaxLines="3" Grid.Row="1" dd:DragDrop.IsDropTarget="True" Style="{StaticResource CappedHiddenTextBox}" Text="{Binding ColumnTitle}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left">
                                                 <i:Interaction.Behaviors>
                                                     <beh:TextBoxFocusBehavior/>
                                                 </i:Interaction.Behaviors>
@@ -177,7 +177,7 @@
                                                                         <ColumnDefinition/>
                                                                     </Grid.ColumnDefinitions>
 
-                                                                    <TextBox MaxLines="3" Grid.Column="1" Grid.Row="1" dd:DragDrop.IsDropTarget="True" Style="{StaticResource HiddenTextBox}" Text="{Binding ItemTitle}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left">
+                                                                    <TextBox MaxLines="3" Grid.Column="1" Grid.Row="1" dd:DragDrop.IsDropTarget="True" Style="{StaticResource CappedHiddenTextBox}" Text="{Binding ItemTitle}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left">
                                                                         <i:Interaction.Behaviors>
                                                                             <beh:TextBoxFocusBehavior/>
                                                                         </i:Interaction.Behaviors>
@@ -206,7 +206,7 @@
                                                                 <ColumnDefinition/>
                                                             </Grid.ColumnDefinitions>
 
-                                                            <TextBox Grid.Column="1" Grid.Row="1" dd:DragDrop.IsDropTarget="True" Style="{StaticResource HiddenTextBoxWithTrimming}" Text="{Binding ItemDescription}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left">
+                                                            <TextBox Grid.Column="1" Grid.Row="1" dd:DragDrop.IsDropTarget="True" Style="{StaticResource HiddenTextBox}" Text="{Binding ItemDescription}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left">
                                                                 <i:Interaction.Behaviors>
                                                                     <beh:TextBoxFocusBehavior/>
                                                                 </i:Interaction.Behaviors>

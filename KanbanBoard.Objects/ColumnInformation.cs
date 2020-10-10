@@ -10,6 +10,8 @@ namespace KanbanBoard.Objects
     {
         private const string NewItemBreak = "#&<NEWITEM>&#";
 
+        private String columnTitle;
+
         private bool columnVisible = true;
 
         public ColumnInformation(string columnTitle)
@@ -28,7 +30,14 @@ namespace KanbanBoard.Objects
 
         public Guid ColumnId { get; set; }
 
-        public string ColumnTitle { get; set; }
+        public string ColumnTitle {
+            get => columnTitle;
+            set {
+                if (!string.IsNullOrEmpty(value)) {
+                    SetProperty(ref columnTitle, value);
+                }
+            }
+        }
 
         public ObservableCollection<ItemInformation> Items { get; }
 
