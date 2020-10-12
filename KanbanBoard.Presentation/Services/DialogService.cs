@@ -6,8 +6,6 @@ namespace KanbanBoard.Presentation.Services
     {
         public bool ShowYesNo(string text, string caption)
         {
-            // Get viewmodel from DI here and assign parameters
-            // Get viewmodel from DI here and assign dialog.Close through parameters?
             var dialog = new DialogBoxWindow();
             var dialogViewModel = new DialogBoxWindowViewModel(text, caption, dialog.Close);
             dialog.DataContext = dialogViewModel;
