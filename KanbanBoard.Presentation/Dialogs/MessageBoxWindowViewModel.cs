@@ -5,11 +5,11 @@ using Prism.Mvvm;
 
 namespace KanbanBoard.Presentation.Dialogs
 {
-    public class MessageBoxViewModel : BindableBase
+    public class MessageBoxWindowViewModel : BindableBase
     {
         private readonly Action closeDialog;
 
-        public MessageBoxViewModel(string text, string caption, Action closeDialog)
+        public MessageBoxWindowViewModel(string text, string caption, Action closeDialog)
         {
             this.closeDialog = closeDialog;
 

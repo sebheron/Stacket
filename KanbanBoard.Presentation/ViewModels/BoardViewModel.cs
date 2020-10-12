@@ -25,7 +25,7 @@ namespace KanbanBoard.Presentation.ViewModels
             this.dialogService = dialogService;
 
             BoardHandling.Setup();
-            if (string.IsNullOrEmpty(string.Empty))//Settings.Default.CurrentBoard))
+            if (string.IsNullOrEmpty(Settings.Default.CurrentBoard))
             {
                 Settings.Default.CurrentBoard = this.dialogService.SelectBoard();
                 if (string.IsNullOrEmpty(Settings.Default.CurrentBoard))

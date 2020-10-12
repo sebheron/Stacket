@@ -143,7 +143,7 @@
     <Compile Include="Behaviors\TextBoxHighlightBehavior.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\ColorToScreenColorConverter.cs" />
-    <Compile Include="Dialogs\MessageBoxViewModel.cs" />
+    <Compile Include="Dialogs\MessageBoxWindowViewModel.cs" />
     <Compile Include="Services\IDialogService.cs" />
     <Compile Include="Views\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>

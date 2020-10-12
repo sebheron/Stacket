@@ -18,7 +18,7 @@ namespace KanbanBoard.Presentation.Services
         public void Show(string text, string caption)
         {
             var dialog = new MessageBoxWindow();
-            var dialogViewModel = new MessageBoxViewModel(text, caption, dialog.Close);
+            var dialogViewModel = new MessageBoxWindowViewModel(text, caption, dialog.Close);
             dialog.DataContext = dialogViewModel;
 
             dialog.ShowDialog();
