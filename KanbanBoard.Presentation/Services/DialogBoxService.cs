@@ -1,4 +1,4 @@
-using KanbanBoard.Presentation.Views;
+using KanbanBoard.Presentation.Dialogs;
 
 namespace KanbanBoard.Presentation.Services
 {
@@ -7,38 +7,45 @@ namespace KanbanBoard.Presentation.Services
         public static bool ShowYesNo(string text, string caption)
         {
             // Get viewmodel from DI here and assign parameters
-            var dialog = new DialogBoxWindow(text, caption);
+            // Get viewmodel from DI here and assign dialog.Close through parameters?
+            var dialog = new DialogBoxWindow();
+            var dialogViewModel = new DialogBoxWindowViewModel(text, caption, dialog.Close);
+            dialog.DataContext = dialogViewModel;
+
             dialog.ShowDialog();
 
-            return dialog.DialogResult != null && dialog.DialogResult.Value;
+            return dialogViewModel.Result;
         }
 
-        public static bool Show(string text, string caption)
+        public static void Show(string text, string caption)
         {
-            var dialog = new MessageBoxWindow(text, caption);
-            dialog.ShowDialog();
+            var dialog = new MessageBoxWindow();
+            var dialogViewModel = new MessageBoxViewModel(text, caption, dialog.Close);
+            dialog.DataContext = dialogViewModel;
 
-            return true;
+            dialog.ShowDialog();
         }
 
         public static string GetInput(string text, string caption)
         {
-            var dialog = new InputBoxWindow(text, caption);
+            var dialog = new InputBoxWindow();
+            var dialogViewModel = new InputBoxWindowViewModel(text, caption, dialog.Close);
+            dialog.DataContext = dialogViewModel;
+
             dialog.ShowDialog();
 
-            if (dialog.DialogResult == null || !dialog.DialogResult.Value || dialog.Tag == null) return string.Empty;
-
-            return (string) dialog.Tag;
+            return dialogViewModel.Input;
         }
 
-        public static string SelectBoard(string currentBoard)
+        public static string SelectBoard()
         {
-            var dialog = new BoardSelectorWindow(currentBoard);
+            var dialog = new BoardSelectorWindow();
+            var dialogViewModel = new BoardSelectorWindowViewModel(dialog.Close);
+            dialog.DataContext = dialogViewModel;
+
             dialog.ShowDialog();
 
-            if (dialog.DialogResult == null || dialog.DialogResult.Value == false) return string.Empty;
-
-            return dialog.Tag.ToString();
+            return dialogViewModel.BoardLocation;
         }
     }
 }

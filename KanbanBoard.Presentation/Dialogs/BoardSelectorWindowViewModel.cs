@@ -1,29 +1,34 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Windows;
 using System.Windows.Input;
 using KanbanBoard.Presentation.Services;
+using KanbanBoard.Properties;
 using Prism.Commands;
 using Prism.Mvvm;
 
-namespace KanbanBoard.Presentation.ViewModels
+namespace KanbanBoard.Presentation.Dialogs
 {
     public class BoardSelectorWindowViewModel : BindableBase
     {
+        private readonly Action closeDialog;
         private string selectedBoard;
 
-        public BoardSelectorWindowViewModel()
+        public BoardSelectorWindowViewModel(Action closeDialog)
         {
-            this.BoardFiles = new ObservableCollection<string>(GetFileNames(currentBoard));
-            this.RaisePropertyChanged(nameof(this.BoardFiles));
+            this.closeDialog = closeDialog;
 
-            this.CancelButtonCommand = new DelegateCommand(this.CancelButton, () => true);
-            this.NewButtonCommand = new DelegateCommand(this.NewButton, () => true);
+            this.BoardFiles.AddRange(GetFileNames(Settings.Default.CurrentBoard));
+
+            this.CloseDialogCommand = new DelegateCommand(this.CloseDialog);
+            this.NewButtonCommand = new DelegateCommand(this.NewButton);
             this.OpenButtonCommand = new DelegateCommand(this.OpenButton, this.IsFileSelected).ObservesProperty(() => this.SelectedBoard);
             this.DeleteButtonCommand = new DelegateCommand(this.DeleteButton, this.IsFileSelected).ObservesProperty(() => this.SelectedBoard);
         }
+
+        public string BoardLocation { get; private set; }
 
         public string SelectedBoard
         {
@@ -31,45 +36,34 @@ namespace KanbanBoard.Presentation.ViewModels
             set => this.SetProperty(ref this.selectedBoard, value);
         }
 
-        public ObservableCollection<string> BoardFiles { get; set; }
+        public ObservableCollection<string> BoardFiles { get; } = new ObservableCollection<string>();
 
-        public ICommand CancelButtonCommand { get; }
+        public ICommand CloseDialogCommand { get; }
         public ICommand NewButtonCommand { get; }
         public ICommand OpenButtonCommand { get; }
         public ICommand DeleteButtonCommand { get; }
 
-        private IEnumerable<string> GetFileNames(string currentBoard)
+        private static IEnumerable<string> GetFileNames(string currentBoard)
         {
-            return Directory.GetFiles(BoardHandling.BoardFileStorageLocation).Where(x => x != currentBoard)
-                .Select(Path.GetFileNameWithoutExtension);
+            return Directory.GetFiles(BoardHandling.BoardFileStorageLocation).Select(Path.GetFileNameWithoutExtension);
         }
 
-        public void CancelButton()
-        {
-            this.dialogWindow.DialogResult = false;
-            this.dialogWindow.Close();
-        }
-
-        public void NewButton()
+        private void NewButton()
         {
             var input = DialogBoxService.GetInput("Name for the new board:", "New Board");
             if (string.IsNullOrEmpty(input)) return;
 
-            this.dialogWindow.Tag = Path.Combine(BoardHandling.BoardFileStorageLocation,
-                input + BoardHandling.BoardFileExtension);
-            this.dialogWindow.DialogResult = true;
-            this.dialogWindow.Close();
+            this.BoardLocation = Path.Combine(BoardHandling.BoardFileStorageLocation, input + BoardHandling.BoardFileExtension);
+            this.CloseDialog();
         }
 
-        public void OpenButton()
+        private void OpenButton()
         {
-            this.dialogWindow.Tag = Path.Combine(BoardHandling.BoardFileStorageLocation,
-                SelectedBoard + BoardHandling.BoardFileExtension);
-            this.dialogWindow.DialogResult = true;
-            this.dialogWindow.Close();
+            this.BoardLocation = Path.Combine(BoardHandling.BoardFileStorageLocation, this.SelectedBoard + BoardHandling.BoardFileExtension);
+            this.CloseDialog();
         }
 
-        public void DeleteButton()
+        private void DeleteButton()
         {
             if (!DialogBoxService.ShowYesNo("Are you sure want to delete this board?", "Delete board")) return;
 
@@ -77,9 +71,14 @@ namespace KanbanBoard.Presentation.ViewModels
             this.BoardFiles.Remove(this.SelectedBoard);
         }
 
-        public bool IsFileSelected()
+        private bool IsFileSelected()
         {
             return this.BoardFiles.Count > 0 && this.SelectedBoard != null;
+        }
+
+        private void CloseDialog()
+        {
+            this.closeDialog.Invoke();
         }
     }
 }

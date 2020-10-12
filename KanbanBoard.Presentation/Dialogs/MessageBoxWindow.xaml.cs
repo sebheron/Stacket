@@ -1,14 +1,14 @@
 using System.Windows;
 using System.Windows.Input;
 
-namespace KanbanBoard.Presentation.Views
+namespace KanbanBoard.Presentation.Dialogs
 {
     /// <summary>
-    ///     Interaction logic for BoardSelectorWindow.xaml
+    ///     Interaction logic for MessageBoxWindow.xaml
     /// </summary>
-    public partial class BoardSelectorWindow : Window
+    public partial class MessageBoxWindow : Window
     {
-        public BoardSelectorWindow(string currentBoard)
+        public MessageBoxWindow()
         {
             this.InitializeComponent();
         }

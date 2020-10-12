@@ -143,22 +143,23 @@
     <Compile Include="Behaviors\TextBoxHighlightBehavior.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\ColorToScreenColorConverter.cs" />
+    <Compile Include="Dialogs\MessageBoxViewModel.cs" />
     <Compile Include="Views\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\BoardSelectorWindowViewModel.cs" />
-    <Compile Include="Views\BoardSelectorWindow.xaml.cs">
+    <Compile Include="Dialogs\BoardSelectorWindowViewModel.cs" />
+    <Compile Include="Dialogs\BoardSelectorWindow.xaml.cs">
       <DependentUpon>BoardSelectorWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\DialogBoxWindowViewModel.cs" />
-    <Compile Include="Views\DialogBoxWindow.xaml.cs">
+    <Compile Include="Dialogs\DialogBoxWindowViewModel.cs" />
+    <Compile Include="Dialogs\DialogBoxWindow.xaml.cs">
       <DependentUpon>DialogBoxWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\InputBoxWindowViewModel.cs" />
-    <Compile Include="Views\InputBoxWindow.xaml.cs">
+    <Compile Include="Dialogs\InputBoxWindowViewModel.cs" />
+    <Compile Include="Dialogs\InputBoxWindow.xaml.cs">
       <DependentUpon>InputBoxWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MessageBoxWindow.xaml.cs">
+    <Compile Include="Dialogs\MessageBoxWindow.xaml.cs">
       <DependentUpon>MessageBoxWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Services\BoardHandling.cs" />
@@ -168,19 +169,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\BoardSelectorWindow.xaml">
+    <Page Include="Dialogs\BoardSelectorWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\DialogBoxWindow.xaml">
+    <Page Include="Dialogs\DialogBoxWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\InputBoxWindow.xaml">
+    <Page Include="Dialogs\InputBoxWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\MessageBoxWindow.xaml">
+    <Page Include="Dialogs\MessageBoxWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -246,8 +247,6 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Dialogs\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
