@@ -1,11 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows.Input;
 using KanbanBoard.Presentation.Services;
-using KanbanBoard.Properties;
 using Prism.Commands;
 using Prism.Mvvm;
 
@@ -13,14 +11,17 @@ namespace KanbanBoard.Presentation.Dialogs
 {
     public class BoardSelectorWindowViewModel : BindableBase
     {
+        private readonly IDialogService dialogService;
         private readonly Action closeDialog;
+
         private string selectedBoard;
 
-        public BoardSelectorWindowViewModel(Action closeDialog)
+        public BoardSelectorWindowViewModel(IDialogService dialogService, Action closeDialog)
         {
+            this.dialogService = dialogService;
             this.closeDialog = closeDialog;
 
-            this.BoardFiles.AddRange(GetFileNames(Settings.Default.CurrentBoard));
+            this.PopulateBoardFiles();
 
             this.CloseDialogCommand = new DelegateCommand(this.CloseDialog);
             this.NewButtonCommand = new DelegateCommand(this.NewButton);
@@ -43,14 +44,14 @@ namespace KanbanBoard.Presentation.Dialogs
         public ICommand OpenButtonCommand { get; }
         public ICommand DeleteButtonCommand { get; }
 
-        private static IEnumerable<string> GetFileNames(string currentBoard)
+        private void PopulateBoardFiles()
         {
-            return Directory.GetFiles(BoardHandling.BoardFileStorageLocation).Select(Path.GetFileNameWithoutExtension);
+            this.BoardFiles.AddRange(Directory.GetFiles(BoardHandling.BoardFileStorageLocation).Select(Path.GetFileNameWithoutExtension));
         }
 
         private void NewButton()
         {
-            var input = DialogBoxService.GetInput("Name for the new board:", "New Board");
+            var input = this.dialogService.GetInput("Name for the new board:", "New Board");
             if (string.IsNullOrEmpty(input)) return;
 
             this.BoardLocation = Path.Combine(BoardHandling.BoardFileStorageLocation, input + BoardHandling.BoardFileExtension);
@@ -65,7 +66,7 @@ namespace KanbanBoard.Presentation.Dialogs
 
         private void DeleteButton()
         {
-            if (!DialogBoxService.ShowYesNo("Are you sure want to delete this board?", "Delete board")) return;
+            if (!this.dialogService.ShowYesNo("Are you sure want to delete this board?", "Delete board")) return;
 
             File.Delete(Path.Combine(BoardHandling.BoardFileStorageLocation, this.SelectedBoard + BoardHandling.BoardFileExtension));
             this.BoardFiles.Remove(this.SelectedBoard);

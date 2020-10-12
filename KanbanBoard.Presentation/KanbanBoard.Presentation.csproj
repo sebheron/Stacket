@@ -144,6 +144,7 @@
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\ColorToScreenColorConverter.cs" />
     <Compile Include="Dialogs\MessageBoxViewModel.cs" />
+    <Compile Include="Services\IDialogService.cs" />
     <Compile Include="Views\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
     </Compile>
@@ -163,7 +164,7 @@
       <DependentUpon>MessageBoxWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Services\BoardHandling.cs" />
-    <Compile Include="Services\DialogBoxService.cs" />
+    <Compile Include="Services\DialogService.cs" />
     <Compile Include="ViewModels\BoardViewModel.cs" />
     <Page Include="Views\AboutWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

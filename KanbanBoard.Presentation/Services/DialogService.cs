@@ -2,9 +2,9 @@ using KanbanBoard.Presentation.Dialogs;
 
 namespace KanbanBoard.Presentation.Services
 {
-    public class DialogBoxService
+    public class DialogService : IDialogService
     {
-        public static bool ShowYesNo(string text, string caption)
+        public bool ShowYesNo(string text, string caption)
         {
             // Get viewmodel from DI here and assign parameters
             // Get viewmodel from DI here and assign dialog.Close through parameters?
@@ -17,7 +17,7 @@ namespace KanbanBoard.Presentation.Services
             return dialogViewModel.Result;
         }
 
-        public static void Show(string text, string caption)
+        public void Show(string text, string caption)
         {
             var dialog = new MessageBoxWindow();
             var dialogViewModel = new MessageBoxViewModel(text, caption, dialog.Close);
@@ -26,7 +26,7 @@ namespace KanbanBoard.Presentation.Services
             dialog.ShowDialog();
         }
 
-        public static string GetInput(string text, string caption)
+        public string GetInput(string text, string caption)
         {
             var dialog = new InputBoxWindow();
             var dialogViewModel = new InputBoxWindowViewModel(text, caption, dialog.Close);
@@ -37,10 +37,10 @@ namespace KanbanBoard.Presentation.Services
             return dialogViewModel.Input;
         }
 
-        public static string SelectBoard()
+        public string SelectBoard()
         {
             var dialog = new BoardSelectorWindow();
-            var dialogViewModel = new BoardSelectorWindowViewModel(dialog.Close);
+            var dialogViewModel = new BoardSelectorWindowViewModel(this, dialog.Close);
             dialog.DataContext = dialogViewModel;
 
             dialog.ShowDialog();

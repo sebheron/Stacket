@@ -1,15 +1,15 @@
 using System.Windows;
 using KanbanBoard.Presentation.Behaviors;
+using KanbanBoard.Presentation.Services;
 using KanbanBoard.Presentation.Views;
 using Prism.Ioc;
-using Prism.Unity;
 
 namespace KanbanBoard.Presentation
 {
     /// <summary>
     ///     Interaction logic for App.xaml
     /// </summary>
-    public partial class App : PrismApplication
+    public partial class App
     {
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -20,7 +20,7 @@ namespace KanbanBoard.Presentation
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            //throw new System.NotImplementedException();
+            containerRegistry.RegisterInstance<IDialogService>(new DialogService());
         }
 
         protected override Window CreateShell()
