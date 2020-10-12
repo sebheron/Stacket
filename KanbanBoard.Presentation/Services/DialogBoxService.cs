@@ -1,4 +1,4 @@
-using KanbanBoard.Presentation.Dialogs;
+using KanbanBoard.Presentation.Views;
 
 namespace KanbanBoard.Presentation.Services
 {
@@ -6,6 +6,7 @@ namespace KanbanBoard.Presentation.Services
     {
         public static bool ShowYesNo(string text, string caption)
         {
+            // Get viewmodel from DI here and assign parameters
             var dialog = new DialogBoxWindow(text, caption);
             dialog.ShowDialog();
 

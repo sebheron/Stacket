@@ -1,4 +1,5 @@
 using System.Windows;
+using KanbanBoard.Presentation.ViewModels;
 
 namespace KanbanBoard.Presentation.Views
 {

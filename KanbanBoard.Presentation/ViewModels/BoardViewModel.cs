@@ -5,12 +5,12 @@ using System.Windows;
 using System.Windows.Input;
 using KanbanBoard.Logic.BoardDataTypes;
 using KanbanBoard.Presentation.Behaviors;
+using KanbanBoard.Presentation.Services;
 using KanbanBoard.Properties;
 using Prism.Commands;
 using Prism.Mvvm;
-using KanbanBoard.Presentation.Services;
 
-namespace KanbanBoard.Presentation.Views
+namespace KanbanBoard.Presentation.ViewModels
 {
     public class BoardViewModel : BindableBase
     {

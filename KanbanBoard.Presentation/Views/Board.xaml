@@ -8,6 +8,8 @@
         xmlns:con="clr-namespace:KanbanBoard.Presentation.Converters"
         xmlns:beh="clr-namespace:KanbanBoard.Presentation.Behaviors"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:prism="http://prismlibrary.com/"
+        prism:ViewModelLocator.AutoWireViewModel="True"
         mc:Ignorable="d"
         Title="Board" WindowState="Maximized"
         WindowStyle="None" AllowsTransparency="True" ResizeMode="NoResize"

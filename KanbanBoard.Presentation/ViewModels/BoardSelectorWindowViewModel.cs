@@ -4,23 +4,20 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using KanbanBoard.Presentation.Services;
 using Prism.Commands;
 using Prism.Mvvm;
-using KanbanBoard.Presentation.Services;
 
-namespace KanbanBoard.Presentation.Dialogs
+namespace KanbanBoard.Presentation.ViewModels
 {
-    public class BoardSelectorViewModel : BindableBase
+    public class BoardSelectorWindowViewModel : BindableBase
     {
-        private readonly Window dialogWindow;
-
         private string selectedBoard;
 
-        public BoardSelectorViewModel(Window window, string currentBoard)
+        public BoardSelectorWindowViewModel()
         {
             this.BoardFiles = new ObservableCollection<string>(GetFileNames(currentBoard));
             this.RaisePropertyChanged(nameof(this.BoardFiles));
-            this.dialogWindow = window;
 
             this.CancelButtonCommand = new DelegateCommand(this.CancelButton, () => true);
             this.NewButtonCommand = new DelegateCommand(this.NewButton, () => true);

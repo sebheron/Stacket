@@ -1,17 +1,16 @@
 using System.Windows;
 using System.Windows.Input;
 
-namespace KanbanBoard.Presentation.Dialogs
+namespace KanbanBoard.Presentation.Views
 {
     /// <summary>
     ///     Interaction logic for InputBox.xaml
     /// </summary>
     public partial class DialogBoxWindow : Window
     {
-        public DialogBoxWindow(string text, string caption)
+        public DialogBoxWindow()
         {
             this.InitializeComponent();
-            this.DataContext = new DialogBoxViewModel(this, text, caption);
         }
 
         private void WindowMouseDown(object sender, MouseButtonEventArgs e)

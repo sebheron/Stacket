@@ -3,13 +3,13 @@ using System.Windows.Input;
 using Prism.Commands;
 using Prism.Mvvm;
 
-namespace KanbanBoard.Presentation.Dialogs
+namespace KanbanBoard.Presentation.ViewModels
 {
-    public class InputBoxViewModel : BindableBase
+    public class InputBoxWindowViewModel : BindableBase
     {
         private readonly Window dialogWindow;
 
-        public InputBoxViewModel(Window window, string text, string caption)
+        public InputBoxWindowViewModel(Window window, string text, string caption)
         {
             this.dialogWindow = window;
             this.Text = text;
