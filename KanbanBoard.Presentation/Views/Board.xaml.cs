@@ -6,10 +6,6 @@ namespace KanbanBoard.Presentation.Views
     {
         public Board()
         {
-            var boardViewModel = new BoardViewModel();
-            this.Closing += boardViewModel.OnClosing;
-            this.DataContext = boardViewModel;
-
             this.InitializeComponent();
         }
 

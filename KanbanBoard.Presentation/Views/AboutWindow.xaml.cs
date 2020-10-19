@@ -1,7 +1,7 @@
 using System.Windows;
 using System.Windows.Input;
 
-namespace KanbanBoard.Presentation.Dialogs
+namespace KanbanBoard.Presentation.Views
 {
     /// <summary>
     ///     Interaction logic for AboutWindow.xaml

@@ -8,10 +8,9 @@ namespace KanbanBoard.Presentation.Dialogs
     /// </summary>
     public partial class BoardSelectorWindow : Window
     {
-        public BoardSelectorWindow(string currentBoard)
+        public BoardSelectorWindow()
         {
             this.InitializeComponent();
-            this.DataContext = new BoardSelectorViewModel(this, currentBoard);
         }
 
         private void WindowMouseDown(object sender, MouseButtonEventArgs e)
