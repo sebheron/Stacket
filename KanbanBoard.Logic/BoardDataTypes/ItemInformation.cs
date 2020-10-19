@@ -10,11 +10,8 @@ namespace KanbanBoard.Logic.BoardDataTypes
         private const string NewItemData = "$%<NEWITEMDATA>%$";
 
         private string itemTitle;
-
         private Color itemColor;
-        
         private bool itemDescriptionVisible;
-        
         private ItemTypes itemType;
 
         public ItemInformation(string itemTitle)

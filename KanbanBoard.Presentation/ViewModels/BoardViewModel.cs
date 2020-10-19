@@ -55,6 +55,8 @@ namespace KanbanBoard.Presentation.ViewModels
             this.NewBoardCommand = new DelegateCommand(this.NewBoard);
             this.LoadBoardCommand = new DelegateCommand(this.LoadBoard);
             this.SaveBoardCommand = new DelegateCommand(this.SaveBoard, this.CanSave).ObservesProperty(() => this.Changed);
+            this.ExitCommand = new DelegateCommand(this.OnClosing);
+
             this.AddColumnLeftCommand = new DelegateCommand<object>(this.AddColumnLeft);
             this.AddColumnRightCommand = new DelegateCommand<object>(this.AddColumnRight);
             this.DeleteColumnCommand = new DelegateCommand<object>(this.DeleteColumn);
@@ -104,6 +106,7 @@ namespace KanbanBoard.Presentation.ViewModels
         public ICommand NewBoardCommand { get; }
         public ICommand LoadBoardCommand { get; }
         public ICommand SaveBoardCommand { get; }
+        public ICommand ExitCommand { get; }
 
         // Column commands.
         public ICommand AddColumnLeftCommand { get; }
@@ -237,6 +240,17 @@ namespace KanbanBoard.Presentation.ViewModels
                 columnInformation.Items.Add(new ItemInformation("New Item"));
                 this.Changed = true;
             }
+        }
+
+        private void OnClosing()
+        {
+            if (!string.IsNullOrEmpty(this.BoardInformation.FilePath)
+                && this.dialogService.ShowYesNo("Do you want to save changes to the current board?", "Save Changes"))
+            {
+                this.BoardInformation.Save();
+            }
+
+            Application.Current.Shutdown();
         }
     }
 }
