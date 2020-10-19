@@ -8,6 +8,8 @@
         xmlns:con="clr-namespace:KanbanBoard.Presentation.Converters"
         xmlns:beh="clr-namespace:KanbanBoard.Presentation.Behaviors"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:prism="http://prismlibrary.com/"
+        prism:ViewModelLocator.AutoWireViewModel="True"
         mc:Ignorable="d"
         Title="Board" WindowState="Maximized"
         WindowStyle="None" AllowsTransparency="True" ResizeMode="NoResize"
@@ -29,7 +31,7 @@
             <MenuItem Header="New" Command="{Binding NewBoardCommand}" IsEnabled="{Binding NewEnabled}"/>
             <MenuItem Header="Load" Command="{Binding LoadBoardCommand}" IsEnabled="{Binding LoadEnabled}"/>
             <MenuItem Header="Save" Command="{Binding SaveBoardCommand}"/>
-            <MenuItem Header="Exit" Click="Exit_Click" />
+            <MenuItem Header="Exit" Command="{Binding ExitCommand}" />
         </ContextMenu>
 
         <ObjectDataProvider x:Key="ItemTypes" MethodName="GetValues" ObjectType="{x:Type system:Enum}">

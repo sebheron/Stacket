@@ -1,53 +1,31 @@
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
+using KanbanBoard.Presentation.Behaviors;
+using KanbanBoard.Presentation.Services;
+using KanbanBoard.Presentation.Views;
+using Prism.Ioc;
 
 namespace KanbanBoard.Presentation
 {
     /// <summary>
     ///     Interaction logic for App.xaml
     /// </summary>
-    public partial class App : System.Windows.Application
+    public partial class App
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            // Select the text in a TextBox when it receives focus.
-            EventManager.RegisterClassHandler(typeof(TextBox), UIElement.PreviewMouseLeftButtonDownEvent, new MouseButtonEventHandler(SelectivelyIgnoreMouseButton));
-            EventManager.RegisterClassHandler(typeof(TextBox), UIElement.GotKeyboardFocusEvent, new RoutedEventHandler(SelectAllText));
-            EventManager.RegisterClassHandler(typeof(TextBox), Control.MouseDoubleClickEvent, new RoutedEventHandler(SelectAllText));
+            TextBoxHighlightBehavior.Initialize();
 
             base.OnStartup(e);
         }
 
-        private static void SelectivelyIgnoreMouseButton(object sender, MouseButtonEventArgs e)
+        protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            // Find the TextBox
-            DependencyObject parent = e.OriginalSource as UIElement;
-            while (parent != null && !(parent is TextBox))
-            {
-                parent = VisualTreeHelper.GetParent(parent);
-            }
-
-            if (parent != null)
-            {
-                var textBox = (TextBox)parent;
-                if (!textBox.IsKeyboardFocusWithin)
-                {
-                    // If the text box is not yet focused, give it the focus and
-                    // stop further processing of this click event.
-                    textBox.Focus();
-                    e.Handled = true;
-                }
-            }
+            containerRegistry.RegisterInstance<IDialogService>(new DialogService());
         }
 
-        private static void SelectAllText(object sender, RoutedEventArgs e)
+        protected override Window CreateShell()
         {
-            if (e.OriginalSource is TextBox textBox)
-            {
-                textBox.SelectAll();
-            }
+            return Container.Resolve<Board>();
         }
     }
 }

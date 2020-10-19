@@ -8,10 +8,9 @@ namespace KanbanBoard.Presentation.Dialogs
     /// </summary>
     public partial class DialogBoxWindow : Window
     {
-        public DialogBoxWindow(string text, string caption)
+        public DialogBoxWindow()
         {
             this.InitializeComponent();
-            this.DataContext = new DialogBoxViewModel(this, text, caption);
         }
 
         private void WindowMouseDown(object sender, MouseButtonEventArgs e)

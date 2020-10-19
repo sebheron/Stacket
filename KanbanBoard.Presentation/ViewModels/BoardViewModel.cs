@@ -1,39 +1,33 @@
 using System;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using KanbanBoard.Logic.BoardDataTypes;
 using KanbanBoard.Presentation.Behaviors;
+using KanbanBoard.Presentation.Services;
 using KanbanBoard.Properties;
-using Microsoft.Win32;
 using Prism.Commands;
 using Prism.Mvvm;
-using KanbanBoard.Presentation.Services;
 
-namespace KanbanBoard.Presentation.Views
+namespace KanbanBoard.Presentation.ViewModels
 {
     public class BoardViewModel : BindableBase
     {
+        private readonly IDialogService dialogService;
+
         private BoardInformation boardInformation;
         private bool changed;
         private bool loadEnabled = true;
         private bool newEnabled = true;
 
-        public BoardViewModel()
+        public BoardViewModel(IDialogService dialogService)
         {
-            if (!Settings.Default.AskedUserForStartup) {
-                if (DialogBoxService.ShowYesNo("Should Stacket start on Windows startup?", "Stacket")) {
-                    Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true)
-                        .SetValue("Stacket", Process.GetCurrentProcess().MainModule.FileName);
-                }
-                Settings.Default.AskedUserForStartup = true;
-            }
+            this.dialogService = dialogService;
+
             BoardHandling.Setup();
             if (string.IsNullOrEmpty(Settings.Default.CurrentBoard))
             {
-                Settings.Default.CurrentBoard = DialogBoxService.SelectBoard(Settings.Default.CurrentBoard);
+                Settings.Default.CurrentBoard = this.dialogService.SelectBoard();
                 if (string.IsNullOrEmpty(Settings.Default.CurrentBoard))
                 {
                     Application.Current.Shutdown();
@@ -43,8 +37,8 @@ namespace KanbanBoard.Presentation.Views
             }
             else if (!File.Exists(Settings.Default.CurrentBoard))
             {
-                DialogBoxService.Show("The board " + Path.GetFileName(Settings.Default.CurrentBoard) + " is missing.", "Missing Board File");
-                Settings.Default.CurrentBoard = DialogBoxService.SelectBoard(Settings.Default.CurrentBoard);
+                this.dialogService.Show("The board " + Path.GetFileName(Settings.Default.CurrentBoard) + " is missing.", "Missing Board File");
+                Settings.Default.CurrentBoard = this.dialogService.SelectBoard();
                 if (string.IsNullOrEmpty(Settings.Default.CurrentBoard))
                 {
                     Application.Current.Shutdown();
@@ -57,15 +51,17 @@ namespace KanbanBoard.Presentation.Views
             this.DragHandler = new DragHandleBehavior();
             this.DragHandler.DragStarted += () => this.RaisePropertyChanged(nameof(this.DragHandler));
 
-            this.ShowSettingsCommand = new DelegateCommand(ShowSettings, () => true);
-            this.NewBoardCommand = new DelegateCommand(NewBoard, () => true);
-            this.LoadBoardCommand = new DelegateCommand(LoadBoard, () => true);
-            this.SaveBoardCommand = new DelegateCommand(SaveBoard, CanSave).ObservesProperty(() => Changed);
-            this.AddColumnLeftCommand = new DelegateCommand<object>(AddColumnLeft, arg => true);
-            this.AddColumnRightCommand = new DelegateCommand<object>(AddColumnRight, arg => true);
-            this.DeleteColumnCommand = new DelegateCommand<object>(DeleteColumn, arg => true);
-            this.AddItemCommand = new DelegateCommand<object>(AddItem, arg => true);
-            this.DeleteItemCommand = new DelegateCommand<object>(DeleteItem, arg => true);
+            this.ShowSettingsCommand = new DelegateCommand(this.ShowSettings);
+            this.NewBoardCommand = new DelegateCommand(this.NewBoard);
+            this.LoadBoardCommand = new DelegateCommand(this.LoadBoard);
+            this.SaveBoardCommand = new DelegateCommand(this.SaveBoard, this.CanSave).ObservesProperty(() => this.Changed);
+            this.ExitCommand = new DelegateCommand(this.OnClosing);
+
+            this.AddColumnLeftCommand = new DelegateCommand<object>(this.AddColumnLeft);
+            this.AddColumnRightCommand = new DelegateCommand<object>(this.AddColumnRight);
+            this.DeleteColumnCommand = new DelegateCommand<object>(this.DeleteColumn);
+            this.AddItemCommand = new DelegateCommand<object>(this.AddItem);
+            this.DeleteItemCommand = new DelegateCommand<object>(this.DeleteItem);
         }
 
         public DragHandleBehavior DragHandler { get; }
@@ -110,6 +106,7 @@ namespace KanbanBoard.Presentation.Views
         public ICommand NewBoardCommand { get; }
         public ICommand LoadBoardCommand { get; }
         public ICommand SaveBoardCommand { get; }
+        public ICommand ExitCommand { get; }
 
         // Column commands.
         public ICommand AddColumnLeftCommand { get; }
@@ -129,7 +126,7 @@ namespace KanbanBoard.Presentation.Views
         {
             if (!string.IsNullOrEmpty(this.BoardInformation.FilePath) 
                 && this.Changed 
-                && DialogBoxService.ShowYesNo("Do you want to save changes to the current board?", "Save Changes"))
+                && this.dialogService.ShowYesNo("Do you want to save changes to the current board?", "Save Changes"))
             {
                 this.SaveBoard();
             }
@@ -137,7 +134,7 @@ namespace KanbanBoard.Presentation.Views
             this.NewEnabled = false;
             this.LoadEnabled = false;
 
-            var input = DialogBoxService.GetInput("Name for the new board:", "New Board");
+            var input = this.dialogService.GetInput("Name for the new board:", "New Board");
             this.NewEnabled = true;
             this.LoadEnabled = true;
 
@@ -152,15 +149,14 @@ namespace KanbanBoard.Presentation.Views
 
         private void LoadBoard()
         {
-            if (this.Changed && DialogBoxService.ShowYesNo("Do you want to save changes to the current board?", "Save Changes"))
+            if (this.Changed && this.dialogService.ShowYesNo("Do you want to save changes to the current board?", "Save Changes"))
             {
                 this.BoardInformation.Save();
             }
 
-
             this.NewEnabled = false;
             this.LoadEnabled = false;
-            var newBoard = DialogBoxService.SelectBoard(Settings.Default.CurrentBoard);
+            var newBoard = this.dialogService.SelectBoard();
             this.NewEnabled = true;
             this.LoadEnabled = true;
 
@@ -203,15 +199,15 @@ namespace KanbanBoard.Presentation.Views
 
             if (this.BoardInformation.ColumnCount <= 1)
             {
-                DialogBoxService.Show("This is the last column and cannot be removed.", "Remove column");
+                this.dialogService.Show("This is the last column and cannot be removed.", "Remove column");
                 return;
             }
 
-            if (!columnInformation.Unchanged() && !DialogBoxService.ShowYesNo("Are you sure you want to remove this column?", "Remove Column")) return;
+            if (!columnInformation.Unchanged() && !this.dialogService.ShowYesNo("Are you sure you want to remove this column?", "Remove Column")) return;
 
             if (columnInformation.Items.Count > 0)
             {
-                var saveItems = DialogBoxService.ShowYesNo(
+                var saveItems = this.dialogService.ShowYesNo(
                     "Should all the items within the column be saved? If so they will be moved to the leftmost column.",
                     "Remove Column");
                 if (saveItems) BoardInformation.MigrateItemsToLeftMost(columnInformation);
@@ -227,7 +223,7 @@ namespace KanbanBoard.Presentation.Views
             if (arg is ItemInformation itemInformation)
             {
                 var remove = itemInformation.Unchanged() ||
-                             DialogBoxService.ShowYesNo("Are you sure you want to remove this item?", "Remove Item");
+                             this.dialogService.ShowYesNo("Are you sure you want to remove this item?", "Remove Item");
                 if (remove)
                 {
                     this.BoardInformation.Columns[BoardInformation.GetItemsColumnIndex(itemInformation)].Items
@@ -246,22 +242,15 @@ namespace KanbanBoard.Presentation.Views
             }
         }
 
-        public void OnClosing(object sender, CancelEventArgs e)
+        private void OnClosing()
         {
             if (!string.IsNullOrEmpty(this.BoardInformation.FilePath)
-                && this.Changed
-                && DialogBoxService.ShowYesNo("Do you want to save changes to the current board?", "Save Changes"))
+                && this.dialogService.ShowYesNo("Do you want to save changes to the current board?", "Save Changes"))
             {
-                BoardInformation.Save();
+                this.BoardInformation.Save();
             }
 
-            foreach (Window item in Application.Current.Windows)
-            {
-                if (item.Tag == null || item.Tag.ToString() != "MainWindow")
-                {
-                    item.Close();
-                }
-            }
+            Application.Current.Shutdown();
         }
     }
 }
