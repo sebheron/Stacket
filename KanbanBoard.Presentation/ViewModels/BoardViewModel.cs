@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
@@ -6,6 +7,7 @@ using KanbanBoard.Logic.BoardDataTypes;
 using KanbanBoard.Presentation.Behaviors;
 using KanbanBoard.Presentation.Services;
 using KanbanBoard.Properties;
+using Microsoft.Win32;
 using Prism.Commands;
 using Prism.Mvvm;
 
@@ -23,6 +25,14 @@ namespace KanbanBoard.Presentation.ViewModels
         public BoardViewModel(IDialogService dialogService)
         {
             this.dialogService = dialogService;
+
+            if (!Settings.Default.AskedUserForStartup) {
+                if (this.dialogService.ShowYesNo("Should Stacket start on Windows startup?", "Stacket")) {
+                    Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true)
+                        .SetValue("Stacket", Process.GetCurrentProcess().MainModule.FileName);
+                }
+                Settings.Default.AskedUserForStartup = true;
+            }
 
             BoardHandling.Setup();
             if (string.IsNullOrEmpty(Settings.Default.CurrentBoard))
