@@ -15,7 +15,7 @@ namespace KanbanBoard.Presentation.Dialogs
             this.Text = text;
             this.Caption = caption;
 
-            this.CloseDialogCommand = new DelegateCommand(this.CloseDialog);
+            this.OkCommand = new DelegateCommand(this.Ok);
             this.CancelCommand = new DelegateCommand(this.Cancel);
         }
 
@@ -24,14 +24,15 @@ namespace KanbanBoard.Presentation.Dialogs
         public string Text { get; }
 
         public ICommand CancelCommand { get; }
-        public ICommand CloseDialogCommand { get; }
+        public ICommand OkCommand { get; }
 
         private void Cancel()
         {
             this.Input = string.Empty;
+            this.closeDialog.Invoke();
         }
 
-        private void CloseDialog()
+        private void Ok()
         {
             this.closeDialog.Invoke();
         }

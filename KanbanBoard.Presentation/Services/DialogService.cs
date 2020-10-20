@@ -47,7 +47,10 @@ namespace KanbanBoard.Presentation.Services
         }
 
         public void ShowSettings() {
+            var dialog = new SettingsWindow();
+            //var dialogViewModel = new 
 
+            dialog.ShowDialog();
         }
     }
 }
