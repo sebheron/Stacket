@@ -16,6 +16,8 @@ namespace KanbanBoard.Presentation.Dialogs
             this.AcceptCommand = new DelegateCommand(this.Accept);
         }
 
+        public bool StartOnStartup;
+
         public ICommand CancelCommand { get; }
         public ICommand AcceptCommand { get; }
 

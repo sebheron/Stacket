@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" Topmost="True" ShowInTaskbar="False"
-        Title="SettingsWindow"  Height="300" Width="350" WindowStyle="None" Background="Transparent" AllowsTransparency="True" WindowStartupLocation="CenterScreen">
+        Title="SettingsWindow"  Height="115" Width="300" WindowStyle="None" Background="Transparent" AllowsTransparency="True" WindowStartupLocation="CenterScreen">
 
     <Border CornerRadius="15" Background="#BFD3D3D3">
         <Grid>
@@ -14,6 +14,12 @@
                 <RowDefinition Height="35"/>
             </Grid.RowDefinitions>
 
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
             <Border MouseDown="WindowMouseDown" Background="DarkGray" CornerRadius="5" Grid.ColumnSpan="3" Margin="0,0,0,0.4">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -21,26 +27,19 @@
                         <ColumnDefinition Width="30"/>
                     </Grid.ColumnDefinitions>
 
-                    <Button Grid.Column="1" Style="{StaticResource TransparentRoundFlat3DButton}" FontFamily="Marlett" Content="r" Command="{Binding OkCommand}"/>
+                    <Button Grid.Column="1" Style="{StaticResource TransparentRoundFlat3DButton}" FontFamily="Marlett" Content="r" Command="{Binding CancelCommand}"/>
                     <TextBlock Grid.Column="0" Margin="5" Text="Settings"/>
                 </Grid>
             </Border>
-            <Border Margin="10,9.6" Grid.Row="1" Grid.ColumnSpan="3" BorderBrush="Black" BorderThickness="1">
-                <ScrollViewer>
-                    <StackPanel>
-                        <Button Height="50"/>
-                        <Button Height="50"/>
-                        <Button Height="50"/>
-                        <Button Height="50"/>
-                        <Button Height="50"/>
-                        <Button Height="50"/>
-                        <Button Height="50"/>
-                        <Button Height="50"/>
-                        <Button Height="50"/>
-                    </StackPanel>
-                </ScrollViewer>
-            </Border>
-            <Button Grid.Row="2" Content="Ok" Margin="3,1,3,3" Style="{StaticResource TransparentRoundFlat3DButton}" Command="{Binding OkCommand}" IsDefault="True"/>
+            <Button Grid.Row="2" Grid.Column="2" Content="Cancel" Margin="3,1,3,3" Style="{StaticResource TransparentRoundFlat3DButton}" Command="{Binding CancelCommand}" IsDefault="True"/>
+            <Button Grid.Row="2" Grid.Column="1" Content="Apply" Margin="3,1,3,3" Style="{StaticResource TransparentRoundFlat3DButton}" Command="{Binding AcceptCommand}" IsDefault="True"/>
+            <Grid Grid.Row="1" Grid.ColumnSpan="3" Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <CheckBox HorizontalAlignment="Center" VerticalAlignment="Top" Content="Start Stacket on Windows startup" Grid.ColumnSpan="3"/>
+            </Grid>
         </Grid>
     </Border>
 </Window>
