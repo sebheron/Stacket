@@ -53,15 +53,8 @@
             <RowDefinition Height="30"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Grid HorizontalAlignment="Center">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="45"/>
-                <ColumnDefinition Width="90"/>
-                <ColumnDefinition Width="45"/>
-            </Grid.ColumnDefinitions>
-            
-            <ToggleButton x:Name="MainWindowToggle" Grid.Column="1" Style="{StaticResource RoundFlat3DToggleButton}" Height="25" IsChecked="True" FocusVisualStyle="{x:Null}" ContextMenu="{StaticResource TrayMenu}" />
-        </Grid>
+
+        <ToggleButton x:Name="MainWindowToggle" HorizontalAlignment="Center" MinWidth="80" Grid.Column="1" Style="{StaticResource RoundFlat3DToggleButton}" Height="25" IsChecked="True" FocusVisualStyle="{x:Null}" ContextMenu="{StaticResource TrayMenu}" />
 
         <StackPanel Visibility="{Binding IsChecked, ElementName=MainWindowToggle, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Row="1" HorizontalAlignment="Center" Orientation="Horizontal" x:Name="MainGrid" Margin="15,0,15,15">
             <StackPanel.Effect>
@@ -140,7 +133,7 @@
                                                 CommandParameter="{Binding}" FontFamily="Marlett" Content="r" FocusVisualStyle="{x:Null}" />
                                     </Grid>
                                 </Border>
-                                
+
                                 <ScrollViewer Visibility="{Binding ColumnVisible, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                                     <ItemsControl Background="#01000000" ItemsSource="{Binding Items}"
                                           dd:DragDrop.IsDragSource="True"
@@ -190,13 +183,13 @@
                                                                               IsChecked="{Binding ItemDescriptionVisible, Mode=TwoWay}" FocusVisualStyle="{x:Null}" />
 
                                                                 <ComboBox Style="{StaticResource TransparentRoundComboBox}" Grid.Column="2" SelectedValue="{Binding ItemType}" ItemsSource="{Binding Source={StaticResource ItemTypes}}" VerticalAlignment="Top" Height="30"/>
-                                                                
+
                                                                 <Button Content="r" FontFamily="Marlett" Grid.Column="3" Style="{StaticResource TransparentRoundFlat3DButton}" VerticalAlignment="Top" Height="30"
                                                                         Command="{Binding ElementName=MainGrid, Path=DataContext.DeleteItemCommand}"
                                                                         CommandParameter="{Binding}" FocusVisualStyle="{x:Null}"/>
                                                             </Grid>
                                                         </Border>
-                                                        
+
                                                         <Grid Visibility="{Binding ItemDescriptionVisible, Converter={StaticResource BooleanToVisibilityConverter}}" MinHeight="60">
                                                             <Grid.RowDefinitions>
                                                                 <RowDefinition Height="6"/>
