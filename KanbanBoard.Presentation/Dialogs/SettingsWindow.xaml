@@ -38,7 +38,7 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <CheckBox HorizontalAlignment="Center" VerticalAlignment="Top" Content="Start Stacket on Windows startup" Grid.ColumnSpan="3"/>
+                <CheckBox IsChecked="{Binding StartOnStartup, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Top" Content="Start Stacket on Windows startup" Grid.ColumnSpan="3"/>
             </Grid>
         </Grid>
     </Border>

@@ -48,7 +48,8 @@ namespace KanbanBoard.Presentation.Services
 
         public void ShowSettings() {
             var dialog = new SettingsWindow();
-            //var dialogViewModel = new 
+            var dialogViewModel = new SettingsWindowViewModel(dialog.Close);
+            dialog.DataContext = dialogViewModel;
 
             dialog.ShowDialog();
         }

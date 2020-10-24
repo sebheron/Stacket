@@ -27,7 +27,8 @@ namespace KanbanBoard.Presentation.ViewModels
             this.dialogService = dialogService;
 
             if (!Settings.Default.AskedUserForStartup) {
-                if (this.dialogService.ShowYesNo("Should Stacket start on Windows startup?", "Stacket")) {
+                if (this.dialogService.ShowYesNo("Should Stacket start on Windows startup?", "Stacket"))
+                {
                     Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true)
                         .SetValue("Stacket", Process.GetCurrentProcess().MainModule.FileName);
                 }
