@@ -1,14 +1,14 @@
 using System.Windows;
 using System.Windows.Input;
 
-namespace KanbanBoard.Presentation.Views
+namespace KanbanBoard.Presentation.Dialogs
 {
     /// <summary>
-    ///     Interaction logic for AboutWindow.xaml
+    /// Interaction logic for SettingsWindow.xaml
     /// </summary>
-    public partial class AboutWindow : Window
+    public partial class SettingsWindow : Window
     {
-        public AboutWindow()
+        public SettingsWindow()
         {
             this.InitializeComponent();
         }
