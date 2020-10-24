@@ -54,7 +54,11 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <ToggleButton x:Name="MainWindowToggle" HorizontalAlignment="Center" MinWidth="80" Grid.Column="1" Style="{StaticResource RoundFlat3DToggleButton}" Height="25" IsChecked="True" FocusVisualStyle="{x:Null}" ContextMenu="{StaticResource TrayMenu}" />
+        <ToggleButton x:Name="MainWindowToggle" Width="80" Height="25" Grid.Column="1" Style="{StaticResource RoundFlat3DToggleButton}" IsChecked="True" FocusVisualStyle="{x:Null}" ContextMenu="{StaticResource TrayMenu}">
+            <i:Interaction.Behaviors>
+                <beh:MoveableButtonBehavior/>
+            </i:Interaction.Behaviors>
+        </ToggleButton>
 
         <StackPanel Visibility="{Binding IsChecked, ElementName=MainWindowToggle, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Row="1" HorizontalAlignment="Center" Orientation="Horizontal" x:Name="MainGrid" Margin="15,0,15,15">
             <StackPanel.Effect>

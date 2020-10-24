@@ -139,6 +139,7 @@
     </ApplicationDefinition>
     <Compile Include="Behaviors\DragHandleBehavior.cs" />
     <Compile Include="Behaviors\MaxLinesBehavior.cs" />
+    <Compile Include="Behaviors\MoveableButtonBehavior.cs" />
     <Compile Include="Behaviors\TextBoxFocusBehavior.cs" />
     <Compile Include="Behaviors\TextBoxHighlightBehavior.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
