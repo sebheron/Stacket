@@ -5,7 +5,7 @@ using System.Windows.Input;
 using KanbanBoard.Logic.BoardDataTypes;
 using KanbanBoard.Presentation.Behaviors;
 using KanbanBoard.Presentation.Services;
-using KanbanBoard.Properties;
+using KanbanBoard.Presentation.Properties;
 using Prism.Commands;
 using Prism.Mvvm;
 

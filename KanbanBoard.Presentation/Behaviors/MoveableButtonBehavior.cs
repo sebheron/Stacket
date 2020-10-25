@@ -28,8 +28,7 @@ namespace KanbanBoard.Presentation.Behaviors
             {
                 parent = Application.Current.MainWindow;
                 AssociatedObject.RenderTransform = transform;
-
-                xPos = transform.X;
+                xPos = transform.X = Properties.Settings.Default.TogglePosition;
                 halfScreenWidth = SystemParameters.MaximizedPrimaryScreenWidth / 2;
                 halfButtonWidth = ((ToggleButton)AssociatedObject).Width / 2;
 
@@ -88,7 +87,8 @@ namespace KanbanBoard.Presentation.Behaviors
             {
                 dragging = false;
                 e.Handled = true;
-                xPos = transform.X;
+                Properties.Settings.Default.TogglePosition = xPos = transform.X;
+                Properties.Settings.Default.Save();
                 ((ToggleButton)sender).ReleaseMouseCapture();
             }
         }
