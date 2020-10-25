@@ -51,7 +51,9 @@ namespace KanbanBoard.Presentation.Behaviors
         private void AssociatedObject_PreviewMouseMove(object sender, MouseEventArgs e)
         {
             var delta = e.GetPosition(parent).X - prevPos.X;
-            if (e.LeftButton == MouseButtonState.Pressed && (Math.Abs(delta) > dragThreshold || dragging))
+            if (!Properties.Settings.Default.LockToggle &&
+                e.LeftButton == MouseButtonState.Pressed &&
+                (Math.Abs(delta) > dragThreshold || dragging))
             {
                 dragging = true;
                 xPos += delta;
