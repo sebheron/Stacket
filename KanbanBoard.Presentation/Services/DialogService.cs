@@ -15,7 +15,7 @@ namespace KanbanBoard.Presentation.Services
             return dialogViewModel.Result;
         }
 
-        public void Show(string text, string caption)
+        public void ShowMessage(string text, string caption)
         {
             var dialog = new MessageBoxWindow();
             var dialogViewModel = new MessageBoxWindowViewModel(text, caption, dialog.Close);
@@ -44,6 +44,14 @@ namespace KanbanBoard.Presentation.Services
             dialog.ShowDialog();
 
             return dialogViewModel.BoardLocation;
+        }
+
+        public void ShowSettings() {
+            var dialog = new SettingsWindow();
+            var dialogViewModel = new SettingsWindowViewModel(dialog.Close);
+            dialog.DataContext = dialogViewModel;
+
+            dialog.ShowDialog();
         }
     }
 }

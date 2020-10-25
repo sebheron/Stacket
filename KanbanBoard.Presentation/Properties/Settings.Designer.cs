@@ -46,5 +46,17 @@ namespace KanbanBoard.Presentation.Properties {
                 this["TogglePosition"] = value;
             }
         }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AskedUserForStartup {
+            get {
+                return ((bool)(this["AskedUserForStartup"]));
+            }
+            set {
+                this["AskedUserForStartup"] = value;
+            }
+        }
     }
 }

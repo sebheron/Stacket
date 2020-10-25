@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
@@ -6,6 +7,7 @@ using KanbanBoard.Logic.BoardDataTypes;
 using KanbanBoard.Presentation.Behaviors;
 using KanbanBoard.Presentation.Services;
 using KanbanBoard.Presentation.Properties;
+using Microsoft.Win32;
 using Prism.Commands;
 using Prism.Mvvm;
 
@@ -24,6 +26,15 @@ namespace KanbanBoard.Presentation.ViewModels
         {
             this.dialogService = dialogService;
 
+            if (!Settings.Default.AskedUserForStartup) {
+                if (this.dialogService.ShowYesNo("Should Stacket start on Windows startup?", "Stacket"))
+                {
+                    Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true)
+                        .SetValue("Stacket", Process.GetCurrentProcess().MainModule.FileName);
+                }
+                Settings.Default.AskedUserForStartup = true;
+            }
+
             BoardHandling.Setup();
             if (string.IsNullOrEmpty(Settings.Default.CurrentBoard))
             {
@@ -37,7 +48,7 @@ namespace KanbanBoard.Presentation.ViewModels
             }
             else if (!File.Exists(Settings.Default.CurrentBoard))
             {
-                this.dialogService.Show("The board " + Path.GetFileName(Settings.Default.CurrentBoard) + " is missing.", "Missing Board File");
+                this.dialogService.ShowMessage("The board " + Path.GetFileName(Settings.Default.CurrentBoard) + " is missing.", "Missing Board File");
                 Settings.Default.CurrentBoard = this.dialogService.SelectBoard();
                 if (string.IsNullOrEmpty(Settings.Default.CurrentBoard))
                 {
@@ -102,10 +113,12 @@ namespace KanbanBoard.Presentation.ViewModels
         // Show settings command.
         public ICommand ShowSettingsCommand { get; }
 
-        // Board command.
+        // Board commands.
         public ICommand NewBoardCommand { get; }
         public ICommand LoadBoardCommand { get; }
         public ICommand SaveBoardCommand { get; }
+
+        // Exit command
         public ICommand ExitCommand { get; }
 
         // Column commands.
@@ -119,7 +132,7 @@ namespace KanbanBoard.Presentation.ViewModels
 
         private void ShowSettings()
         {
-            //Show settings
+            this.dialogService.ShowSettings();
         }
 
         public void NewBoard()
@@ -135,16 +148,16 @@ namespace KanbanBoard.Presentation.ViewModels
             this.LoadEnabled = false;
 
             var input = this.dialogService.GetInput("Name for the new board:", "New Board");
+
             this.NewEnabled = true;
             this.LoadEnabled = true;
 
-            if (string.IsNullOrEmpty(input)) return;
-
-            Settings.Default.CurrentBoard = Path.Combine(BoardHandling.BoardFileStorageLocation,
-                input + BoardHandling.BoardFileExtension);
-            this.BoardInformation = new BoardInformation(Settings.Default.CurrentBoard);
-            Settings.Default.Save();
-            this.Changed = false;
+            if (!string.IsNullOrEmpty(input)) {
+                Settings.Default.CurrentBoard = Path.Combine(BoardHandling.BoardFileStorageLocation, input + BoardHandling.BoardFileExtension);
+                this.BoardInformation = new BoardInformation(Settings.Default.CurrentBoard);
+                Settings.Default.Save();
+                this.Changed = false;
+            }
         }
 
         private void LoadBoard()
@@ -199,7 +212,7 @@ namespace KanbanBoard.Presentation.ViewModels
 
             if (this.BoardInformation.ColumnCount <= 1)
             {
-                this.dialogService.Show("This is the last column and cannot be removed.", "Remove column");
+                this.dialogService.ShowMessage("This is the last column and cannot be removed.", "Remove column");
                 return;
             }
 
@@ -245,6 +258,7 @@ namespace KanbanBoard.Presentation.ViewModels
         private void OnClosing()
         {
             if (!string.IsNullOrEmpty(this.BoardInformation.FilePath)
+                && this.Changed
                 && this.dialogService.ShowYesNo("Do you want to save changes to the current board?", "Save Changes"))
             {
                 this.BoardInformation.Save();
