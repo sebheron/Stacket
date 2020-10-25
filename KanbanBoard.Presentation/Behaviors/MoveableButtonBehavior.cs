@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Threading;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -54,7 +52,8 @@ namespace KanbanBoard.Presentation.Behaviors
                 if (Math.Abs(xPos) < snapThreshold)
                 {
                     transform.X = 0;
-                } else
+                }
+                else
                 {
                     transform.X = xPos;
                 }
