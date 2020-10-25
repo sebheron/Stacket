@@ -13,14 +13,15 @@ namespace KanbanBoard.Presentation.Dialogs
         private RegistryKey reg;
         private bool startOnStartup;
 
-        public SettingsWindowViewModel(Action closeDialog) {
+        public SettingsWindowViewModel(Action closeDialog)
+        {
             this.closeDialog = closeDialog;
 
             this.CancelCommand = new DelegateCommand(this.Cancel);
             this.AcceptCommand = new DelegateCommand(this.Accept);
 
-            reg = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-            StartOnStartup = !String.IsNullOrEmpty(reg.GetValue("Stacket") as string);
+            this.reg = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+            this.StartOnStartup = !String.IsNullOrEmpty(reg.GetValue("Stacket") as string);
         }
 
         public bool StartOnStartup
@@ -32,18 +33,20 @@ namespace KanbanBoard.Presentation.Dialogs
         public ICommand CancelCommand { get; }
         public ICommand AcceptCommand { get; }
 
-        private void Cancel() {
+        private void Cancel()
+        {
             this.closeDialog.Invoke();
         }
 
-        private void Accept() {
+        private void Accept()
+        {
             if (StartOnStartup)
             {
-                reg.SetValue("Stacket", Process.GetCurrentProcess().MainModule.FileName);
+                this.reg.SetValue("Stacket", Process.GetCurrentProcess().MainModule.FileName);
             }
             else if (reg.GetValue("Stacket") != null)
             {
-                reg.DeleteValue("Stacket");
+                this.reg.DeleteValue("Stacket");
             }
             this.closeDialog.Invoke();
         }
