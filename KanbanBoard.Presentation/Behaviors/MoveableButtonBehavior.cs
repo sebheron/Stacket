@@ -11,6 +11,9 @@ namespace KanbanBoard.Presentation.Behaviors
 {
     public class MoveableButtonBehavior : Behavior<UIElement>
     {
+        private const int dragThreshold = 1;
+        private const int snapThreshold = 15;
+
         private bool dragging;
         private Point prevPos;
 
@@ -44,11 +47,11 @@ namespace KanbanBoard.Presentation.Behaviors
         private void AssociatedObject_PreviewMouseMove(object sender, MouseEventArgs e)
         {
             var delta = e.GetPosition(parent).X - prevPos.X;
-            if (e.LeftButton == MouseButtonState.Pressed && (Math.Abs(delta) > 1 || dragging))
+            if (e.LeftButton == MouseButtonState.Pressed && (Math.Abs(delta) > dragThreshold || dragging))
             {
                 dragging = true;
                 xPos += delta;
-                if (Math.Abs(xPos) < 10)
+                if (Math.Abs(xPos) < snapThreshold)
                 {
                     transform.X = 0;
                 } else
