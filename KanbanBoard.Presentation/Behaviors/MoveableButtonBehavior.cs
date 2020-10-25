@@ -15,6 +15,9 @@ namespace KanbanBoard.Presentation.Behaviors
         private bool dragging;
         private Point prevPos;
 
+        private double halfScreenWidth;
+        private double halfButtonWidth;
+
         private double xPos;
         private TranslateTransform transform = new TranslateTransform();
         private Window parent;
@@ -25,7 +28,11 @@ namespace KanbanBoard.Presentation.Behaviors
             {
                 parent = Application.Current.MainWindow;
                 AssociatedObject.RenderTransform = transform;
+
                 xPos = transform.X;
+                halfScreenWidth = SystemParameters.MaximizedPrimaryScreenWidth / 2;
+                halfButtonWidth = ((ToggleButton)AssociatedObject).Width / 2;
+
                 AssociatedObject.PreviewMouseLeftButtonDown += AssociatedObject_PreviewMouseLeftButtonDown;
                 AssociatedObject.PreviewMouseLeftButtonUp += AssociatedObject_PreviewMouseLeftButtonUp;
                 AssociatedObject.PreviewMouseMove += AssociatedObject_PreviewMouseMove;
@@ -52,6 +59,14 @@ namespace KanbanBoard.Presentation.Behaviors
                 if (Math.Abs(xPos) < snapThreshold)
                 {
                     transform.X = 0;
+                }
+                else if (xPos > halfScreenWidth - halfButtonWidth)
+                {
+                    transform.X = halfScreenWidth - halfButtonWidth;
+                }
+                else if (xPos < -halfScreenWidth + halfButtonWidth)
+                {
+                    transform.X = -halfScreenWidth + halfButtonWidth;
                 }
                 else
                 {
