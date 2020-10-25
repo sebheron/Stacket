@@ -57,7 +57,6 @@ namespace KanbanBoard.Presentation.Behaviors
                 {
                     transform.X = xPos;
                 }
-                Console.WriteLine(transform.X);
             }
             prevPos = e.GetPosition(parent);
         }
