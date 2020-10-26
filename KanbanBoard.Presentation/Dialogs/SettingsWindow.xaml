@@ -9,36 +9,50 @@
     <Border CornerRadius="15" Background="#BFD3D3D3">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
-                <RowDefinition/>
-                <RowDefinition Height="35"/>
+                <RowDefinition Height="30" />
+                <RowDefinition />
+                <RowDefinition Height="35" />
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
             <Border MouseDown="WindowMouseDown" Background="DarkGray" CornerRadius="5" Grid.ColumnSpan="3" Margin="0,0,0,0.4">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="30" />
                     </Grid.ColumnDefinitions>
 
-                    <Button Grid.Column="1" Style="{StaticResource TransparentRoundFlat3DButton}" FontFamily="Marlett" Content="r" Command="{Binding CancelCommand}"/>
-                    <TextBlock Grid.Column="0" Margin="5" Text="Settings"/>
+                    <Button Grid.Column="1" Style="{StaticResource TransparentRoundFlat3DButton}"
+                            FontFamily="Marlett" Content="r" Command="{Binding CancelCommand}" />
+                    <TextBlock Grid.Column="0" Margin="5" Text="Settings" />
                 </Grid>
             </Border>
-            <Button Grid.Row="2" Grid.Column="2" Content="Cancel" Margin="3,1,3,3" Style="{StaticResource TransparentRoundFlat3DButton}" Command="{Binding CancelCommand}" IsDefault="True"/>
-            <Button Grid.Row="2" Grid.Column="1" Content="Apply" Margin="3,1,3,3" Style="{StaticResource TransparentRoundFlat3DButton}" Command="{Binding AcceptCommand}" IsDefault="True"/>
+
+            <Button Grid.Row="2" Grid.Column="2"
+                    Content="Cancel" Margin="3,1,3,3"
+                    Style="{StaticResource TransparentRoundFlat3DButton}" Command="{Binding CancelCommand}"
+                    IsDefault="True" />
+
+            <Button Grid.Row="2" Grid.Column="1"
+                    Content="Apply" Margin="3,1,3,3"
+                    Style="{StaticResource TransparentRoundFlat3DButton}"
+                    Command="{Binding AcceptCommand}"
+                    IsDefault="True" />
+
             <Grid Grid.Row="1" Grid.ColumnSpan="3" Margin="10">
                 <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
+                    <RowDefinition />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
-                <CheckBox IsChecked="{Binding StartOnStartup, Mode=TwoWay}" HorizontalAlignment="Center" VerticalAlignment="Top" Content="Start Stacket on Windows startup" Grid.ColumnSpan="3"/>
+
+                <CheckBox IsChecked="{Binding StartOnStartup, Mode=TwoWay}"
+                          HorizontalAlignment="Center" VerticalAlignment="Top"
+                          Content="Start Stacket on Windows startup" Grid.ColumnSpan="3" />
             </Grid>
         </Grid>
     </Border>

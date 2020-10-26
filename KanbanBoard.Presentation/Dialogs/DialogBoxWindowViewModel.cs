@@ -31,7 +31,7 @@ namespace KanbanBoard.Presentation.Dialogs
         public void YesButton()
         {
             this.Result = true;
-            this.closeDialog.Invoke();
+            this.Close();
         }
 
         private void Close()

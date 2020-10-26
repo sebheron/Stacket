@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Windows.Input;
-using Microsoft.Win32;
+using KanbanBoard.Presentation.Properties;
+using KanbanBoard.Presentation.Services;
 using Prism.Commands;
 using Prism.Mvvm;
 
@@ -10,18 +11,20 @@ namespace KanbanBoard.Presentation.Dialogs
     public class SettingsWindowViewModel : BindableBase
     {
         private readonly Action closeDialog;
-        private RegistryKey reg;
+        private readonly IRegistryService registryService;
         private bool startOnStartup;
 
-        public SettingsWindowViewModel(Action closeDialog)
+        public SettingsWindowViewModel(Action closeDialog, IRegistryService registryService)
         {
             this.closeDialog = closeDialog;
 
             this.CancelCommand = new DelegateCommand(this.Cancel);
             this.AcceptCommand = new DelegateCommand(this.Accept);
 
-            this.reg = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-            this.StartOnStartup = !String.IsNullOrEmpty(reg.GetValue("Stacket") as string);
+            this.registryService = registryService;
+
+            this.StartOnStartup = !string.IsNullOrEmpty(
+                registryService.GetValue(Resources.StartupRegistryLocation, Resources.StartupRegistryName) as string);
         }
 
         public bool StartOnStartup
@@ -40,14 +43,17 @@ namespace KanbanBoard.Presentation.Dialogs
 
         private void Accept()
         {
-            if (StartOnStartup)
+            if (this.StartOnStartup)
             {
-                this.reg.SetValue("Stacket", Process.GetCurrentProcess().MainModule.FileName);
+                this.registryService.SetValue(Resources.StartupRegistryLocation,
+                    Resources.StartupRegistryName,
+                    Process.GetCurrentProcess().MainModule.FileName);
             }
-            else if (reg.GetValue("Stacket") != null)
+            else if (this.registryService.GetValue(Resources.StartupRegistryLocation, Resources.StartupRegistryName) != null)
             {
-                this.reg.DeleteValue("Stacket");
+                this.registryService.DeleteValue(Resources.StartupRegistryLocation, Resources.StartupRegistryName);
             }
+
             this.closeDialog.Invoke();
         }
     }
