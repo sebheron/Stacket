@@ -28,9 +28,13 @@ namespace KanbanBoard.Presentation.ViewModels
             this.dialogService = dialogService;
             this.registryService = registryService;
 
-            KanbanBoard.Properties.Settings.Default.PropertyChanged += SettingsChanged;
+            Settings.Default.PropertyChanged += SettingsChanged;
 
-            if (!KanbanBoard.Properties.Settings.Default.AskedUserForStartup)
+            if (!Settings.Default.RanOnce)
+            {
+                Settings.Default.RanOnce = true;
+            }
+            else if (!Settings.Default.AskedUserForStartup)
             {
                 if (this.dialogService.ShowYesNo("Should Stacket start on Windows startup?", "Stacket"))
                 {
@@ -38,34 +42,34 @@ namespace KanbanBoard.Presentation.ViewModels
                         Process.GetCurrentProcess().MainModule.FileName);
                 }
 
-                KanbanBoard.Properties.Settings.Default.AskedUserForStartup = true;
-                KanbanBoard.Properties.Settings.Default.Save();
+                Settings.Default.AskedUserForStartup = true;
+                Settings.Default.Save();
             }
 
             BoardHandling.Setup();
-            if (string.IsNullOrEmpty(KanbanBoard.Properties.Settings.Default.CurrentBoard))
+            if (string.IsNullOrEmpty(Settings.Default.CurrentBoard))
             {
-                KanbanBoard.Properties.Settings.Default.CurrentBoard = this.dialogService.SelectBoard();
-                if (string.IsNullOrEmpty(KanbanBoard.Properties.Settings.Default.CurrentBoard))
+                Settings.Default.CurrentBoard = this.dialogService.SelectBoard();
+                if (string.IsNullOrEmpty(Settings.Default.CurrentBoard))
                 {
                     Application.Current.Shutdown();
                 }
 
-                KanbanBoard.Properties.Settings.Default.Save();
+                Settings.Default.Save();
             }
-            else if (!File.Exists(KanbanBoard.Properties.Settings.Default.CurrentBoard))
+            else if (!File.Exists(Settings.Default.CurrentBoard))
             {
-                this.dialogService.ShowMessage("The board " + Path.GetFileName(KanbanBoard.Properties.Settings.Default.CurrentBoard) + " is missing.", "Missing Board File");
-                KanbanBoard.Properties.Settings.Default.CurrentBoard = this.dialogService.SelectBoard();
-                if (string.IsNullOrEmpty(KanbanBoard.Properties.Settings.Default.CurrentBoard))
+                this.dialogService.ShowMessage("The board " + Path.GetFileName(Settings.Default.CurrentBoard) + " is missing.", "Missing Board File");
+                Settings.Default.CurrentBoard = this.dialogService.SelectBoard();
+                if (string.IsNullOrEmpty(Settings.Default.CurrentBoard))
                 {
                     Application.Current.Shutdown();
                 }
 
-                KanbanBoard.Properties.Settings.Default.Save();
+                Settings.Default.Save();
             }
 
-            this.BoardInformation = new BoardInformation(KanbanBoard.Properties.Settings.Default.CurrentBoard);
+            this.BoardInformation = new BoardInformation(Settings.Default.CurrentBoard);
             this.DragHandler = new DragHandleBehavior();
             this.DragHandler.DragStarted += () => this.RaisePropertyChanged(nameof(this.DragHandler));
 
@@ -142,7 +146,7 @@ namespace KanbanBoard.Presentation.ViewModels
 
         private void SettingsChanged(object sender, PropertyChangedEventArgs e)
         {
-            KanbanBoard.Properties.Settings.Default.Save();
+            Settings.Default.Save();
         }
 
         private void ShowSettings()
@@ -169,10 +173,10 @@ namespace KanbanBoard.Presentation.ViewModels
 
             if (string.IsNullOrEmpty(input)) return;
 
-            KanbanBoard.Properties.Settings.Default.CurrentBoard = Path.Combine(BoardHandling.BoardFileStorageLocation,
+            Settings.Default.CurrentBoard = Path.Combine(BoardHandling.BoardFileStorageLocation,
                 input + BoardHandling.BoardFileExtension);
-            this.BoardInformation = new BoardInformation(KanbanBoard.Properties.Settings.Default.CurrentBoard);
-            KanbanBoard.Properties.Settings.Default.Save();
+            this.BoardInformation = new BoardInformation(Settings.Default.CurrentBoard);
+            Settings.Default.Save();
             this.Changed = false;
         }
 
@@ -193,9 +197,9 @@ namespace KanbanBoard.Presentation.ViewModels
 
             if (string.IsNullOrEmpty(newBoard)) return;
 
-            KanbanBoard.Properties.Settings.Default.CurrentBoard = newBoard;
-            this.BoardInformation = new BoardInformation(KanbanBoard.Properties.Settings.Default.CurrentBoard);
-            KanbanBoard.Properties.Settings.Default.Save();
+            Settings.Default.CurrentBoard = newBoard;
+            this.BoardInformation = new BoardInformation(Settings.Default.CurrentBoard);
+            Settings.Default.Save();
             this.Changed = false;
         }
 

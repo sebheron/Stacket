@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace KanbanBoard.Properties {
+namespace KanbanBoard.Presentation.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -44,6 +44,18 @@ namespace KanbanBoard.Properties {
             }
             set {
                 this["AskedUserForStartup"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool RanOnce {
+            get {
+                return ((bool)(this["RanOnce"]));
+            }
+            set {
+                this["RanOnce"] = value;
             }
         }
     }
