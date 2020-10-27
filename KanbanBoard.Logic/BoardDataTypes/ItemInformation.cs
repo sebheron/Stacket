@@ -1,14 +1,13 @@
 using System;
 using System.Windows.Media;
 using KanbanBoard.Logic.Enums;
+using KanbanBoard.Logic.Properties;
 using Prism.Mvvm;
 
 namespace KanbanBoard.Logic.BoardDataTypes
 {
     public class ItemInformation : BindableBase
     {
-        public static ItemTypes LastItemType;
-
         private const string NewItemData = "$%<NEWITEMDATA>%$";
 
         private string itemTitle;
@@ -21,7 +20,7 @@ namespace KanbanBoard.Logic.BoardDataTypes
             this.ItemId = Guid.NewGuid();
             this.ItemTitle = itemTitle;
             this.ItemDescription = string.Empty;
-            this.ItemType = LastItemType;
+            this.ItemType = Settings.Default.LastItemType;
             this.ItemDueDate = DateTime.Now.Date;
             this.ItemDescriptionVisible = false;
         }
@@ -72,7 +71,8 @@ namespace KanbanBoard.Logic.BoardDataTypes
             get => itemType;
             set
             {
-                LastItemType = value;
+                Settings.Default.LastItemType = value;
+                Settings.Default.Save();
                 this.SetColor(value);
                 this.SetProperty(ref this.itemType, value);
             }
