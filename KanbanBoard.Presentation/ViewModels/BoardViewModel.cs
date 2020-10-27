@@ -43,7 +43,6 @@ namespace KanbanBoard.Presentation.ViewModels
                 }
 
                 Settings.Default.AskedUserForStartup = true;
-                Settings.Default.Save();
             }
 
             BoardHandling.Setup();
@@ -54,8 +53,6 @@ namespace KanbanBoard.Presentation.ViewModels
                 {
                     Application.Current.Shutdown();
                 }
-
-                Settings.Default.Save();
             }
             else if (!File.Exists(Settings.Default.CurrentBoard))
             {
@@ -65,8 +62,6 @@ namespace KanbanBoard.Presentation.ViewModels
                 {
                     Application.Current.Shutdown();
                 }
-
-                Settings.Default.Save();
             }
 
             this.BoardInformation = new BoardInformation(Settings.Default.CurrentBoard);
