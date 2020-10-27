@@ -55,9 +55,9 @@
 
                 <CheckBox IsChecked="{Binding LockToggle, Mode=TwoWay}"
                         HorizontalAlignment="Left" VerticalAlignment="Top"
-                        Content="Lock toggle button" Grid.Row="1" Grid.ColumnSpan="3"/>
+                        Content="Lock toggle button" Grid.Row="1" Grid.ColumnSpan="3" />
                 <CheckBox IsChecked="{Binding StartOnStartup, Mode=TwoWay}"
-                          HorizontalAlignment="Center" VerticalAlignment="Top"
+                          HorizontalAlignment="Left" VerticalAlignment="Top"
                           Content="Start Stacket on Windows startup" Grid.ColumnSpan="3" />
             </Grid>
         </Grid>
