@@ -70,5 +70,17 @@ namespace KanbanBoard.Presentation.Properties {
                 this["LockToggle"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool RanOnce {
+            get {
+                return ((bool)(this["RanOnce"]));
+            }
+            set {
+                this["RanOnce"] = value;
+            }
+        }
     }
 }

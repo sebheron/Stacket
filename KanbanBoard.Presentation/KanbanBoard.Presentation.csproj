@@ -170,6 +170,8 @@
     </Compile>
     <Compile Include="Services\BoardHandling.cs" />
     <Compile Include="Services\DialogService.cs" />
+    <Compile Include="Services\IRegistryService.cs" />
+    <Compile Include="Services\RegistryService.cs" />
     <Compile Include="ViewModels\BoardViewModel.cs" />
     <Page Include="Dialogs\BoardSelectorWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

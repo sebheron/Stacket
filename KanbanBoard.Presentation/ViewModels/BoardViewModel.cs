@@ -1,13 +1,13 @@
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using KanbanBoard.Logic.BoardDataTypes;
 using KanbanBoard.Presentation.Behaviors;
-using KanbanBoard.Presentation.Services;
 using KanbanBoard.Presentation.Properties;
-using Microsoft.Win32;
+using KanbanBoard.Presentation.Services;
 using Prism.Commands;
 using Prism.Mvvm;
 
@@ -16,22 +16,32 @@ namespace KanbanBoard.Presentation.ViewModels
     public class BoardViewModel : BindableBase
     {
         private readonly IDialogService dialogService;
+        private readonly IRegistryService registryService;
 
         private BoardInformation boardInformation;
         private bool changed;
         private bool loadEnabled = true;
         private bool newEnabled = true;
 
-        public BoardViewModel(IDialogService dialogService)
+        public BoardViewModel(IDialogService dialogService, IRegistryService registryService)
         {
             this.dialogService = dialogService;
+            this.registryService = registryService;
 
-            if (!Settings.Default.AskedUserForStartup) {
+            Settings.Default.PropertyChanged += this.SettingsChanged;
+
+            if (!Settings.Default.RanOnce)
+            {
+                Settings.Default.RanOnce = true;
+            }
+            else if (!Settings.Default.AskedUserForStartup)
+            {
                 if (this.dialogService.ShowYesNo("Should Stacket start on Windows startup?", "Stacket"))
                 {
-                    Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true)
-                        .SetValue("Stacket", Process.GetCurrentProcess().MainModule.FileName);
+                    this.registryService.SetValue(Resources.StartupRegistryLocation, Resources.StartupRegistryName,
+                        Process.GetCurrentProcess().MainModule.FileName);
                 }
+
                 Settings.Default.AskedUserForStartup = true;
             }
 
@@ -43,8 +53,6 @@ namespace KanbanBoard.Presentation.ViewModels
                 {
                     Application.Current.Shutdown();
                 }
-                    
-                Settings.Default.Save();
             }
             else if (!File.Exists(Settings.Default.CurrentBoard))
             {
@@ -54,8 +62,6 @@ namespace KanbanBoard.Presentation.ViewModels
                 {
                     Application.Current.Shutdown();
                 }
-                    
-                Settings.Default.Save();
             }
 
             this.BoardInformation = new BoardInformation(Settings.Default.CurrentBoard);
@@ -115,6 +121,7 @@ namespace KanbanBoard.Presentation.ViewModels
 
         // Board commands.
         public ICommand NewBoardCommand { get; }
+
         public ICommand LoadBoardCommand { get; }
         public ICommand SaveBoardCommand { get; }
 
@@ -123,12 +130,19 @@ namespace KanbanBoard.Presentation.ViewModels
 
         // Column commands.
         public ICommand AddColumnLeftCommand { get; }
+
         public ICommand AddColumnRightCommand { get; }
         public ICommand DeleteColumnCommand { get; }
 
         // Item commands.
         public ICommand AddItemCommand { get; }
+
         public ICommand DeleteItemCommand { get; }
+
+        private void SettingsChanged(object sender, PropertyChangedEventArgs e)
+        {
+            Settings.Default.Save();
+        }
 
         private void ShowSettings()
         {
@@ -137,13 +151,13 @@ namespace KanbanBoard.Presentation.ViewModels
 
         public void NewBoard()
         {
-            if (!string.IsNullOrEmpty(this.BoardInformation.FilePath) 
-                && this.Changed 
+            if (!string.IsNullOrEmpty(this.BoardInformation.FilePath)
+                && this.Changed
                 && this.dialogService.ShowYesNo("Do you want to save changes to the current board?", "Save Changes"))
             {
                 this.SaveBoard();
             }
-                
+
             this.NewEnabled = false;
             this.LoadEnabled = false;
 
@@ -152,12 +166,13 @@ namespace KanbanBoard.Presentation.ViewModels
             this.NewEnabled = true;
             this.LoadEnabled = true;
 
-            if (!string.IsNullOrEmpty(input)) {
-                Settings.Default.CurrentBoard = Path.Combine(BoardHandling.BoardFileStorageLocation, input + BoardHandling.BoardFileExtension);
-                this.BoardInformation = new BoardInformation(Settings.Default.CurrentBoard);
-                Settings.Default.Save();
-                this.Changed = false;
-            }
+            if (string.IsNullOrEmpty(input)) return;
+
+            Settings.Default.CurrentBoard = Path.Combine(BoardHandling.BoardFileStorageLocation,
+                input + BoardHandling.BoardFileExtension);
+            this.BoardInformation = new BoardInformation(Settings.Default.CurrentBoard);
+            Settings.Default.Save();
+            this.Changed = false;
         }
 
         private void LoadBoard()
@@ -169,7 +184,9 @@ namespace KanbanBoard.Presentation.ViewModels
 
             this.NewEnabled = false;
             this.LoadEnabled = false;
+
             var newBoard = this.dialogService.SelectBoard();
+
             this.NewEnabled = true;
             this.LoadEnabled = true;
 
@@ -258,7 +275,6 @@ namespace KanbanBoard.Presentation.ViewModels
         private void OnClosing()
         {
             if (!string.IsNullOrEmpty(this.BoardInformation.FilePath)
-                && this.Changed
                 && this.dialogService.ShowYesNo("Do you want to save changes to the current board?", "Save Changes"))
             {
                 this.BoardInformation.Save();
