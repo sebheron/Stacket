@@ -21,7 +21,7 @@ namespace KanbanBoard.Presentation
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterInstance<IRegistryService>(new RegistryService());
-            containerRegistry.RegisterInstance<IDialogService>(new DialogService(Container.Resolve<IRegistryService>()));
+            containerRegistry.Register<IDialogService, DialogService>();
         }
 
         protected override Window CreateShell()

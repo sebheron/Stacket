@@ -28,7 +28,7 @@ namespace KanbanBoard.Presentation.ViewModels
             this.dialogService = dialogService;
             this.registryService = registryService;
 
-            Settings.Default.PropertyChanged += SettingsChanged;
+            Settings.Default.PropertyChanged += this.SettingsChanged;
 
             if (!Settings.Default.RanOnce)
             {
