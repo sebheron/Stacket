@@ -7,6 +7,8 @@ namespace KanbanBoard.Logic.BoardDataTypes
 {
     public class ItemInformation : BindableBase
     {
+        public static ItemTypes LastItemType;
+
         private const string NewItemData = "$%<NEWITEMDATA>%$";
 
         private string itemTitle;
@@ -19,7 +21,7 @@ namespace KanbanBoard.Logic.BoardDataTypes
             this.ItemId = Guid.NewGuid();
             this.ItemTitle = itemTitle;
             this.ItemDescription = string.Empty;
-            this.ItemType = ItemTypes.Item;
+            this.ItemType = LastItemType;
             this.ItemDueDate = DateTime.Now.Date;
             this.ItemDescriptionVisible = false;
         }
@@ -37,12 +39,12 @@ namespace KanbanBoard.Logic.BoardDataTypes
 
         public Guid ItemId { get; set; }
 
-        public string ItemTitle 
+        public string ItemTitle
         {
             get => itemTitle;
-            set 
+            set
             {
-                if (!string.IsNullOrEmpty(value)) 
+                if (!string.IsNullOrEmpty(value))
                 {
                     this.SetProperty(ref itemTitle, value);
                 }
@@ -70,6 +72,7 @@ namespace KanbanBoard.Logic.BoardDataTypes
             get => itemType;
             set
             {
+                LastItemType = value;
                 this.SetColor(value);
                 this.SetProperty(ref this.itemType, value);
             }
@@ -82,15 +85,19 @@ namespace KanbanBoard.Logic.BoardDataTypes
                 case ItemTypes.Bug:
                     this.ItemColor = Color.FromArgb(255, 255, 159, 26);
                     break;
+
                 case ItemTypes.Investigation:
                     this.ItemColor = Color.FromArgb(255, 64, 86, 161);
                     break;
+
                 case ItemTypes.Item:
                     this.ItemColor = Color.FromArgb(255, 147, 158, 196);
                     break;
+
                 case ItemTypes.Parked:
                     this.ItemColor = Color.FromArgb(255, 241, 60, 31);
                     break;
+
                 default:
                     this.ItemColor = Color.FromArgb(255, 147, 158, 196);
                     break;
@@ -103,7 +110,7 @@ namespace KanbanBoard.Logic.BoardDataTypes
             var itemId = Guid.Parse(itemData[0]);
             var itemTitle = itemData[1];
             var itemDescription = itemData[2];
-            var itemType = (ItemTypes) Enum.Parse(typeof(ItemTypes), itemData[3]);
+            var itemType = (ItemTypes)Enum.Parse(typeof(ItemTypes), itemData[3]);
             var itemDueDate = DateTime.Parse(itemData[4]).Date;
 
             return new ItemInformation(itemId, itemTitle, itemDescription, itemType, itemDueDate);
@@ -111,15 +118,14 @@ namespace KanbanBoard.Logic.BoardDataTypes
 
         public override string ToString()
         {
-            return this.ItemId + NewItemData + this.ItemTitle + NewItemData + this.ItemDescription 
+            return this.ItemId + NewItemData + this.ItemTitle + NewItemData + this.ItemDescription
                    + NewItemData + this.ItemType + NewItemData + this.ItemDueDate + NewItemData + this.ItemColor;
         }
 
         public bool Unchanged()
         {
-            return this.ItemTitle == "New Item" 
-                   && this.ItemDescription == string.Empty
-                   && this.ItemType == ItemTypes.Item;
+            return this.ItemTitle == "New Item"
+                   && this.ItemDescription == string.Empty;
         }
     }
 }
