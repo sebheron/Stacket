@@ -75,6 +75,9 @@
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>KanbanBoard.Presentation.App</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="CommonServiceLocator, Version=2.0.4.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonServiceLocator.2.0.4\lib\net46\CommonServiceLocator.dll</HintPath>
@@ -143,11 +146,12 @@
     <Compile Include="Behaviors\TextBoxHighlightBehavior.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\ColorToScreenColorConverter.cs" />
-    <Compile Include="Dialogs\MessageBoxWindowViewModel.cs" />
-    <Compile Include="Services\IDialogService.cs" />
-    <Compile Include="Views\AboutWindow.xaml.cs">
-      <DependentUpon>AboutWindow.xaml</DependentUpon>
+    <Compile Include="Dialogs\SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\MessageBoxWindowViewModel.cs" />
+    <Compile Include="Dialogs\SettingsWindowViewModel.cs" />
+    <Compile Include="Services\IDialogService.cs" />
     <Compile Include="Dialogs\BoardSelectorWindowViewModel.cs" />
     <Compile Include="Dialogs\BoardSelectorWindow.xaml.cs">
       <DependentUpon>BoardSelectorWindow.xaml</DependentUpon>
@@ -165,11 +169,9 @@
     </Compile>
     <Compile Include="Services\BoardHandling.cs" />
     <Compile Include="Services\DialogService.cs" />
+    <Compile Include="Services\IRegistryService.cs" />
+    <Compile Include="Services\RegistryService.cs" />
     <Compile Include="ViewModels\BoardViewModel.cs" />
-    <Page Include="Views\AboutWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Dialogs\BoardSelectorWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -179,6 +181,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Dialogs\InputBoxWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dialogs\SettingsWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

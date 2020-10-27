@@ -4,6 +4,13 @@ namespace KanbanBoard.Presentation.Services
 {
     public class DialogService : IDialogService
     {
+        private readonly IRegistryService registryService;
+
+        public DialogService(IRegistryService registryService)
+        {
+            this.registryService = registryService;
+        }
+
         public bool ShowYesNo(string text, string caption)
         {
             var dialog = new DialogBoxWindow();
@@ -15,7 +22,7 @@ namespace KanbanBoard.Presentation.Services
             return dialogViewModel.Result;
         }
 
-        public void Show(string text, string caption)
+        public void ShowMessage(string text, string caption)
         {
             var dialog = new MessageBoxWindow();
             var dialogViewModel = new MessageBoxWindowViewModel(text, caption, dialog.Close);
@@ -44,6 +51,15 @@ namespace KanbanBoard.Presentation.Services
             dialog.ShowDialog();
 
             return dialogViewModel.BoardLocation;
+        }
+
+        public void ShowSettings()
+        {
+            var dialog = new SettingsWindow();
+            var dialogViewModel = new SettingsWindowViewModel(dialog.Close, this.registryService);
+            dialog.DataContext = dialogViewModel;
+
+            dialog.ShowDialog();
         }
     }
 }
