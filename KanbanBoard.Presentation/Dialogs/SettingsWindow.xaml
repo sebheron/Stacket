@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" Topmost="True" ShowInTaskbar="False"
-        Title="SettingsWindow"  Height="115" Width="300" WindowStyle="None" Background="Transparent" AllowsTransparency="True" WindowStartupLocation="CenterScreen">
+        Title="SettingsWindow"  Height="115" Width="255" WindowStyle="None" Background="Transparent" AllowsTransparency="True" WindowStartupLocation="CenterScreen">
 
     <Border CornerRadius="15" Background="#BFD3D3D3">
         <Grid>
@@ -53,8 +53,11 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
 
+                <CheckBox IsChecked="{Binding LockToggle, Mode=TwoWay}"
+                        HorizontalAlignment="Left" VerticalAlignment="Top"
+                        Content="Lock toggle button" Grid.Row="1" Grid.ColumnSpan="3" />
                 <CheckBox IsChecked="{Binding StartOnStartup, Mode=TwoWay}"
-                          HorizontalAlignment="Center" VerticalAlignment="Top"
+                          HorizontalAlignment="Left" VerticalAlignment="Top"
                           Content="Start Stacket on Windows startup" Grid.ColumnSpan="3" />
             </Grid>
         </Grid>

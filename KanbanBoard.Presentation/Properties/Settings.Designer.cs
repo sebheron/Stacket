@@ -37,6 +37,18 @@ namespace KanbanBoard.Presentation.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public double TogglePosition {
+            get {
+                return ((double)(this["TogglePosition"]));
+            }
+            set {
+                this["TogglePosition"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool AskedUserForStartup {
             get {
@@ -44,6 +56,18 @@ namespace KanbanBoard.Presentation.Properties {
             }
             set {
                 this["AskedUserForStartup"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool LockToggle {
+            get {
+                return ((bool)(this["LockToggle"]));
+            }
+            set {
+                this["LockToggle"] = value;
             }
         }
         
