@@ -61,6 +61,15 @@ namespace KanbanBoard.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .brd.
+        /// </summary>
+        internal static string BoardFileExtension {
+            get {
+                return ResourceManager.GetString("BoardFileExtension", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run.
         /// </summary>
         internal static string StartupRegistryLocation {

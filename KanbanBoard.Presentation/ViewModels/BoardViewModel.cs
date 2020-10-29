@@ -1,6 +1,4 @@
 using System;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
@@ -16,7 +14,6 @@ namespace KanbanBoard.Presentation.ViewModels
     public class BoardViewModel : BindableBase
     {
         private readonly IDialogService dialogService;
-        private readonly IRegistryService registryService;
 
         private BoardInformation boardInformation;
         private bool changed;
@@ -26,43 +23,6 @@ namespace KanbanBoard.Presentation.ViewModels
         public BoardViewModel(IDialogService dialogService, IRegistryService registryService)
         {
             this.dialogService = dialogService;
-            this.registryService = registryService;
-
-            Settings.Default.PropertyChanged += this.SettingsChanged;
-
-            if (!Settings.Default.RanOnce)
-            {
-                Settings.Default.RanOnce = true;
-            }
-            else if (!Settings.Default.AskedUserForStartup)
-            {
-                if (this.dialogService.ShowYesNo("Should Stacket start on Windows startup?", "Stacket"))
-                {
-                    this.registryService.SetValue(Resources.StartupRegistryLocation, Resources.StartupRegistryName,
-                        Process.GetCurrentProcess().MainModule.FileName);
-                }
-
-                Settings.Default.AskedUserForStartup = true;
-            }
-
-            BoardHandling.Setup();
-            if (string.IsNullOrEmpty(Settings.Default.CurrentBoard))
-            {
-                Settings.Default.CurrentBoard = this.dialogService.SelectBoard();
-                if (string.IsNullOrEmpty(Settings.Default.CurrentBoard))
-                {
-                    Application.Current.Shutdown();
-                }
-            }
-            else if (!File.Exists(Settings.Default.CurrentBoard))
-            {
-                this.dialogService.ShowMessage("The board " + Path.GetFileName(Settings.Default.CurrentBoard) + " is missing.", "Missing Board File");
-                Settings.Default.CurrentBoard = this.dialogService.SelectBoard();
-                if (string.IsNullOrEmpty(Settings.Default.CurrentBoard))
-                {
-                    Application.Current.Shutdown();
-                }
-            }
 
             this.BoardInformation = new BoardInformation(Settings.Default.CurrentBoard);
             this.DragHandler = new DragHandleBehavior();
@@ -139,11 +99,6 @@ namespace KanbanBoard.Presentation.ViewModels
 
         public ICommand DeleteItemCommand { get; }
 
-        private void SettingsChanged(object sender, PropertyChangedEventArgs e)
-        {
-            Settings.Default.Save();
-        }
-
         private void ShowSettings()
         {
             this.dialogService.ShowSettings();
@@ -168,8 +123,8 @@ namespace KanbanBoard.Presentation.ViewModels
 
             if (string.IsNullOrEmpty(input)) return;
 
-            Settings.Default.CurrentBoard = Path.Combine(BoardHandling.BoardFileStorageLocation,
-                input + BoardHandling.BoardFileExtension);
+            Settings.Default.CurrentBoard = Path.Combine(BoardFileLocations.BoardFileStorageLocation,
+                input + Resources.BoardFileExtension);
             this.BoardInformation = new BoardInformation(Settings.Default.CurrentBoard);
             Settings.Default.Save();
             this.Changed = false;
