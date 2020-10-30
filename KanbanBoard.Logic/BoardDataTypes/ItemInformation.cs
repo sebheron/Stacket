@@ -83,8 +83,7 @@ namespace KanbanBoard.Logic.BoardDataTypes
             {
                 Settings.Default.LastItemType = value;
                 Settings.Default.Save();
-                this.SetColor(value);
-                this.SetProperty(ref this.itemType, value);
+                this.ItemType = value;
             }
         }
 

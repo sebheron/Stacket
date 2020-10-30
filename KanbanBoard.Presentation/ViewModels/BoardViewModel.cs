@@ -20,8 +20,10 @@ namespace KanbanBoard.Presentation.ViewModels
         private bool loadEnabled = true;
         private bool newEnabled = true;
 
-        public BoardViewModel(IDialogService dialogService)
+        public BoardViewModel(IDialogService dialogService, IRegistryService registryService)
         {
+            StartupHandling.Initialize(dialogService, registryService);
+
             this.dialogService = dialogService;
 
             this.BoardInformation = new BoardInformation(Settings.Default.CurrentBoard);
@@ -123,10 +125,9 @@ namespace KanbanBoard.Presentation.ViewModels
 
             if (string.IsNullOrEmpty(input)) return;
 
-            Settings.Default.CurrentBoard = Path.Combine(BoardFileLocations.BoardFileStorageLocation,
+            Settings.Default.CurrentBoard = Path.Combine(FileLocations.BoardFileStorageLocation,
                 input + Resources.BoardFileExtension);
             this.BoardInformation = new BoardInformation(Settings.Default.CurrentBoard);
-            Settings.Default.Save();
             this.Changed = false;
         }
 
@@ -149,7 +150,6 @@ namespace KanbanBoard.Presentation.ViewModels
 
             Settings.Default.CurrentBoard = newBoard;
             this.BoardInformation = new BoardInformation(Settings.Default.CurrentBoard);
-            Settings.Default.Save();
             this.Changed = false;
         }
 

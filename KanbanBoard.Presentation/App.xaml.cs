@@ -11,11 +11,10 @@ namespace KanbanBoard.Presentation
     /// </summary>
     public partial class App
     {
-        protected override void OnInitialized()
+        protected override void OnStartup(StartupEventArgs e)
         {
             TextBoxHighlightBehavior.Initialize();
-            StartupHandling.Initialize(Container.Resolve<IDialogService>(), Container.Resolve<IRegistryService>());
-            base.OnInitialized();
+            base.OnStartup(e);
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)

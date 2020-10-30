@@ -15,13 +15,18 @@ namespace KanbanBoard.Presentation.Services
     {
         public static void Initialize(IDialogService dialogService, IRegistryService registryService)
         {
-            AskUserForStartup(dialogService, registryService);
-            Directory.CreateDirectory(BoardFileLocations.BoardFileStorageLocation);
+            Settings.Default.PropertyChanged += SaveSettings;
+            AskUserToAutoStartApp(dialogService, registryService);
+            Directory.CreateDirectory(FileLocations.BoardFileStorageLocation);
             OpenLastBoard(dialogService);
+        }
+
+        private static void SaveSettings(object sender, PropertyChangedEventArgs e)
+        {
             Settings.Default.Save();
         }
 
-        private static void AskUserForStartup(IDialogService dialogService, IRegistryService registryService)
+        private static void AskUserToAutoStartApp(IDialogService dialogService, IRegistryService registryService)
         {
             if (!Settings.Default.RanOnce)
             {
