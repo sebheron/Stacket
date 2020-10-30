@@ -53,15 +53,12 @@
             <RowDefinition Height="30" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <Grid HorizontalAlignment="Center">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="45" />
-                <ColumnDefinition Width="90" />
-                <ColumnDefinition Width="45" />
-            </Grid.ColumnDefinitions>
 
-            <ToggleButton x:Name="MainWindowToggle" Grid.Column="1" Style="{StaticResource RoundFlat3DToggleButton}" Height="25" IsChecked="True" FocusVisualStyle="{x:Null}" ContextMenu="{StaticResource TrayMenu}" />
-        </Grid>
+        <ToggleButton x:Name="MainWindowToggle" Width="80" Height="25" Grid.Column="1" Style="{StaticResource RoundFlat3DToggleButton}" IsChecked="True" FocusVisualStyle="{x:Null}" ContextMenu="{StaticResource TrayMenu}">
+            <i:Interaction.Behaviors>
+                <beh:MoveableButtonBehavior/>
+            </i:Interaction.Behaviors>
+        </ToggleButton>
 
         <StackPanel Visibility="{Binding IsChecked, ElementName=MainWindowToggle, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Row="1" HorizontalAlignment="Center" Orientation="Horizontal" x:Name="MainGrid" Margin="15,0,15,15">
             <StackPanel.Effect>
