@@ -38,12 +38,14 @@
             <Button Grid.Row="2" Grid.Column="2"
                     Content="Cancel" Margin="3,1,3,3"
                     Style="{StaticResource TransparentRoundFlat3DButton}"
-                    Command="{Binding CancelCommand}" />
+                    Command="{Binding CancelCommand}"
+                    IsDefault="True" />
 
             <Button Grid.Row="2" Grid.Column="1"
                     Content="Apply" Margin="3,1,3,3"
                     Style="{StaticResource TransparentRoundFlat3DButton}"
-                    Command="{Binding AcceptCommand}" />
+                    Command="{Binding AcceptCommand}"
+                    IsDefault="True" />
 
             <Grid Grid.Row="1" Grid.ColumnSpan="3" Margin="10">
                 <Grid.RowDefinitions>
