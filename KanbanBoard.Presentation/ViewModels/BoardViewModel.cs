@@ -20,7 +20,7 @@ namespace KanbanBoard.Presentation.ViewModels
         private bool loadEnabled = true;
         private bool newEnabled = true;
 
-        public BoardViewModel(IDialogService dialogService, IRegistryService registryService)
+        public BoardViewModel(IDialogService dialogService)
         {
             this.dialogService = dialogService;
 

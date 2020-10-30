@@ -21,45 +21,45 @@
         Background="Transparent" SizeToContent="Height">
 
     <Window.InputBindings>
-        <KeyBinding Modifiers="Ctrl" Key="S" Command="{Binding SaveBoardCommand}"/>
-        <KeyBinding Modifiers="Ctrl" Key="O" Command="{Binding LoadBoardCommand}"/>
+        <KeyBinding Modifiers="Ctrl" Key="S" Command="{Binding SaveBoardCommand}" />
+        <KeyBinding Modifiers="Ctrl" Key="O" Command="{Binding LoadBoardCommand}" />
     </Window.InputBindings>
 
     <Window.Resources>
         <ContextMenu x:Key="TrayMenu" x:Shared="true">
-            <MenuItem Header="New" Command="{Binding NewBoardCommand}" IsEnabled="{Binding NewEnabled}"/>
-            <MenuItem Header="Load" Command="{Binding LoadBoardCommand}" IsEnabled="{Binding LoadEnabled}"/>
-            <MenuItem Header="Save" Command="{Binding SaveBoardCommand}"/>
-            <MenuItem Header="Settings" Command="{Binding ShowSettingsCommand}"/>
+            <MenuItem Header="New" Command="{Binding NewBoardCommand}" IsEnabled="{Binding NewEnabled}" />
+            <MenuItem Header="Load" Command="{Binding LoadBoardCommand}" IsEnabled="{Binding LoadEnabled}" />
+            <MenuItem Header="Save" Command="{Binding SaveBoardCommand}" />
+            <MenuItem Header="Settings" Command="{Binding ShowSettingsCommand}" />
             <MenuItem Header="Exit" Command="{Binding ExitCommand}" />
         </ContextMenu>
 
         <ObjectDataProvider x:Key="ItemTypes" MethodName="GetValues" ObjectType="{x:Type system:Enum}">
             <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="enums:ItemTypes"/>
+                <x:Type TypeName="enums:ItemTypes" />
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
 
         <ToolTip x:Key="TrayToolTip">
-            <Label Margin="0" Padding="0" Content="Stacket"/>
+            <Label Margin="0" Padding="0" Content="Stacket" />
         </ToolTip>
 
-        <con:ColorToScreenColorConverter x:Key="ColorToScreenColor"/>
-        <con:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <con:ColorToScreenColorConverter x:Key="ColorToScreenColor" />
+        <con:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Window.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
-            <RowDefinition/>
+            <RowDefinition Height="30" />
+            <RowDefinition />
         </Grid.RowDefinitions>
         <Grid HorizontalAlignment="Center">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="45"/>
-                <ColumnDefinition Width="90"/>
-                <ColumnDefinition Width="45"/>
+                <ColumnDefinition Width="45" />
+                <ColumnDefinition Width="90" />
+                <ColumnDefinition Width="45" />
             </Grid.ColumnDefinitions>
-            
+
             <ToggleButton x:Name="MainWindowToggle" Grid.Column="1" Style="{StaticResource RoundFlat3DToggleButton}" Height="25" IsChecked="True" FocusVisualStyle="{x:Null}" ContextMenu="{StaticResource TrayMenu}" />
         </Grid>
 
@@ -74,14 +74,14 @@
                     IconSource="..\icon.ico"
                     ContextMenu="{StaticResource TrayMenu}"
                     MenuActivation="LeftOrRightClick"
-                    TrayToolTip="{StaticResource TrayToolTip}"/>
+                    TrayToolTip="{StaticResource TrayToolTip}" />
 
             <Grid Width="30" Height="45" VerticalAlignment="Top">
                 <Button Content="+" FontSize="18" FontFamily="Arial Black"
                     VerticalAlignment="Center" HorizontalAlignment="Left"
                     Style="{StaticResource LeftHiddenButton}"
                     Width="30" Height="30" Margin="15 0 0 0"
-                    Command="{Binding AddColumnLeftCommand}"/>
+                    Command="{Binding AddColumnLeftCommand}" />
             </Grid>
 
             <ItemsControl ItemsSource="{Binding BoardInformation.Columns}" Focusable="False"
@@ -108,10 +108,10 @@
                                 <Border CornerRadius="8" MinHeight="30" Margin="0,3,0,3" DockPanel.Dock="Top">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="30"/>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition Width="30"/>
-                                            <ColumnDefinition Width="30"/>
+                                            <ColumnDefinition Width="30" />
+                                            <ColumnDefinition />
+                                            <ColumnDefinition Width="30" />
+                                            <ColumnDefinition Width="30" />
                                         </Grid.ColumnDefinitions>
 
                                         <Button Style="{StaticResource TransparentRoundFlat3DButton}" VerticalAlignment="Top" Height="30"
@@ -120,13 +120,13 @@
 
                                         <Grid Grid.Column="1" HorizontalAlignment="Left">
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="6"/>
-                                                <RowDefinition/>
+                                                <RowDefinition Height="6" />
+                                                <RowDefinition />
                                             </Grid.RowDefinitions>
 
                                             <TextBox MaxLines="3" Grid.Row="1" dd:DragDrop.IsDropTarget="True" Style="{StaticResource CappedHiddenTextBox}" Text="{Binding ColumnTitle}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left">
                                                 <i:Interaction.Behaviors>
-                                                    <beh:TextBoxFocusBehavior/>
+                                                    <beh:TextBoxFocusBehavior />
                                                 </i:Interaction.Behaviors>
                                             </TextBox>
                                         </Grid>
@@ -140,7 +140,7 @@
                                                 CommandParameter="{Binding}" FontFamily="Marlett" Content="r" FocusVisualStyle="{x:Null}" />
                                     </Grid>
                                 </Border>
-                                
+
                                 <ScrollViewer Visibility="{Binding ColumnVisible, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                                     <ItemsControl Background="#01000000" ItemsSource="{Binding Items}"
                                           dd:DragDrop.IsDragSource="True"
@@ -162,26 +162,26 @@
                                                         <Border Background="{Binding ItemColor, Converter={StaticResource ColorToScreenColor}}" CornerRadius="4" MinHeight="30" FocusVisualStyle="{x:Null}">
                                                             <Grid>
                                                                 <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition/>
-                                                                    <ColumnDefinition Width="30"/>
-                                                                    <ColumnDefinition Width="30"/>
-                                                                    <ColumnDefinition Width="30"/>
+                                                                    <ColumnDefinition />
+                                                                    <ColumnDefinition Width="30" />
+                                                                    <ColumnDefinition Width="30" />
+                                                                    <ColumnDefinition Width="30" />
                                                                 </Grid.ColumnDefinitions>
 
                                                                 <Grid HorizontalAlignment="Left">
                                                                     <Grid.RowDefinitions>
-                                                                        <RowDefinition Height="6"/>
-                                                                        <RowDefinition/>
-                                                                        <RowDefinition Height="6"/>
+                                                                        <RowDefinition Height="6" />
+                                                                        <RowDefinition />
+                                                                        <RowDefinition Height="6" />
                                                                     </Grid.RowDefinitions>
                                                                     <Grid.ColumnDefinitions>
-                                                                        <ColumnDefinition Width="5"/>
-                                                                        <ColumnDefinition/>
+                                                                        <ColumnDefinition Width="5" />
+                                                                        <ColumnDefinition />
                                                                     </Grid.ColumnDefinitions>
 
                                                                     <TextBox MaxLines="3" Grid.Column="1" Grid.Row="1" dd:DragDrop.IsDropTarget="True" Style="{StaticResource CappedHiddenTextBox}" Text="{Binding ItemTitle}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left">
                                                                         <i:Interaction.Behaviors>
-                                                                            <beh:TextBoxFocusBehavior/>
+                                                                            <beh:TextBoxFocusBehavior />
                                                                         </i:Interaction.Behaviors>
                                                                     </TextBox>
                                                                 </Grid>
@@ -189,28 +189,28 @@
                                                                 <ToggleButton Grid.Column="1" Style="{StaticResource MinimizeFlat3DToggleButton}" VerticalAlignment="Top" Height="30"
                                                                               IsChecked="{Binding ItemDescriptionVisible, Mode=TwoWay}" FocusVisualStyle="{x:Null}" />
 
-                                                                <ComboBox Style="{StaticResource TransparentRoundComboBox}" Grid.Column="2" SelectedValue="{Binding ItemType}" ItemsSource="{Binding Source={StaticResource ItemTypes}}" VerticalAlignment="Top" Height="30"/>
-                                                                
+                                                                <ComboBox Style="{StaticResource TransparentRoundComboBox}" Grid.Column="2" SelectedValue="{Binding ItemTypeView}" ItemsSource="{Binding Source={StaticResource ItemTypes}}" VerticalAlignment="Top" Height="30" />
+
                                                                 <Button Content="r" FontFamily="Marlett" Grid.Column="3" Style="{StaticResource TransparentRoundFlat3DButton}" VerticalAlignment="Top" Height="30"
                                                                         Command="{Binding ElementName=MainGrid, Path=DataContext.DeleteItemCommand}"
-                                                                        CommandParameter="{Binding}" FocusVisualStyle="{x:Null}"/>
+                                                                        CommandParameter="{Binding}" FocusVisualStyle="{x:Null}" />
                                                             </Grid>
                                                         </Border>
-                                                        
+
                                                         <Grid Visibility="{Binding ItemDescriptionVisible, Converter={StaticResource BooleanToVisibilityConverter}}" MinHeight="60">
                                                             <Grid.RowDefinitions>
-                                                                <RowDefinition Height="6"/>
-                                                                <RowDefinition/>
-                                                                <RowDefinition Height="6"/>
+                                                                <RowDefinition Height="6" />
+                                                                <RowDefinition />
+                                                                <RowDefinition Height="6" />
                                                             </Grid.RowDefinitions>
                                                             <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="5"/>
-                                                                <ColumnDefinition/>
+                                                                <ColumnDefinition Width="5" />
+                                                                <ColumnDefinition />
                                                             </Grid.ColumnDefinitions>
 
                                                             <TextBox Grid.Column="1" Grid.Row="1" dd:DragDrop.IsDropTarget="True" Style="{StaticResource HiddenTextBox}" Text="{Binding ItemDescription}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left">
                                                                 <i:Interaction.Behaviors>
-                                                                    <beh:TextBoxFocusBehavior/>
+                                                                    <beh:TextBoxFocusBehavior />
                                                                 </i:Interaction.Behaviors>
                                                             </TextBox>
                                                         </Grid>
@@ -233,7 +233,7 @@
 
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal"/>
+                        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
             </ItemsControl>
@@ -241,7 +241,7 @@
             <Grid Width="30" Height="45" VerticalAlignment="Top">
                 <Button Content="+" FontSize="16" FontFamily="Arial Black" VerticalAlignment="Center" HorizontalAlignment="Right"
                         Style="{StaticResource RightHiddenButton}" Width="30" Height="30" Margin="0 0 15 0"
-                        Command="{Binding AddColumnRightCommand}" FocusVisualStyle="{x:Null}"/>
+                        Command="{Binding AddColumnRightCommand}" FocusVisualStyle="{x:Null}" />
             </Grid>
         </StackPanel>
     </Grid>

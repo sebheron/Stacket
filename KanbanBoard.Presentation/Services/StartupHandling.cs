@@ -15,14 +15,9 @@ namespace KanbanBoard.Presentation.Services
     {
         public static void Initialize(IDialogService dialogService, IRegistryService registryService)
         {
-            Settings.Default.PropertyChanged += SettingsChanged;
             AskUserForStartup(dialogService, registryService);
             Directory.CreateDirectory(BoardFileLocations.BoardFileStorageLocation);
             OpenLastBoard(dialogService);
-        }
-
-        private static void SettingsChanged(object sender, PropertyChangedEventArgs e)
-        {
             Settings.Default.Save();
         }
 
