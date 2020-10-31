@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
@@ -20,9 +21,10 @@ namespace KanbanBoard.Presentation.ViewModels
         private bool loadEnabled = true;
         private bool newEnabled = true;
 
-        public BoardViewModel(IDialogService dialogService, IRegistryService registryService)
+        public BoardViewModel(IDialogService dialogService, IRegistryService registryService, IStartupService startupService)
         {
-            StartupHandling.Initialize(dialogService, registryService);
+            Settings.Default.PropertyChanged += SaveSettings;
+            startupService.Initialize();
 
             this.dialogService = dialogService;
 
@@ -236,6 +238,11 @@ namespace KanbanBoard.Presentation.ViewModels
             }
 
             Application.Current.Shutdown();
+        }
+
+        private void SaveSettings(object sender, PropertyChangedEventArgs e)
+        {
+            Settings.Default.Save();
         }
     }
 }
