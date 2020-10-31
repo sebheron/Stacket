@@ -24,7 +24,11 @@ namespace KanbanBoard.Presentation.ViewModels
         public BoardViewModel(IDialogService dialogService, IRegistryService registryService, IStartupService startupService)
         {
             Settings.Default.PropertyChanged += SaveSettings;
-            startupService.Initialize();
+
+            if (!startupService.Initialize())
+            {
+                Application.Current.Shutdown();
+            }
 
             this.dialogService = dialogService;
 

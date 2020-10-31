@@ -16,8 +16,14 @@ namespace KanbanBoard.Presentation.Services
             this.registryService = registryService;
         }
 
-        public void Initialize()
+        public bool Initialize()
         {
+            if (Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName).Length > 1)
+            {
+                dialogService.ShowMessage("Stacket is already running", "Stacket");
+                return false;
+            }
+
             if (!Settings.Default.RanOnce)
             {
                 Settings.Default.RanOnce = true;
@@ -40,7 +46,7 @@ namespace KanbanBoard.Presentation.Services
                 Settings.Default.CurrentBoard = this.dialogService.SelectBoard();
                 if (string.IsNullOrEmpty(Settings.Default.CurrentBoard))
                 {
-                    Application.Current.Shutdown();
+                    return false;
                 }
             }
             else if (!File.Exists(Settings.Default.CurrentBoard))
@@ -49,9 +55,11 @@ namespace KanbanBoard.Presentation.Services
                 Settings.Default.CurrentBoard = this.dialogService.SelectBoard();
                 if (string.IsNullOrEmpty(Settings.Default.CurrentBoard))
                 {
-                    Application.Current.Shutdown();
+                    return false;
                 }
             }
+
+            return true;
         }
     }
 }

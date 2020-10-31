@@ -8,6 +8,6 @@ namespace KanbanBoard.Presentation.Services
 {
     public interface IStartupService
     {
-        void Initialize();
+        bool Initialize();
     }
 }
