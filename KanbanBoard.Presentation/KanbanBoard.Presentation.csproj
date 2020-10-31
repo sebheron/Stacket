@@ -171,8 +171,9 @@
     <Compile Include="Services\FileLocations.cs" />
     <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\IRegistryService.cs" />
+    <Compile Include="Services\IStartupService.cs" />
     <Compile Include="Services\RegistryService.cs" />
-    <Compile Include="Services\StartupHandling.cs" />
+    <Compile Include="Services\StartupService.cs" />
     <Compile Include="ViewModels\BoardViewModel.cs" />
     <Page Include="Dialogs\BoardSelectorWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
