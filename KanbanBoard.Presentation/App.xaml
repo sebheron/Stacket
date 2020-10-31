@@ -32,9 +32,6 @@
                             <Trigger Property="IsFocused" Value="True">
                                 <Setter Property="Button.FontWeight" Value="ExtraBold" />
                             </Trigger>
-                            <Trigger Property="IsDefaulted" Value="True">
-                                <Setter TargetName="border" Property="BorderThickness" Value="0"/>
-                            </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
                                 <Setter TargetName="border" Property="Background" Value="#6BB8B8B8"/>
                             </Trigger>
@@ -64,10 +61,6 @@
                             </Trigger>
                             <Trigger Property="IsFocused" Value="True">
                                 <Setter Property="Button.FontWeight" Value="ExtraBold" />
-                            </Trigger>
-                            <Trigger Property="IsDefaulted" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="Transparent" />
-                                <Setter TargetName="border" Property="BorderBrush" Value="Transparent" />
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
                                 <Setter TargetName="border" Property="Background" Value="#6BB8B8B8"/>
@@ -208,10 +201,6 @@
                             <Trigger Property="IsFocused" Value="True">
                                 <Setter Property="Button.FontWeight" Value="ExtraBold"/>
                             </Trigger>
-                            <Trigger Property="IsDefaulted" Value="True">
-                                <Setter TargetName="borderA" Property="BorderThickness" Value="0"/>
-                                <Setter TargetName="borderB" Property="BorderThickness" Value="0"/>
-                            </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
@@ -268,10 +257,6 @@
                             </Trigger>
                             <Trigger Property="IsFocused" Value="True">
                                 <Setter Property="Button.FontWeight" Value="ExtraBold"/>
-                            </Trigger>
-                            <Trigger Property="IsDefaulted" Value="True">
-                                <Setter TargetName="borderA" Property="BorderThickness" Value="0"/>
-                                <Setter TargetName="borderB" Property="BorderThickness" Value="0"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
