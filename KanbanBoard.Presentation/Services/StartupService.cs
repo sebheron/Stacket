@@ -16,13 +16,13 @@ namespace KanbanBoard.Presentation.Services
             this.registryService = registryService;
         }
 
-        public void Initialize()
+        public bool Initialize()
         {
             if (!Settings.Default.RanOnce)
             {
                 Settings.Default.RanOnce = true;
             }
-            else if (!Settings.Default.AskedUserForStartup)
+            else if (!string.IsNullOrEmpty(Settings.Default.CurrentBoard) && !Settings.Default.AskedUserForStartup)
             {
                 if (dialogService.ShowYesNo("Should Stacket start on Windows startup?", "Stacket"))
                 {
@@ -33,14 +33,17 @@ namespace KanbanBoard.Presentation.Services
                 Settings.Default.AskedUserForStartup = true;
             }
 
-            Directory.CreateDirectory(FileLocations.BoardFileStorageLocation);
+            if (!Directory.Exists(FileLocations.BoardFileStorageLocation))
+            {
+                Directory.CreateDirectory(FileLocations.BoardFileStorageLocation);
+            }
 
             if (string.IsNullOrEmpty(Settings.Default.CurrentBoard))
             {
                 Settings.Default.CurrentBoard = this.dialogService.SelectBoard();
                 if (string.IsNullOrEmpty(Settings.Default.CurrentBoard))
                 {
-                    Application.Current.Shutdown();
+                    return false;
                 }
             }
             else if (!File.Exists(Settings.Default.CurrentBoard))
@@ -49,9 +52,11 @@ namespace KanbanBoard.Presentation.Services
                 Settings.Default.CurrentBoard = this.dialogService.SelectBoard();
                 if (string.IsNullOrEmpty(Settings.Default.CurrentBoard))
                 {
-                    Application.Current.Shutdown();
+                    return false;
                 }
             }
+
+            return true;
         }
     }
 }
