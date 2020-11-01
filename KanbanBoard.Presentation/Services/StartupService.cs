@@ -28,7 +28,7 @@ namespace KanbanBoard.Presentation.Services
             {
                 Settings.Default.RanOnce = true;
             }
-            else if (!Settings.Default.AskedUserForStartup)
+            else if (!string.IsNullOrEmpty(Settings.Default.CurrentBoard) && !Settings.Default.AskedUserForStartup)
             {
                 if (dialogService.ShowYesNo("Should Stacket start on Windows startup?", "Stacket"))
                 {
@@ -39,7 +39,10 @@ namespace KanbanBoard.Presentation.Services
                 Settings.Default.AskedUserForStartup = true;
             }
 
-            Directory.CreateDirectory(FileLocations.BoardFileStorageLocation);
+            if (!Directory.Exists(FileLocations.BoardFileStorageLocation))
+            {
+                Directory.CreateDirectory(FileLocations.BoardFileStorageLocation);
+            }
 
             if (string.IsNullOrEmpty(Settings.Default.CurrentBoard))
             {

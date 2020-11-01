@@ -1,5 +1,8 @@
+using System.ComponentModel;
 using System.Windows;
+using System.Windows.Navigation;
 using KanbanBoard.Presentation.Behaviors;
+using KanbanBoard.Presentation.Properties;
 using KanbanBoard.Presentation.Services;
 using KanbanBoard.Presentation.Views;
 using Prism.Ioc;
@@ -13,8 +16,21 @@ namespace KanbanBoard.Presentation
     {
         protected override void OnStartup(StartupEventArgs e)
         {
+            Settings.Default.PropertyChanged += SaveSettings;
             TextBoxHighlightBehavior.Initialize();
             base.OnStartup(e);
+        }
+
+        protected override void OnInitialized()
+        {
+            if (Container.Resolve<StartupService>().Initialize())
+            {
+                MainWindow?.Show();
+            }
+            else
+            {
+                Current.Shutdown();
+            }
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
@@ -27,6 +43,11 @@ namespace KanbanBoard.Presentation
         protected override Window CreateShell()
         {
             return Container.Resolve<Board>();
+        }
+
+        private void SaveSettings(object sender, PropertyChangedEventArgs e)
+        {
+            Settings.Default.Save();
         }
     }
 }

@@ -1,5 +1,4 @@
 using System;
-using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
@@ -21,21 +20,14 @@ namespace KanbanBoard.Presentation.ViewModels
         private bool loadEnabled = true;
         private bool newEnabled = true;
 
-        public BoardViewModel(IDialogService dialogService, IRegistryService registryService, IStartupService startupService)
+        public BoardViewModel(IDialogService dialogService)
         {
-            Settings.Default.PropertyChanged += SaveSettings;
-
-            if (!startupService.Initialize())
-            {
-                Application.Current.Shutdown();
-            }
-
             this.dialogService = dialogService;
 
-            this.BoardInformation = new BoardInformation(Settings.Default.CurrentBoard);
             this.DragHandler = new DragHandleBehavior();
             this.DragHandler.DragStarted += () => this.RaisePropertyChanged(nameof(this.DragHandler));
 
+            this.OnLoadedCommand = new DelegateCommand(this.OnWindowLoaded);
             this.ShowSettingsCommand = new DelegateCommand(this.ShowSettings);
             this.NewBoardCommand = new DelegateCommand(this.NewBoard);
             this.LoadBoardCommand = new DelegateCommand(this.LoadBoard);
@@ -84,6 +76,9 @@ namespace KanbanBoard.Presentation.ViewModels
         //The height of an item.
         public double ItemWidth => (WindowWidth - 120) / Math.Max(5, BoardInformation.Columns.Count);
 
+        // Loaded window command.
+        public ICommand OnLoadedCommand { get; }
+
         // Show settings command.
         public ICommand ShowSettingsCommand { get; }
 
@@ -106,6 +101,11 @@ namespace KanbanBoard.Presentation.ViewModels
         public ICommand AddItemCommand { get; }
 
         public ICommand DeleteItemCommand { get; }
+
+        public void OnWindowLoaded()
+        {
+            this.BoardInformation = new BoardInformation(Settings.Default.CurrentBoard);
+        }
 
         private void ShowSettings()
         {
@@ -242,11 +242,6 @@ namespace KanbanBoard.Presentation.ViewModels
             }
 
             Application.Current.Shutdown();
-        }
-
-        private void SaveSettings(object sender, PropertyChangedEventArgs e)
-        {
-            Settings.Default.Save();
         }
     }
 }
