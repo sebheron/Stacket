@@ -18,12 +18,24 @@ namespace KanbanBoard.Presentation.Services
 
         public bool Initialize()
         {
+            if (this.IsAlreadyRunning()) return false;
+            this.AskUserToStartOnStartup();
+            this.CreateBoardStorageFolder();
+            return this.CheckIfBoardIsOpenOrShowOpenBoardDialog();
+        }
+
+        private bool IsAlreadyRunning()
+        {
             if (Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName).Length > 1)
             {
                 dialogService.ShowMessage("Stacket is already running", "Stacket");
-                return false;
+                return true;
             }
+            return false;
+        }
 
+        private void AskUserToStartOnStartup()
+        {
             if (!Settings.Default.RanOnce)
             {
                 Settings.Default.RanOnce = true;
@@ -38,12 +50,18 @@ namespace KanbanBoard.Presentation.Services
 
                 Settings.Default.AskedUserForStartup = true;
             }
+        }
 
+        private void CreateBoardStorageFolder()
+        {
             if (!Directory.Exists(FileLocations.BoardFileStorageLocation))
             {
                 Directory.CreateDirectory(FileLocations.BoardFileStorageLocation);
             }
+        }
 
+        private bool CheckIfBoardIsOpenOrShowOpenBoardDialog()
+        {
             if (string.IsNullOrEmpty(Settings.Default.CurrentBoard))
             {
                 Settings.Default.CurrentBoard = this.dialogService.SelectBoard();
