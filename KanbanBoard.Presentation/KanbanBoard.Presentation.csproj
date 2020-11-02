@@ -168,10 +168,12 @@
     <Compile Include="Dialogs\MessageBoxWindow.xaml.cs">
       <DependentUpon>MessageBoxWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Services\BoardHandling.cs" />
+    <Compile Include="Services\FileLocations.cs" />
     <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\IRegistryService.cs" />
+    <Compile Include="Services\IStartupService.cs" />
     <Compile Include="Services\RegistryService.cs" />
+    <Compile Include="Services\StartupService.cs" />
     <Compile Include="ViewModels\BoardViewModel.cs" />
     <Page Include="Dialogs\BoardSelectorWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -223,6 +225,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />

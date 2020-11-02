@@ -71,10 +71,19 @@ namespace KanbanBoard.Logic.BoardDataTypes
             get => itemType;
             set
             {
-                Settings.Default.LastItemType = value;
-                Settings.Default.Save();
                 this.SetColor(value);
                 this.SetProperty(ref this.itemType, value);
+            }
+        }
+
+        public ItemTypes ItemTypeView
+        {
+            get => itemType;
+            set
+            {
+                Settings.Default.LastItemType = value;
+                Settings.Default.Save();
+                this.ItemType = value;
             }
         }
 

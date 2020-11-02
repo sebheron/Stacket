@@ -1,6 +1,4 @@
 using System;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
@@ -16,58 +14,20 @@ namespace KanbanBoard.Presentation.ViewModels
     public class BoardViewModel : BindableBase
     {
         private readonly IDialogService dialogService;
-        private readonly IRegistryService registryService;
 
         private BoardInformation boardInformation;
         private bool changed;
         private bool loadEnabled = true;
         private bool newEnabled = true;
 
-        public BoardViewModel(IDialogService dialogService, IRegistryService registryService)
+        public BoardViewModel(IDialogService dialogService)
         {
             this.dialogService = dialogService;
-            this.registryService = registryService;
 
-            Settings.Default.PropertyChanged += this.SettingsChanged;
-
-            if (!Settings.Default.RanOnce)
-            {
-                Settings.Default.RanOnce = true;
-            }
-            else if (!Settings.Default.AskedUserForStartup)
-            {
-                if (this.dialogService.ShowYesNo("Should Stacket start on Windows startup?", "Stacket"))
-                {
-                    this.registryService.SetValue(Resources.StartupRegistryLocation, Resources.StartupRegistryName,
-                        Process.GetCurrentProcess().MainModule.FileName);
-                }
-
-                Settings.Default.AskedUserForStartup = true;
-            }
-
-            BoardHandling.Setup();
-            if (string.IsNullOrEmpty(Settings.Default.CurrentBoard))
-            {
-                Settings.Default.CurrentBoard = this.dialogService.SelectBoard();
-                if (string.IsNullOrEmpty(Settings.Default.CurrentBoard))
-                {
-                    Application.Current.Shutdown();
-                }
-            }
-            else if (!File.Exists(Settings.Default.CurrentBoard))
-            {
-                this.dialogService.ShowMessage("The board " + Path.GetFileName(Settings.Default.CurrentBoard) + " is missing.", "Missing Board File");
-                Settings.Default.CurrentBoard = this.dialogService.SelectBoard();
-                if (string.IsNullOrEmpty(Settings.Default.CurrentBoard))
-                {
-                    Application.Current.Shutdown();
-                }
-            }
-
-            this.BoardInformation = new BoardInformation(Settings.Default.CurrentBoard);
             this.DragHandler = new DragHandleBehavior();
             this.DragHandler.DragStarted += () => this.RaisePropertyChanged(nameof(this.DragHandler));
 
+            this.OnLoadedCommand = new DelegateCommand(this.OnWindowLoaded);
             this.ShowSettingsCommand = new DelegateCommand(this.ShowSettings);
             this.NewBoardCommand = new DelegateCommand(this.NewBoard);
             this.LoadBoardCommand = new DelegateCommand(this.LoadBoard);
@@ -116,6 +76,9 @@ namespace KanbanBoard.Presentation.ViewModels
         //The height of an item.
         public double ItemWidth => (WindowWidth - 120) / Math.Max(5, BoardInformation.Columns.Count);
 
+        // Loaded window command.
+        public ICommand OnLoadedCommand { get; }
+
         // Show settings command.
         public ICommand ShowSettingsCommand { get; }
 
@@ -139,9 +102,9 @@ namespace KanbanBoard.Presentation.ViewModels
 
         public ICommand DeleteItemCommand { get; }
 
-        private void SettingsChanged(object sender, PropertyChangedEventArgs e)
+        public void OnWindowLoaded()
         {
-            Settings.Default.Save();
+            this.BoardInformation = new BoardInformation(Settings.Default.CurrentBoard);
         }
 
         private void ShowSettings()
@@ -168,10 +131,9 @@ namespace KanbanBoard.Presentation.ViewModels
 
             if (string.IsNullOrEmpty(input)) return;
 
-            Settings.Default.CurrentBoard = Path.Combine(BoardHandling.BoardFileStorageLocation,
-                input + BoardHandling.BoardFileExtension);
+            Settings.Default.CurrentBoard = Path.Combine(FileLocations.BoardFileStorageLocation,
+                input + Resources.BoardFileExtension);
             this.BoardInformation = new BoardInformation(Settings.Default.CurrentBoard);
-            Settings.Default.Save();
             this.Changed = false;
         }
 
@@ -194,7 +156,6 @@ namespace KanbanBoard.Presentation.ViewModels
 
             Settings.Default.CurrentBoard = newBoard;
             this.BoardInformation = new BoardInformation(Settings.Default.CurrentBoard);
-            Settings.Default.Save();
             this.Changed = false;
         }
 
