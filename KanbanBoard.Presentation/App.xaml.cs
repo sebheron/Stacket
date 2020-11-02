@@ -25,7 +25,7 @@ namespace KanbanBoard.Presentation
         {
             if (Container.Resolve<StartupService>().Initialize())
             {
-                MainWindow?.Show();
+                base.OnInitialized();
             }
             else
             {
