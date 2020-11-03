@@ -121,12 +121,88 @@
     <value>.brd</value>
     <comment>The file extension for the boards.</comment>
   </data>
+  <data name="Board_NewColumnName" xml:space="preserve">
+    <value>New Column</value>
+    <comment>The default name for a newly created column.</comment>
+  </data>
+  <data name="Board_NewItemName" xml:space="preserve">
+    <value>New Item</value>
+    <comment>The default name for a newly created item.</comment>
+  </data>
+  <data name="Crash_Email_Body" xml:space="preserve">
+    <value>&amp;body={0}</value>
+    <comment>The body of the email sent after crashing.</comment>
+  </data>
+  <data name="Crash_Email_MailTo" xml:space="preserve">
+    <value>mailto:stacketbugs@gmail.com?</value>
+    <comment>The mail to part of the email sent after crashing.</comment>
+  </data>
+  <data name="Crash_Email_Subject" xml:space="preserve">
+    <value>subject=Stacket Bug Report - Version {0}</value>
+    <comment>The subject for the email sent after crashing.</comment>
+  </data>
+  <data name="Crash_Message" xml:space="preserve">
+    <value>Stacket has encountered and error and has had to close. Should an error report be sent to the developers?</value>
+    <comment>The message to display when crashing.</comment>
+  </data>
+  <data name="Dialog_CannotRemoveLastColumn_Message" xml:space="preserve">
+    <value>This is the last column and cannot be removed.</value>
+    <comment>The message displayed when trying to remove the last column</comment>
+  </data>
+  <data name="Dialog_MissingBoard_Message" xml:space="preserve">
+    <value>The board {0} is missing.</value>
+    <comment>The message for the missing board dialog.</comment>
+  </data>
+  <data name="Dialog_MissingBoard_Title" xml:space="preserve">
+    <value>Missing Board File</value>
+    <comment>The title for the missing board dialog.</comment>
+  </data>
+  <data name="Dialog_NewBoard_Message" xml:space="preserve">
+    <value>Name for the new board:</value>
+    <comment>The message for the new board dialog.</comment>
+  </data>
+  <data name="Dialog_NewBoard_Title" xml:space="preserve">
+    <value>New Board</value>
+    <comment>The title for the new board dialog.</comment>
+  </data>
+  <data name="Dialog_RemoveColumn_Message" xml:space="preserve">
+    <value>Are you sure you want to remove this column?</value>
+    <comment>The message displayed when removing a column.</comment>
+  </data>
+  <data name="Dialog_RemoveColumn_Title" xml:space="preserve">
+    <value>Remove column</value>
+    <comment>The title for the remove column dialog.</comment>
+  </data>
+  <data name="Dialog_RemoveItem_Message" xml:space="preserve">
+    <value>Are you sure you want to remove this item?</value>
+    <comment>The message to display when removing an item.</comment>
+  </data>
+  <data name="Dialog_RemoveItem_Title" xml:space="preserve">
+    <value>Remove Item</value>
+    <comment>The title for the remove items dialog.</comment>
+  </data>
+  <data name="Dialog_SaveChanges_Message" xml:space="preserve">
+    <value>Do you want to save changes to the current board?</value>
+    <comment>The message for the save changes dialog.</comment>
+  </data>
+  <data name="Dialog_SaveChanges_Title" xml:space="preserve">
+    <value>Save Changes</value>
+    <comment>The title for the save changes dialog.</comment>
+  </data>
+  <data name="Dialog_SaveItemsInColumn_Message" xml:space="preserve">
+    <value>Should all the items within the column be saved? If so they will be moved to the leftmost column.</value>
+    <comment>The message displayed after choosing to delete a column with items in it.</comment>
+  </data>
+  <data name="Dialog_Startup_Message" xml:space="preserve">
+    <value>Should Stacket start on Windows startup?</value>
+    <comment>The message for the startup dialog.</comment>
+  </data>
+  <data name="Stacket" xml:space="preserve">
+    <value>Stacket</value>
+    <comment>The name of the startup registry entry.</comment>
+  </data>
   <data name="StartupRegistryLocation" xml:space="preserve">
     <value>SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run</value>
     <comment>The startup registry location.</comment>
-  </data>
-  <data name="StartupRegistryName" xml:space="preserve">
-    <value>Stacket</value>
-    <comment>The name of the startup registry entry.</comment>
   </data>
 </root>

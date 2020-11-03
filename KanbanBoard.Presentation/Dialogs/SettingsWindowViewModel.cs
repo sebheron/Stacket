@@ -26,7 +26,7 @@ namespace KanbanBoard.Presentation.Dialogs
             this.AcceptCommand = new DelegateCommand(this.Accept);
             this.registryService = registryService;
             this.LockToggle = Properties.Settings.Default.LockToggle;
-            this.StartOnStartup = !string.IsNullOrEmpty(registryService.GetValue(Resources.StartupRegistryLocation, Resources.StartupRegistryName) as string);
+            this.StartOnStartup = !string.IsNullOrEmpty(registryService.GetValue(Resources.StartupRegistryLocation, Resources.Stacket) as string);
         }
 
         public bool StartOnStartup
@@ -54,11 +54,11 @@ namespace KanbanBoard.Presentation.Dialogs
         {
             if (this.StartOnStartup)
             {
-                this.registryService.SetValue(Resources.StartupRegistryLocation, Resources.StartupRegistryName, Process.GetCurrentProcess().MainModule.FileName);
+                this.registryService.SetValue(Resources.StartupRegistryLocation, Resources.Stacket, Process.GetCurrentProcess().MainModule.FileName);
             }
-            else if (this.registryService.GetValue(Resources.StartupRegistryLocation, Resources.StartupRegistryName) != null)
+            else if (this.registryService.GetValue(Resources.StartupRegistryLocation, Resources.Stacket) != null)
             {
-                this.registryService.DeleteValue(Resources.StartupRegistryLocation, Resources.StartupRegistryName);
+                this.registryService.DeleteValue(Resources.StartupRegistryLocation, Resources.Stacket);
             }
 
             Properties.Settings.Default.LockToggle = lockToggle;

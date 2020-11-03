@@ -122,7 +122,7 @@ namespace KanbanBoard.Presentation.ViewModels
             this.logger.Log("New board requested", Category.Debug, Priority.None);
             if (!string.IsNullOrEmpty(this.BoardInformation.FilePath)
                 && this.Changed
-                && this.dialogService.ShowYesNo("Do you want to save changes to the current board?", "Save Changes"))
+                && this.dialogService.ShowYesNo(Resources.Dialog_SaveChanges_Message, Resources.Dialog_SaveChanges_Title))
             {
                 this.SaveBoard();
             }
@@ -130,7 +130,7 @@ namespace KanbanBoard.Presentation.ViewModels
             this.NewEnabled = false;
             this.LoadEnabled = false;
 
-            var input = this.dialogService.GetInput("Name for the new board:", "New Board");
+            var input = this.dialogService.GetInput(Resources.Dialog_NewBoard_Message, Resources.Dialog_NewBoard_Title);
 
             this.NewEnabled = true;
             this.LoadEnabled = true;
@@ -147,7 +147,7 @@ namespace KanbanBoard.Presentation.ViewModels
         private void LoadBoard()
         {
             this.logger.Log("Load board requested", Category.Debug, Priority.None);
-            if (this.Changed && this.dialogService.ShowYesNo("Do you want to save changes to the current board?", "Save Changes"))
+            if (this.Changed && this.dialogService.ShowYesNo(Resources.Dialog_SaveChanges_Message, Resources.Dialog_SaveChanges_Title))
             {
                 this.SaveBoard();
             }
@@ -182,7 +182,7 @@ namespace KanbanBoard.Presentation.ViewModels
 
         private void AddColumnLeft(object arg)
         {
-            this.BoardInformation.InsertBlankColumn("New Column");
+            this.BoardInformation.InsertBlankColumn(Resources.Board_NewColumnName);
             this.RaisePropertyChanged(nameof(this.ItemWidth));
             this.Changed = true;
             this.logger.Log("New left column created", Category.Debug, Priority.None);
@@ -190,7 +190,7 @@ namespace KanbanBoard.Presentation.ViewModels
 
         private void AddColumnRight(object arg)
         {
-            this.BoardInformation.AddBlankColumn("New Column");
+            this.BoardInformation.AddBlankColumn(Resources.Board_NewColumnName);
             RaisePropertyChanged(nameof(this.ItemWidth));
             this.Changed = true;
             this.logger.Log("New right column created", Category.Debug, Priority.None);
@@ -203,17 +203,15 @@ namespace KanbanBoard.Presentation.ViewModels
 
             if (this.BoardInformation.ColumnCount <= 1)
             {
-                this.dialogService.ShowMessage("This is the last column and cannot be removed.", "Remove column");
+                this.dialogService.ShowMessage(Resources.Dialog_CannotRemoveLastColumn_Message, Resources.Dialog_RemoveColumn_Title);
                 return;
             }
 
-            if (!columnInformation.Unchanged() && !this.dialogService.ShowYesNo("Are you sure you want to remove this column?", "Remove Column")) return;
+            if (!columnInformation.Unchanged() && !this.dialogService.ShowYesNo(Resources.Dialog_RemoveColumn_Message, Resources.Dialog_RemoveColumn_Title)) return;
 
             if (columnInformation.Items.Count > 0)
             {
-                var saveItems = this.dialogService.ShowYesNo(
-                    "Should all the items within the column be saved? If so they will be moved to the leftmost column.",
-                    "Remove Column");
+                var saveItems = this.dialogService.ShowYesNo(Resources.Dialog_SaveItemsInColumn_Message, Resources.Dialog_RemoveColumn_Title);
                 if (saveItems) BoardInformation.MigrateItemsToLeftMost(columnInformation);
             }
 
@@ -228,7 +226,7 @@ namespace KanbanBoard.Presentation.ViewModels
             if (arg is ItemInformation itemInformation)
             {
                 var remove = itemInformation.Unchanged() ||
-                             this.dialogService.ShowYesNo("Are you sure you want to remove this item?", "Remove Item");
+                             this.dialogService.ShowYesNo(Resources.Dialog_RemoveItem_Message, Resources.Dialog_RemoveItem_Title);
                 if (remove)
                 {
                     this.BoardInformation.Columns[BoardInformation.GetItemsColumnIndex(itemInformation)].Items
@@ -243,7 +241,7 @@ namespace KanbanBoard.Presentation.ViewModels
         {
             if (arg is ColumnInformation columnInformation)
             {
-                columnInformation.Items.Add(new ItemInformation("New Item"));
+                columnInformation.Items.Add(new ItemInformation(Resources.Board_NewItemName));
                 this.Changed = true;
             }
             this.logger.Log("Item created", Category.Debug, Priority.None);
@@ -253,7 +251,7 @@ namespace KanbanBoard.Presentation.ViewModels
         {
             this.logger.Log("Stacket closing", Category.Debug, Priority.None);
             if (!string.IsNullOrEmpty(this.BoardInformation.FilePath)
-                && this.dialogService.ShowYesNo("Do you want to save changes to the current board?", "Save Changes"))
+                && this.dialogService.ShowYesNo(Resources.Dialog_SaveChanges_Message, Resources.Dialog_SaveChanges_Title))
             {
                 this.SaveBoard();
             }

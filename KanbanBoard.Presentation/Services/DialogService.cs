@@ -34,7 +34,6 @@ namespace KanbanBoard.Presentation.Services
             dialog.DataContext = dialogViewModel;
 
             dialog.ShowDialog();
-            this.logger.Log("Message closed", Category.Debug, Priority.None);
         }
 
         public string GetInput(string text, string caption)

@@ -61,6 +61,24 @@ namespace KanbanBoard.Presentation.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New Column.
+        /// </summary>
+        internal static string Board_NewColumnName {
+            get {
+                return ResourceManager.GetString("Board_NewColumnName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Item.
+        /// </summary>
+        internal static string Board_NewItemName {
+            get {
+                return ResourceManager.GetString("Board_NewItemName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to .brd.
         /// </summary>
         internal static string BoardFileExtension {
@@ -70,20 +88,173 @@ namespace KanbanBoard.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run.
+        ///   Looks up a localized string similar to &amp;body={0}.
         /// </summary>
-        internal static string StartupRegistryLocation {
+        internal static string Crash_Email_Body {
             get {
-                return ResourceManager.GetString("StartupRegistryLocation", resourceCulture);
+                return ResourceManager.GetString("Crash_Email_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to mailto:stacketbugs@gmail.com?.
+        /// </summary>
+        internal static string Crash_Email_MailTo {
+            get {
+                return ResourceManager.GetString("Crash_Email_MailTo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to subject=Stacket Bug Report - Version {0}.
+        /// </summary>
+        internal static string Crash_Email_Subject {
+            get {
+                return ResourceManager.GetString("Crash_Email_Subject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stacket has encountered and error and has had to close. Should an error report be sent to the developers?.
+        /// </summary>
+        internal static string Crash_Message {
+            get {
+                return ResourceManager.GetString("Crash_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This is the last column and cannot be removed..
+        /// </summary>
+        internal static string Dialog_CannotRemoveLastColumn_Message {
+            get {
+                return ResourceManager.GetString("Dialog_CannotRemoveLastColumn_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The board {0} is missing..
+        /// </summary>
+        internal static string Dialog_MissingBoard_Message {
+            get {
+                return ResourceManager.GetString("Dialog_MissingBoard_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Missing Board File.
+        /// </summary>
+        internal static string Dialog_MissingBoard_Title {
+            get {
+                return ResourceManager.GetString("Dialog_MissingBoard_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name for the new board:.
+        /// </summary>
+        internal static string Dialog_NewBoard_Message {
+            get {
+                return ResourceManager.GetString("Dialog_NewBoard_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Board.
+        /// </summary>
+        internal static string Dialog_NewBoard_Title {
+            get {
+                return ResourceManager.GetString("Dialog_NewBoard_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to remove this column?.
+        /// </summary>
+        internal static string Dialog_RemoveColumn_Message {
+            get {
+                return ResourceManager.GetString("Dialog_RemoveColumn_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove column.
+        /// </summary>
+        internal static string Dialog_RemoveColumn_Title {
+            get {
+                return ResourceManager.GetString("Dialog_RemoveColumn_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to remove this item?.
+        /// </summary>
+        internal static string Dialog_RemoveItem_Message {
+            get {
+                return ResourceManager.GetString("Dialog_RemoveItem_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove Item.
+        /// </summary>
+        internal static string Dialog_RemoveItem_Title {
+            get {
+                return ResourceManager.GetString("Dialog_RemoveItem_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you want to save changes to the current board?.
+        /// </summary>
+        internal static string Dialog_SaveChanges_Message {
+            get {
+                return ResourceManager.GetString("Dialog_SaveChanges_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save Changes.
+        /// </summary>
+        internal static string Dialog_SaveChanges_Title {
+            get {
+                return ResourceManager.GetString("Dialog_SaveChanges_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Should all the items within the column be saved? If so they will be moved to the leftmost column..
+        /// </summary>
+        internal static string Dialog_SaveItemsInColumn_Message {
+            get {
+                return ResourceManager.GetString("Dialog_SaveItemsInColumn_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Should Stacket start on Windows startup?.
+        /// </summary>
+        internal static string Dialog_Startup_Message {
+            get {
+                return ResourceManager.GetString("Dialog_Startup_Message", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Stacket.
         /// </summary>
-        internal static string StartupRegistryName {
+        internal static string Stacket {
             get {
-                return ResourceManager.GetString("StartupRegistryName", resourceCulture);
+                return ResourceManager.GetString("Stacket", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run.
+        /// </summary>
+        internal static string StartupRegistryLocation {
+            get {
+                return ResourceManager.GetString("StartupRegistryLocation", resourceCulture);
             }
         }
     }
