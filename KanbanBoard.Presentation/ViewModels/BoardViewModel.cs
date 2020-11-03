@@ -7,6 +7,7 @@ using KanbanBoard.Presentation.Behaviors;
 using KanbanBoard.Presentation.Properties;
 using KanbanBoard.Presentation.Services;
 using Prism.Commands;
+using Prism.Logging;
 using Prism.Mvvm;
 
 namespace KanbanBoard.Presentation.ViewModels
@@ -14,14 +15,16 @@ namespace KanbanBoard.Presentation.ViewModels
     public class BoardViewModel : BindableBase
     {
         private readonly IDialogService dialogService;
+        private readonly ILoggerFacade logger;
 
         private BoardInformation boardInformation;
         private bool changed;
         private bool loadEnabled = true;
         private bool newEnabled = true;
 
-        public BoardViewModel(IDialogService dialogService)
+        public BoardViewModel(IDialogService dialogService, ILoggerFacade logger)
         {
+            this.logger = logger;
             this.dialogService = dialogService;
 
             this.DragHandler = new DragHandleBehavior();
@@ -104,7 +107,9 @@ namespace KanbanBoard.Presentation.ViewModels
 
         public void OnWindowLoaded()
         {
+            this.logger.Log("Window successfully loaded", Category.Debug, Priority.None);
             this.BoardInformation = new BoardInformation(Settings.Default.CurrentBoard);
+            this.logger.Log("Board successfully loaded", Category.Debug, Priority.None);
         }
 
         private void ShowSettings()
@@ -114,6 +119,7 @@ namespace KanbanBoard.Presentation.ViewModels
 
         public void NewBoard()
         {
+            this.logger.Log("New board requested", Category.Debug, Priority.None);
             if (!string.IsNullOrEmpty(this.BoardInformation.FilePath)
                 && this.Changed
                 && this.dialogService.ShowYesNo("Do you want to save changes to the current board?", "Save Changes"))
@@ -134,14 +140,16 @@ namespace KanbanBoard.Presentation.ViewModels
             Settings.Default.CurrentBoard = Path.Combine(FileLocations.BoardFileStorageLocation,
                 input + Resources.BoardFileExtension);
             this.BoardInformation = new BoardInformation(Settings.Default.CurrentBoard);
+            this.logger.Log("New board created and loaded", Category.Debug, Priority.None);
             this.Changed = false;
         }
 
         private void LoadBoard()
         {
+            this.logger.Log("Load board requested", Category.Debug, Priority.None);
             if (this.Changed && this.dialogService.ShowYesNo("Do you want to save changes to the current board?", "Save Changes"))
             {
-                this.BoardInformation.Save();
+                this.SaveBoard();
             }
 
             this.NewEnabled = false;
@@ -156,12 +164,14 @@ namespace KanbanBoard.Presentation.ViewModels
 
             Settings.Default.CurrentBoard = newBoard;
             this.BoardInformation = new BoardInformation(Settings.Default.CurrentBoard);
+            this.logger.Log("Board successfully loaded", Category.Debug, Priority.None);
             this.Changed = false;
         }
 
         public void SaveBoard()
         {
             this.BoardInformation.Save();
+            this.logger.Log("Board successfully saved", Category.Debug, Priority.None);
             this.Changed = false;
         }
 
@@ -175,6 +185,7 @@ namespace KanbanBoard.Presentation.ViewModels
             this.BoardInformation.InsertBlankColumn("New Column");
             this.RaisePropertyChanged(nameof(this.ItemWidth));
             this.Changed = true;
+            this.logger.Log("New left column created", Category.Debug, Priority.None);
         }
 
         private void AddColumnRight(object arg)
@@ -182,6 +193,8 @@ namespace KanbanBoard.Presentation.ViewModels
             this.BoardInformation.AddBlankColumn("New Column");
             RaisePropertyChanged(nameof(this.ItemWidth));
             this.Changed = true;
+            this.logger.Log("New right column created", Category.Debug, Priority.None);
+            throw new InvalidCastException();
         }
 
         private void DeleteColumn(object arg)
@@ -207,6 +220,7 @@ namespace KanbanBoard.Presentation.ViewModels
             this.BoardInformation.RemoveColumn(columnInformation);
             this.RaisePropertyChanged(nameof(this.ItemWidth));
             this.Changed = true;
+            this.logger.Log("Column deleted", Category.Debug, Priority.None);
         }
 
         private void DeleteItem(object arg)
@@ -222,6 +236,7 @@ namespace KanbanBoard.Presentation.ViewModels
                     this.Changed = true;
                 }
             }
+            this.logger.Log("Item deleted", Category.Debug, Priority.None);
         }
 
         private void AddItem(object arg)
@@ -231,16 +246,17 @@ namespace KanbanBoard.Presentation.ViewModels
                 columnInformation.Items.Add(new ItemInformation("New Item"));
                 this.Changed = true;
             }
+            this.logger.Log("Item created", Category.Debug, Priority.None);
         }
 
         private void OnClosing()
         {
+            this.logger.Log("Stacket closing", Category.Debug, Priority.None);
             if (!string.IsNullOrEmpty(this.BoardInformation.FilePath)
                 && this.dialogService.ShowYesNo("Do you want to save changes to the current board?", "Save Changes"))
             {
-                this.BoardInformation.Save();
+                this.SaveBoard();
             }
-
             Application.Current.Shutdown();
         }
     }

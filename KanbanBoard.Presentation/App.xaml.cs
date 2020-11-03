@@ -1,4 +1,7 @@
+using System;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Navigation;
 using KanbanBoard.Presentation.Behaviors;
@@ -6,6 +9,7 @@ using KanbanBoard.Presentation.Properties;
 using KanbanBoard.Presentation.Services;
 using KanbanBoard.Presentation.Views;
 using Prism.Ioc;
+using Prism.Logging;
 
 namespace KanbanBoard.Presentation
 {
@@ -16,9 +20,21 @@ namespace KanbanBoard.Presentation
     {
         protected override void OnStartup(StartupEventArgs e)
         {
+            AppDomain.CurrentDomain.UnhandledException += ExceptionHandler;
             Settings.Default.PropertyChanged += SaveSettings;
             TextBoxHighlightBehavior.Initialize();
             base.OnStartup(e);
+        }
+
+        private void ExceptionHandler(object sender, UnhandledExceptionEventArgs args)
+        {
+            if (args.ExceptionObject is Exception e)
+            {
+                MainWindow.Hide();
+                var logger = Container.Resolve<ILoggerFacade>() as StringLogger;
+                logger.Log(e.Message + e.StackTrace, Category.Exception, Priority.None);
+                Container.Resolve<CrashService>().SendCrash(logger.Builder.ToString());
+            }
         }
 
         protected override void OnInitialized()
@@ -35,9 +51,11 @@ namespace KanbanBoard.Presentation
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.RegisterInstance<IRegistryService>(new RegistryService());
+            containerRegistry.RegisterInstance<ILoggerFacade>(new StringLogger());
+            containerRegistry.Register<IRegistryService, RegistryService>();
             containerRegistry.Register<IDialogService, DialogService>();
             containerRegistry.Register<IStartupService, StartupService>();
+            containerRegistry.Register<ICrashService, CrashService>();
         }
 
         protected override Window CreateShell()

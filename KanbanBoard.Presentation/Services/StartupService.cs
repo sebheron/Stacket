@@ -2,6 +2,7 @@
 using System.IO;
 using System.Windows;
 using KanbanBoard.Presentation.Properties;
+using Prism.Logging;
 
 namespace KanbanBoard.Presentation.Services
 {
@@ -9,15 +10,18 @@ namespace KanbanBoard.Presentation.Services
     {
         private readonly IDialogService dialogService;
         private readonly IRegistryService registryService;
+        private readonly ILoggerFacade logger;
 
-        public StartupService(IDialogService dialogService, IRegistryService registryService)
+        public StartupService(IDialogService dialogService, IRegistryService registryService, ILoggerFacade logger)
         {
             this.dialogService = dialogService;
             this.registryService = registryService;
+            this.logger = logger;
         }
 
         public bool Initialize()
         {
+            this.logger.Log("Initializing startup", Category.Debug, Priority.None);
             if (this.IsAlreadyRunning()) return false;
             this.AskUserToStartOnStartup();
             this.CreateBoardStorageFolder();

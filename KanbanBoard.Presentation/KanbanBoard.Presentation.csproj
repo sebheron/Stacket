@@ -152,6 +152,8 @@
     </Compile>
     <Compile Include="Dialogs\MessageBoxWindowViewModel.cs" />
     <Compile Include="Dialogs\SettingsWindowViewModel.cs" />
+    <Compile Include="Services\CrashService.cs" />
+    <Compile Include="Services\ICrashService.cs" />
     <Compile Include="Services\IDialogService.cs" />
     <Compile Include="Dialogs\BoardSelectorWindowViewModel.cs" />
     <Compile Include="Dialogs\BoardSelectorWindow.xaml.cs">
@@ -174,6 +176,7 @@
     <Compile Include="Services\IStartupService.cs" />
     <Compile Include="Services\RegistryService.cs" />
     <Compile Include="Services\StartupService.cs" />
+    <Compile Include="Services\StringLogger.cs" />
     <Compile Include="ViewModels\BoardViewModel.cs" />
     <Page Include="Dialogs\BoardSelectorWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

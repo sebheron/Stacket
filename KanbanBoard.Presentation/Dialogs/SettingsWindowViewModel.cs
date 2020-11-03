@@ -4,6 +4,7 @@ using System.Windows.Input;
 using KanbanBoard.Presentation.Properties;
 using KanbanBoard.Presentation.Services;
 using Prism.Commands;
+using Prism.Logging;
 using Prism.Mvvm;
 
 namespace KanbanBoard.Presentation.Dialogs
@@ -12,12 +13,14 @@ namespace KanbanBoard.Presentation.Dialogs
     {
         private readonly Action closeDialog;
         private readonly IRegistryService registryService;
+        private readonly ILoggerFacade logger;
         private bool startOnStartup;
         private bool lockToggle;
 
-        public SettingsWindowViewModel(Action closeDialog, IRegistryService registryService)
+        public SettingsWindowViewModel(Action closeDialog, IRegistryService registryService, ILoggerFacade logger)
         {
             this.closeDialog = closeDialog;
+            this.logger = logger;
 
             this.CancelCommand = new DelegateCommand(this.Cancel);
             this.AcceptCommand = new DelegateCommand(this.Accept);
@@ -43,6 +46,7 @@ namespace KanbanBoard.Presentation.Dialogs
 
         private void Cancel()
         {
+            this.logger.Log("Cancel selected", Category.Debug, Priority.None);
             this.closeDialog.Invoke();
         }
 
@@ -60,6 +64,7 @@ namespace KanbanBoard.Presentation.Dialogs
             Properties.Settings.Default.LockToggle = lockToggle;
             Properties.Settings.Default.Save();
 
+            this.logger.Log("Ok selected", Category.Debug, Priority.None);
             this.closeDialog.Invoke();
         }
     }
