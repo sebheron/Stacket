@@ -1,4 +1,4 @@
-﻿using KanbanBoard.Presentation.Properties;
+﻿using KanbanBoard.Logic.Properties;
 using System.Diagnostics;
 using System.Reflection;
 
@@ -19,7 +19,7 @@ namespace KanbanBoard.Presentation.Services
             {
                 Process.Start(Resources.Crash_Email_MailTo
                     + string.Format(Resources.Crash_Email_Subject, Assembly.GetExecutingAssembly().GetName().Version)
-                    + string.Format(, emailBody));
+                    + string.Format(Resources.Crash_Email_Body, emailBody));
             }
         }
     }

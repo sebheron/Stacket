@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using KanbanBoard.Logic.Properties;
 using Prism.Mvvm;
 
 namespace KanbanBoard.Logic.BoardDataTypes
@@ -30,12 +31,12 @@ namespace KanbanBoard.Logic.BoardDataTypes
 
         public Guid ColumnId { get; set; }
 
-        public string ColumnTitle 
+        public string ColumnTitle
         {
             get => columnTitle;
-            set 
+            set
             {
-                if (!string.IsNullOrEmpty(value)) 
+                if (!string.IsNullOrEmpty(value))
                 {
                     this.SetProperty(ref columnTitle, value);
                 }
@@ -70,7 +71,7 @@ namespace KanbanBoard.Logic.BoardDataTypes
 
         public bool Unchanged()
         {
-            return this.ColumnTitle == "New Column" && this.Items.Count <= 0;
+            return this.ColumnTitle == Resources.Board_NewColumnName && this.Items.Count <= 0;
         }
     }
 }

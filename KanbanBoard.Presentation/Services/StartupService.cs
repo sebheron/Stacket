@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 using System.IO;
-using KanbanBoard.Presentation.Properties;
+using KanbanBoard.Logic.Properties;
 using Prism.Logging;
 
 namespace KanbanBoard.Presentation.Services
@@ -45,7 +45,7 @@ namespace KanbanBoard.Presentation.Services
             }
             else if (!string.IsNullOrEmpty(Settings.Default.CurrentBoard) && !Settings.Default.AskedUserForStartup)
             {
-                if (dialogService.ShowYesNo(Resources.Dialog_NewBoard_Startup, Resources.Stacket))
+                if (dialogService.ShowYesNo(Resources.Dialog_Startup_Message, Resources.Stacket))
                 {
                     this.registryService.SetValue(Resources.StartupRegistryLocation, Resources.Stacket,
                         Process.GetCurrentProcess().MainModule.FileName);

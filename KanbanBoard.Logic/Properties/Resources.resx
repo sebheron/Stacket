@@ -129,6 +129,18 @@
     <value>New Item</value>
     <comment>The default name for a newly created item.</comment>
   </data>
+  <data name="ColumnName_Done" xml:space="preserve">
+    <value>Done</value>
+    <comment>The name for the done column.</comment>
+  </data>
+  <data name="ColumnName_InProgress" xml:space="preserve">
+    <value>In Progress</value>
+    <comment>The name for the in progress column.</comment>
+  </data>
+  <data name="ColumnName_New" xml:space="preserve">
+    <value>New</value>
+    <comment>The name for the new column.</comment>
+  </data>
   <data name="Crash_Email_Body" xml:space="preserve">
     <value>&amp;body={0}</value>
     <comment>The body of the email sent after crashing.</comment>

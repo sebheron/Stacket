@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Navigation;
 using KanbanBoard.Presentation.Behaviors;
-using KanbanBoard.Presentation.Properties;
+using KanbanBoard.Logic.Properties;
 using KanbanBoard.Presentation.Services;
 using KanbanBoard.Presentation.Views;
 using Prism.Ioc;

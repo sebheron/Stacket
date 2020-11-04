@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Windows.Input;
-using KanbanBoard.Presentation.Properties;
+using KanbanBoard.Logic.Properties;
 using KanbanBoard.Presentation.Services;
 using Prism.Commands;
 using Prism.Logging;
@@ -25,7 +25,7 @@ namespace KanbanBoard.Presentation.Dialogs
             this.CancelCommand = new DelegateCommand(this.Cancel);
             this.AcceptCommand = new DelegateCommand(this.Accept);
             this.registryService = registryService;
-            this.LockToggle = Properties.Settings.Default.LockToggle;
+            this.LockToggle = Settings.Default.LockToggle;
             this.StartOnStartup = !string.IsNullOrEmpty(registryService.GetValue(Resources.StartupRegistryLocation, Resources.Stacket) as string);
         }
 
@@ -61,8 +61,7 @@ namespace KanbanBoard.Presentation.Dialogs
                 this.registryService.DeleteValue(Resources.StartupRegistryLocation, Resources.Stacket);
             }
 
-            Properties.Settings.Default.LockToggle = lockToggle;
-            Properties.Settings.Default.Save();
+            Settings.Default.LockToggle = lockToggle;
 
             this.logger.Log("Ok selected", Category.Debug, Priority.None);
             this.closeDialog.Invoke();

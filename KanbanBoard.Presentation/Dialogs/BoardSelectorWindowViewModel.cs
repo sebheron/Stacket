@@ -1,10 +1,9 @@
 using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows.Input;
-using KanbanBoard.Presentation.Properties;
+using KanbanBoard.Logic.Properties;
 using KanbanBoard.Presentation.Services;
 using Prism.Commands;
 using Prism.Logging;
@@ -58,7 +57,7 @@ namespace KanbanBoard.Presentation.Dialogs
         private void NewButton()
         {
             this.logger.Log("New board requested", Category.Debug, Priority.None);
-            var input = this.dialogService.GetInput("Name for the new board:", "New Board");
+            var input = this.dialogService.GetInput(Resources.Dialog_NewBoard_Message, Resources.Dialog_NewBoard_Title);
             if (string.IsNullOrEmpty(input)) return;
 
             this.BoardLocation = Path.Combine(FileLocations.BoardFileStorageLocation, input + Resources.BoardFileExtension);
