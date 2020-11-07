@@ -194,7 +194,6 @@ namespace KanbanBoard.Presentation.ViewModels
             RaisePropertyChanged(nameof(this.ItemWidth));
             this.Changed = true;
             this.logger.Log("New right column created", Category.Debug, Priority.None);
-            throw new InvalidCastException();
         }
 
         private void DeleteColumn(object arg)
