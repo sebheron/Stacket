@@ -19,7 +19,7 @@ namespace KanbanBoard.Tests
                 items.Add(item);
             }
 
-            return new ColumnInformation(Guid.NewGuid(), GetRandomNameOrDescription(random, 5), items);
+            return new ColumnInformation(Guid.NewGuid(), GetRandomNameOrDescription(random, 5), false, items);
         }
 
         public static ItemInformation GetRandomTestItem(Random random)
@@ -27,10 +27,10 @@ namespace KanbanBoard.Tests
             var enumVals = Enum.GetValues(typeof(ItemTypes));
             var itemTitle = GetRandomNameOrDescription(random, 5);
             var itemDescription = GetRandomNameOrDescription(random, 10);
-            var itemType = (ItemTypes) enumVals.GetValue(random.Next(enumVals.Length));
+            var itemType = (ItemTypes)enumVals.GetValue(random.Next(enumVals.Length));
             var itemDueDate = new DateTime(random.Next(3000));
 
-            return new ItemInformation(Guid.NewGuid(), itemTitle, itemDescription, itemType, itemDueDate);
+            return new ItemInformation(Guid.NewGuid(), itemTitle, itemDescription, itemType, itemDueDate, false);
         }
 
         public static BoardInformation GetRandomFileWithData(Random random)
