@@ -1,6 +1,7 @@
 using System;
 using System.Windows.Input;
 using Prism.Commands;
+using Prism.Logging;
 using Prism.Mvvm;
 
 namespace KanbanBoard.Presentation.Dialogs
@@ -8,10 +9,12 @@ namespace KanbanBoard.Presentation.Dialogs
     public class DialogBoxWindowViewModel : BindableBase
     {
         private readonly Action closeDialog;
+        private readonly ILoggerFacade logger;
 
-        public DialogBoxWindowViewModel(string text, string caption, Action closeDialog)
+        public DialogBoxWindowViewModel(string text, string caption, Action closeDialog, ILoggerFacade logger)
         {
             this.closeDialog = closeDialog;
+            this.logger = logger;
 
             this.Text = text;
             this.Caption = caption;
@@ -31,11 +34,13 @@ namespace KanbanBoard.Presentation.Dialogs
         public void YesButton()
         {
             this.Result = true;
-            this.Close();
+            this.logger.Log("Yes selected", Category.Debug, Priority.None);
+            this.closeDialog.Invoke();
         }
 
         private void Close()
         {
+            this.logger.Log("No selected", Category.Debug, Priority.None);
             this.closeDialog.Invoke();
         }
     }

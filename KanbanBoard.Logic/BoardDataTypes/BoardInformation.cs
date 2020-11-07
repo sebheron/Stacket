@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using KanbanBoard.Logic.Properties;
 
 namespace KanbanBoard.Logic.BoardDataTypes
 {
@@ -30,9 +31,9 @@ namespace KanbanBoard.Logic.BoardDataTypes
             }
             else
             {
-                this.Columns.Add(new ColumnInformation("New"));
-                this.Columns.Add(new ColumnInformation("In Progress"));
-                this.Columns.Add(new ColumnInformation("Done"));
+                this.Columns.Add(new ColumnInformation(Resources.ColumnName_New));
+                this.Columns.Add(new ColumnInformation(Resources.ColumnName_InProgress));
+                this.Columns.Add(new ColumnInformation(Resources.ColumnName_Done));
             }
 
             this.FilePath = filePath;
@@ -104,7 +105,7 @@ namespace KanbanBoard.Logic.BoardDataTypes
                     return this.GetColumnIndex(columnInformation);
                 }
             }
-                
+
             return -1;
         }
     }

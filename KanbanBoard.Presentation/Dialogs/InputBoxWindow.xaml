@@ -9,35 +9,35 @@
     <Border CornerRadius="15" Background="#BFD3D3D3">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
-                <RowDefinition/>
-                <RowDefinition Height="35"/>
+                <RowDefinition Height="30" />
+                <RowDefinition />
+                <RowDefinition Height="35" />
             </Grid.RowDefinitions>
 
             <Border MouseDown="WindowMouseDown" Background="DarkGray" CornerRadius="5" Grid.ColumnSpan="3" Margin="0,0,0,0.4">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="30" />
                     </Grid.ColumnDefinitions>
 
-                    <Button Grid.Column="1" Style="{StaticResource TransparentRoundFlat3DButton}" FontFamily="Marlett" Content="r" Command="{Binding CancelCommand}"/>
-                    <TextBlock Grid.Column="0" Margin="5" Text="{Binding Caption}"/>
+                    <Button Grid.Column="1" Style="{StaticResource TransparentRoundFlat3DButton}" FontFamily="Marlett" Content="r" Command="{Binding CancelCommand}" />
+                    <TextBlock Grid.Column="0" Margin="5" Text="{Binding Caption}" />
                 </Grid>
             </Border>
 
             <Grid Grid.Row="1">
                 <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
+                    <RowDefinition />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
 
-                <TextBlock Text="{Binding Text}" Margin="10,4,10,3" TextWrapping="Wrap"/>
+                <TextBlock Text="{Binding Text}" Margin="10,4,10,3" TextWrapping="Wrap" />
 
                 <Border Grid.Row="1" Margin="10,14" BorderBrush="#B05E5E5E" BorderThickness="1">
                     <TextBox Style="{StaticResource HiddenTextBox}" Text="{Binding Input, Mode=TwoWay}" AcceptsReturn="False">
                         <TextBox.InputBindings>
-                            <KeyBinding Key="Enter" Command="{Binding CloseDialogCommand}"/>
+                            <KeyBinding Key="Enter" Command="{Binding CancelCommand}" />
                         </TextBox.InputBindings>
                     </TextBox>
                 </Border>
@@ -45,12 +45,12 @@
 
             <Grid Grid.Row="2" Grid.ColumnSpan="3" Margin="0,0.4,0,0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
-                <Button Content="Ok" Margin="3,1,3,3" Style="{StaticResource TransparentRoundFlat3DButton}" Command="{Binding OkCommand}"/>
-                <Button Content="Cancel" Grid.Column="1" Margin="3,1,3,3" Style="{StaticResource TransparentRoundFlat3DButton}" Command="{Binding CancelCommand}"/>
+                <Button Content="Ok" Margin="3,1,3,3" Style="{StaticResource TransparentRoundFlat3DButton}" Command="{Binding OkCommand}" />
+                <Button Content="Cancel" Grid.Column="1" Margin="3,1,3,3" Style="{StaticResource TransparentRoundFlat3DButton}" Command="{Binding CancelCommand}" />
             </Grid>
         </Grid>
     </Border>
