@@ -19,7 +19,7 @@ namespace KanbanBoard.Logic.BoardDataTypes
         {
             this.ColumnId = Guid.NewGuid();
             this.ColumnTitle = columnTitle;
-            this.ColumnVisible = false;
+            this.ColumnVisible = true;
             this.Items = new ObservableCollection<ItemInformation>();
         }
 
