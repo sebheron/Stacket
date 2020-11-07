@@ -82,7 +82,6 @@ namespace KanbanBoard.Logic.BoardDataTypes
             set
             {
                 Settings.Default.LastItemType = value;
-                Settings.Default.Save();
                 this.ItemType = value;
             }
         }
@@ -133,8 +132,7 @@ namespace KanbanBoard.Logic.BoardDataTypes
 
         public bool Unchanged()
         {
-            return this.ItemTitle == "New Item"
-                   && this.ItemDescription == string.Empty;
+            return this.ItemTitle == Resources.Board_NewItemName && this.ItemDescription == string.Empty;
         }
     }
 }

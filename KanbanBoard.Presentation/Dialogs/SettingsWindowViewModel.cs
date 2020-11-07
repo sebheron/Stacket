@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Windows.Input;
-using KanbanBoard.Presentation.Properties;
+using KanbanBoard.Logic.Properties;
 using KanbanBoard.Presentation.Services;
 using Prism.Commands;
+using Prism.Logging;
 using Prism.Mvvm;
 
 namespace KanbanBoard.Presentation.Dialogs
@@ -12,18 +13,20 @@ namespace KanbanBoard.Presentation.Dialogs
     {
         private readonly Action closeDialog;
         private readonly IRegistryService registryService;
+        private readonly ILoggerFacade logger;
         private bool startOnStartup;
         private bool lockToggle;
 
-        public SettingsWindowViewModel(Action closeDialog, IRegistryService registryService)
+        public SettingsWindowViewModel(Action closeDialog, IRegistryService registryService, ILoggerFacade logger)
         {
             this.closeDialog = closeDialog;
+            this.logger = logger;
 
             this.CancelCommand = new DelegateCommand(this.Cancel);
             this.AcceptCommand = new DelegateCommand(this.Accept);
             this.registryService = registryService;
-            this.LockToggle = Properties.Settings.Default.LockToggle;
-            this.StartOnStartup = !string.IsNullOrEmpty(registryService.GetValue(Resources.StartupRegistryLocation, Resources.StartupRegistryName) as string);
+            this.LockToggle = Settings.Default.LockToggle;
+            this.StartOnStartup = !string.IsNullOrEmpty(registryService.GetValue(Resources.StartupRegistryLocation, Resources.Stacket) as string);
         }
 
         public bool StartOnStartup
@@ -43,6 +46,7 @@ namespace KanbanBoard.Presentation.Dialogs
 
         private void Cancel()
         {
+            this.logger.Log("Cancel selected", Category.Debug, Priority.None);
             this.closeDialog.Invoke();
         }
 
@@ -50,16 +54,16 @@ namespace KanbanBoard.Presentation.Dialogs
         {
             if (this.StartOnStartup)
             {
-                this.registryService.SetValue(Resources.StartupRegistryLocation, Resources.StartupRegistryName, Process.GetCurrentProcess().MainModule.FileName);
+                this.registryService.SetValue(Resources.StartupRegistryLocation, Resources.Stacket, Process.GetCurrentProcess().MainModule.FileName);
             }
-            else if (this.registryService.GetValue(Resources.StartupRegistryLocation, Resources.StartupRegistryName) != null)
+            else if (this.registryService.GetValue(Resources.StartupRegistryLocation, Resources.Stacket) != null)
             {
-                this.registryService.DeleteValue(Resources.StartupRegistryLocation, Resources.StartupRegistryName);
+                this.registryService.DeleteValue(Resources.StartupRegistryLocation, Resources.Stacket);
             }
 
-            Properties.Settings.Default.LockToggle = lockToggle;
-            Properties.Settings.Default.Save();
+            Settings.Default.LockToggle = lockToggle;
 
+            this.logger.Log("Ok selected", Category.Debug, Priority.None);
             this.closeDialog.Invoke();
         }
     }

@@ -3,23 +3,26 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows.Input;
-using KanbanBoard.Presentation.Properties;
+using KanbanBoard.Logic.Properties;
 using KanbanBoard.Presentation.Services;
 using Prism.Commands;
+using Prism.Logging;
 using Prism.Mvvm;
 
 namespace KanbanBoard.Presentation.Dialogs
 {
     public class BoardSelectorWindowViewModel : BindableBase
     {
-        private readonly IDialogService dialogService;
         private readonly Action closeDialog;
+        private readonly IDialogService dialogService;
+        private readonly ILoggerFacade logger;
 
         private string selectedBoard;
 
-        public BoardSelectorWindowViewModel(IDialogService dialogService, Action closeDialog)
+        public BoardSelectorWindowViewModel(IDialogService dialogService, ILoggerFacade logger, Action closeDialog)
         {
             this.dialogService = dialogService;
+            this.logger = logger;
             this.closeDialog = closeDialog;
 
             this.PopulateBoardFiles();
@@ -48,11 +51,13 @@ namespace KanbanBoard.Presentation.Dialogs
         private void PopulateBoardFiles()
         {
             this.BoardFiles.AddRange(Directory.GetFiles(FileLocations.BoardFileStorageLocation).Select(Path.GetFileNameWithoutExtension));
+            this.logger.Log("Populated board files list", Category.Debug, Priority.None);
         }
 
         private void NewButton()
         {
-            var input = this.dialogService.GetInput("Name for the new board:", "New Board");
+            this.logger.Log("New board requested", Category.Debug, Priority.None);
+            var input = this.dialogService.GetInput(Resources.Dialog_NewBoard_Message, Resources.Dialog_NewBoard_Title);
             if (string.IsNullOrEmpty(input)) return;
 
             this.BoardLocation = Path.Combine(FileLocations.BoardFileStorageLocation, input + Resources.BoardFileExtension);
@@ -61,6 +66,7 @@ namespace KanbanBoard.Presentation.Dialogs
 
         private void OpenButton()
         {
+            this.logger.Log("Open board requested", Category.Debug, Priority.None);
             this.BoardLocation = Path.Combine(FileLocations.BoardFileStorageLocation, this.SelectedBoard + Resources.BoardFileExtension);
             this.CloseDialog();
         }
@@ -71,6 +77,7 @@ namespace KanbanBoard.Presentation.Dialogs
 
             File.Delete(Path.Combine(FileLocations.BoardFileStorageLocation, this.SelectedBoard + Resources.BoardFileExtension));
             this.BoardFiles.Remove(this.SelectedBoard);
+            this.logger.Log("Board deleted", Category.Debug, Priority.None);
         }
 
         private bool IsFileSelected()

@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.IO;
-using System.Windows;
-using KanbanBoard.Presentation.Properties;
+using KanbanBoard.Logic.Properties;
+using Prism.Logging;
 
 namespace KanbanBoard.Presentation.Services
 {
@@ -9,15 +9,18 @@ namespace KanbanBoard.Presentation.Services
     {
         private readonly IDialogService dialogService;
         private readonly IRegistryService registryService;
+        private readonly ILoggerFacade logger;
 
-        public StartupService(IDialogService dialogService, IRegistryService registryService)
+        public StartupService(IDialogService dialogService, IRegistryService registryService, ILoggerFacade logger)
         {
             this.dialogService = dialogService;
             this.registryService = registryService;
+            this.logger = logger;
         }
 
         public bool Initialize()
         {
+            this.logger.Log("Initializing startup", Category.Debug, Priority.None);
             if (this.IsAlreadyRunning()) return false;
             this.AskUserToStartOnStartup();
             this.CreateBoardStorageFolder();
@@ -28,7 +31,7 @@ namespace KanbanBoard.Presentation.Services
         {
             if (Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName).Length > 1)
             {
-                dialogService.ShowMessage("Stacket is already running", "Stacket");
+                dialogService.ShowMessage("Stacket is already running", Resources.Stacket);
                 return true;
             }
             return false;
@@ -42,9 +45,9 @@ namespace KanbanBoard.Presentation.Services
             }
             else if (!string.IsNullOrEmpty(Settings.Default.CurrentBoard) && !Settings.Default.AskedUserForStartup)
             {
-                if (dialogService.ShowYesNo("Should Stacket start on Windows startup?", "Stacket"))
+                if (dialogService.ShowYesNo(Resources.Dialog_Startup_Message, Resources.Stacket))
                 {
-                    this.registryService.SetValue(Resources.StartupRegistryLocation, Resources.StartupRegistryName,
+                    this.registryService.SetValue(Resources.StartupRegistryLocation, Resources.Stacket,
                         Process.GetCurrentProcess().MainModule.FileName);
                 }
 
@@ -72,7 +75,7 @@ namespace KanbanBoard.Presentation.Services
             }
             else if (!File.Exists(Settings.Default.CurrentBoard))
             {
-                this.dialogService.ShowMessage("The board " + Path.GetFileName(Settings.Default.CurrentBoard) + " is missing.", "Missing Board File");
+                this.dialogService.ShowMessage(string.Format(Resources.Dialog_MissingBoard_Message, Path.GetFileName(Settings.Default.CurrentBoard)), Resources.Dialog_MissingBoard_Title);
                 Settings.Default.CurrentBoard = this.dialogService.SelectBoard();
                 if (string.IsNullOrEmpty(Settings.Default.CurrentBoard))
                 {

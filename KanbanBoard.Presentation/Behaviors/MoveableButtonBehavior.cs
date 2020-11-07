@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
+using KanbanBoard.Logic.Properties;
 
 namespace KanbanBoard.Presentation.Behaviors
 {
@@ -27,7 +28,7 @@ namespace KanbanBoard.Presentation.Behaviors
             if (this.AssociatedObject == null) return;
             this.parent = Application.Current.MainWindow;
             this.AssociatedObject.RenderTransform = this.transform;
-            this.xPos = this.transform.X = Properties.Settings.Default.TogglePosition;
+            this.xPos = this.transform.X = Settings.Default.TogglePosition;
             this.halfScreenWidth = SystemParameters.MaximizedPrimaryScreenWidth / 2;
             this.halfButtonWidth = ((ToggleButton)this.AssociatedObject).Width / 2;
 
@@ -48,7 +49,7 @@ namespace KanbanBoard.Presentation.Behaviors
         {
             var delta = e.GetPosition(this.parent).X - this.prevPos.X;
 
-            if (!Properties.Settings.Default.LockToggle
+            if (!Settings.Default.LockToggle
                 && e.LeftButton == MouseButtonState.Pressed
                 && (Math.Abs(delta) > DragThreshold || this.dragging))
             {
@@ -87,8 +88,7 @@ namespace KanbanBoard.Presentation.Behaviors
             {
                 this.dragging = false;
                 e.Handled = true;
-                Properties.Settings.Default.TogglePosition = this.xPos = this.transform.X;
-                Properties.Settings.Default.Save();
+                Settings.Default.TogglePosition = this.xPos = this.transform.X;
                 ((ToggleButton)sender).ReleaseMouseCapture();
             }
         }
