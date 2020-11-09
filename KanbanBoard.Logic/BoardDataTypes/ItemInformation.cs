@@ -26,14 +26,14 @@ namespace KanbanBoard.Logic.BoardDataTypes
         }
 
         public ItemInformation(Guid itemId, string itemTitle, string itemDescription, ItemTypes itemType,
-            DateTime itemDueDate)
+            DateTime itemDueDate, bool itemDescriptionVisible)
         {
             this.ItemId = itemId;
             this.ItemTitle = itemTitle;
             this.ItemDescription = itemDescription;
             this.ItemType = itemType;
             this.ItemDueDate = itemDueDate.Date;
-            this.ItemDescriptionVisible = false;
+            this.ItemDescriptionVisible = itemDescriptionVisible;
         }
 
         public Guid ItemId { get; set; }
@@ -121,13 +121,15 @@ namespace KanbanBoard.Logic.BoardDataTypes
             var itemType = (ItemTypes)Enum.Parse(typeof(ItemTypes), itemData[3]);
             var itemDueDate = DateTime.Parse(itemData[4]).Date;
 
-            return new ItemInformation(itemId, itemTitle, itemDescription, itemType, itemDueDate);
+            bool.TryParse(itemData[5], out bool itemDescriptionVisible);
+
+            return new ItemInformation(itemId, itemTitle, itemDescription, itemType, itemDueDate, itemDescriptionVisible);
         }
 
         public override string ToString()
         {
             return this.ItemId + NewItemData + this.ItemTitle + NewItemData + this.ItemDescription
-                   + NewItemData + this.ItemType + NewItemData + this.ItemDueDate + NewItemData + this.ItemColor;
+                   + NewItemData + this.ItemType + NewItemData + this.ItemDueDate + NewItemData + this.ItemDescriptionVisible;
         }
 
         public bool Unchanged()

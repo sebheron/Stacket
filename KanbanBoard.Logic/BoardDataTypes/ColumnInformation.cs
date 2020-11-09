@@ -13,19 +13,21 @@ namespace KanbanBoard.Logic.BoardDataTypes
 
         private string columnTitle;
 
-        private bool columnVisible = true;
+        private bool columnVisible;
 
         public ColumnInformation(string columnTitle)
         {
             this.ColumnId = Guid.NewGuid();
             this.ColumnTitle = columnTitle;
+            this.ColumnVisible = true;
             this.Items = new ObservableCollection<ItemInformation>();
         }
 
-        public ColumnInformation(Guid columnId, string columnTitle, List<ItemInformation> items)
+        public ColumnInformation(Guid columnId, string columnTitle, bool columnVisible, List<ItemInformation> items)
         {
             this.ColumnId = columnId;
             this.ColumnTitle = columnTitle;
+            this.ColumnVisible = columnVisible;
             this.Items = new ObservableCollection<ItemInformation>(items);
         }
 
@@ -54,18 +56,18 @@ namespace KanbanBoard.Logic.BoardDataTypes
         public static ColumnInformation Load(string parsedColumn)
         {
             var columnData = parsedColumn.Split(new[] { NewItemBreak }, StringSplitOptions.None);
+            var containsVisiblityData = bool.TryParse(columnData[2], out bool columnVisible);
             var items = new List<ItemInformation>();
-            for (var i = 2; i < columnData.Length - 1; i++)
+            for (var i = containsVisiblityData ? 3 : 2; i < columnData.Length - 1; i++)
             {
                 items.Add(ItemInformation.Load(columnData[i]));
             }
-
-            return new ColumnInformation(Guid.Parse(columnData[0]), columnData[1], items);
+            return new ColumnInformation(Guid.Parse(columnData[0]), columnData[1], columnVisible, items);
         }
 
         public override string ToString()
         {
-            var columnData = $"{this.ColumnId + NewItemBreak + this.ColumnTitle + NewItemBreak}";
+            var columnData = $"{this.ColumnId + NewItemBreak + this.ColumnTitle + NewItemBreak + this.ColumnVisible + NewItemBreak}";
             return Items.Aggregate(columnData, (current, item) => current + item + NewItemBreak);
         }
 
