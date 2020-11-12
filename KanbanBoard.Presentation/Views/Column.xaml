@@ -32,9 +32,14 @@
                         <ColumnDefinition Width="30" />
                     </Grid.ColumnDefinitions>
 
-                    <Button Style="{StaticResource TransparentRoundFlat3DButton}" VerticalAlignment="Top" Height="30"
-                                                Command="{Binding AddItemCommand}"
-                                                CommandParameter="{Binding}" FontFamily="Arial Black" FontSize="16" Content="+" FocusVisualStyle="{x:Null}" />
+                    <Button Style="{StaticResource TransparentRoundFlat3DButton}" 
+                            VerticalAlignment="Top" 
+                            Height="30"
+                            Command="{Binding AddItemCommand}"
+                            FontFamily="Arial Black" 
+                            FontSize="16" 
+                            Content="+" 
+                            FocusVisualStyle="{x:Null}" />
 
                     <Grid Grid.Column="1" HorizontalAlignment="Left">
                         <Grid.RowDefinitions>
@@ -49,13 +54,22 @@
                         </TextBox>
                     </Grid>
 
-                    <ToggleButton Grid.Column="2" Style="{StaticResource MinimizeFlat3DToggleButton}" VerticalAlignment="Top" Height="30"
-                                                      IsChecked="{Binding ColumnVisible, Mode=TwoWay}" FocusVisualStyle="{x:Null}">
+                    <ToggleButton Grid.Column="2" 
+                                  Style="{StaticResource MinimizeFlat3DToggleButton}" 
+                                  VerticalAlignment="Top" 
+                                  Height="30"
+                                  IsChecked="{Binding ColumnVisible, Mode=TwoWay}" 
+                                  FocusVisualStyle="{x:Null}">
                     </ToggleButton>
 
-                    <Button Grid.Column="3" Style="{StaticResource TransparentRoundFlat3DButton}" VerticalAlignment="Top" Height="30"
-                                                Command="{Binding DeleteColumnCommand}"
-                                                CommandParameter="{Binding}" FontFamily="Marlett" Content="r" FocusVisualStyle="{x:Null}" />
+                    <Button Grid.Column="3" 
+                            Style="{StaticResource TransparentRoundFlat3DButton}" 
+                            VerticalAlignment="Top" 
+                            Height="30"
+                            Command="{Binding DeleteColumnCommand}" 
+                            FontFamily="Marlett" 
+                            Content="r" 
+                            FocusVisualStyle="{x:Null}" />
                 </Grid>
             </Border>
 

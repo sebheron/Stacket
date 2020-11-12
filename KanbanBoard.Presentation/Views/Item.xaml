@@ -73,7 +73,7 @@
                 </Grid>
             </Border>
 
-            <Grid Visibility="{Binding DescriptionVisible, Converter={StaticResource BooleanToVisibilityConverter}}" MinHeight="60">
+            <Grid Visibility="{Binding DescriptionVisible, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}" MinHeight="60">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="6" />
                     <RowDefinition />
