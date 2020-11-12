@@ -39,7 +39,7 @@ namespace KanbanBoard.Presentation.Factories
 
             bool.TryParse(parsedItemData[5], out var itemDescriptionVisible);
 
-            return new ItemViewModel(itemId, itemTitle, itemDescription, itemDescriptionVisible, itemType, this.eventAggregator);
+            return new ItemViewModel(this.eventAggregator, itemId, itemTitle, itemDescription, itemDescriptionVisible, itemType);
         }
     }
 }

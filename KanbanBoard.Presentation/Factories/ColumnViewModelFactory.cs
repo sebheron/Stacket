@@ -51,14 +51,14 @@ namespace KanbanBoard.Presentation.Factories
             }
 
             return new ColumnViewModel(
-                Guid.Parse(parsedColumn[0]), 
-                parsedColumn[1], 
-                columnVisible, 
-                items, 
                 this.itemFactory, 
                 this.dialogService, 
                 this.logger, 
-                this.eventAggregator);
+                this.eventAggregator,
+                Guid.Parse(parsedColumn[0]),
+                parsedColumn[1],
+                columnVisible,
+                items);
         }
     }
 }

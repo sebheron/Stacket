@@ -6,61 +6,34 @@ using KanbanBoard.Logic.Enums;
 using KanbanBoard.Logic.Properties;
 using Prism.Commands;
 using Prism.Events;
-using Prism.Mvvm;
 
 namespace KanbanBoard.Presentation.ViewModels
 {
-    public class ItemViewModel : BindableBase
+    public class ItemViewModel : BaseCollectionItemViewModel
     {
-        private readonly IEventAggregator eventAggregator;
-
-        private string title = Resources.Board_NewItemName;
         private string description;
         private bool descriptionVisible;
-        private ItemTypes itemType = Settings.Default.LastItemType;
+        private ItemTypes itemType;
         private Color itemColor;
 
         public ItemViewModel(
-            Guid id,
-            string title,
-            string description,
-            bool descriptionVisible,
-            ItemTypes itemType,
-            IEventAggregator eventAggregator)
-            : this(eventAggregator)
+            IEventAggregator eventAggregator,
+            Guid? id = null,
+            string title = null,
+            string description = null,
+            bool descriptionVisible = false,
+            ItemTypes? itemType = null)
+            : base(id, title ?? Resources.Board_NewItemName, eventAggregator)
         {
             // Loading an item.
-            this.Id = id;
-            this.title = title;
-            this.description = description;
+            this.Description = description;
             this.DescriptionVisible = descriptionVisible;
-            this.ItemType = itemType;
-        }
+            this.ItemType = itemType ?? Settings.Default.LastItemType;
 
-        public ItemViewModel(IEventAggregator eventAggregator)
-        {
-            this.eventAggregator = eventAggregator;
-
-            this.DeleteItemCommand = new DelegateCommand(() => this.eventAggregator.GetEvent<DeleteColumnEvent>().Publish(this.Id));
-
-            this.SetColor(this.ItemType);
+            this.DeleteItemCommand = new DelegateCommand(() => this.EventAggregator.GetEvent<DeleteColumnEvent>().Publish(this.Id));
         }
 
         public ICommand DeleteItemCommand { get; }
-
-        public Guid Id { get; } = Guid.NewGuid();
-
-        public string Title
-        {
-            get => title;
-            set
-            {
-                if (string.IsNullOrEmpty(value)) return;
-
-                this.SetProperty(ref title, value);
-                this.eventAggregator.GetEvent<RequestSaveEvent>().Publish();
-            }
-        }
 
         public string Description
         {
@@ -70,7 +43,7 @@ namespace KanbanBoard.Presentation.ViewModels
                 if (this.description == value) return;
 
                 this.SetProperty(ref this.description, value);
-                this.eventAggregator.GetEvent<RequestSaveEvent>().Publish();
+                this.EventAggregator.GetEvent<RequestSaveEvent>().Publish();
             }
         }
 

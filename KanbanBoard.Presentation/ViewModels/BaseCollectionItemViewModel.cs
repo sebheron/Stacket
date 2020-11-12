@@ -6,20 +6,20 @@ using Prism.Mvvm;
 
 namespace KanbanBoard.Presentation.ViewModels
 {
-    public class BaseCollectionItemViewModel : BindableBase
+    public abstract class BaseCollectionItemViewModel : BindableBase
     {
-        private readonly IEventAggregator eventAggregator;
+        protected readonly IEventAggregator EventAggregator;
 
         private string title;
 
-        public BaseCollectionItemViewModel(Guid id, string title, IEventAggregator eventAggregator)
+        protected BaseCollectionItemViewModel(Guid? id, string title, IEventAggregator eventAggregator)
         {
-            this.eventAggregator = eventAggregator;
+            this.EventAggregator = eventAggregator;
 
             this.DragHandler = new DragHandleBehavior();
             this.DragHandler.DragStarted += () => this.RaisePropertyChanged(nameof(this.DragHandler));
 
-            this.Id = id;
+            this.Id = id ?? Guid.NewGuid();
             this.title = title;
         }
 
@@ -35,7 +35,7 @@ namespace KanbanBoard.Presentation.ViewModels
                 if (string.IsNullOrEmpty(value)) return;
 
                 this.SetProperty(ref title, value);
-                this.eventAggregator.GetEvent<RequestSaveEvent>().Publish();
+                this.EventAggregator.GetEvent<RequestSaveEvent>().Publish();
             }
         }
     }
