@@ -56,9 +56,6 @@ namespace KanbanBoard.Presentation.ViewModels
 
             this.AddColumnLeftCommand = new DelegateCommand(this.AddColumnLeft);
             this.AddColumnRightCommand = new DelegateCommand(this.AddColumnRight);
-            /*this.DeleteColumnCommand = new DelegateCommand<object>(this.DeleteColumn);
-            this.AddItemCommand = new DelegateCommand<object>(this.AddItem);
-            this.DeleteItemCommand = new DelegateCommand<object>(this.DeleteItem);*/
         }
 
         public ObservableCollection<ColumnViewModel> Columns { get; } = new ObservableCollection<ColumnViewModel>();

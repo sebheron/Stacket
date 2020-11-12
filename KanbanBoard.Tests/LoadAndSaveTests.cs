@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using KanbanBoard.Logic.BoardDataTypes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace KanbanBoard.Tests
@@ -10,7 +9,7 @@ namespace KanbanBoard.Tests
     [TestClass]
     public class LoadAndSaveTests
     {
-        [TestMethod]
+        /*[TestMethod]
         public void TestCreateLoadDataItem()
         {
             var createBoardInformation = BoardTestData.GetRandomFileWithData(new Random());
@@ -48,6 +47,6 @@ namespace KanbanBoard.Tests
             var loadColumnInformation = ColumnInformation.Load(createColumnInformation.ToString());
 
             BoardTypeAssertions.AssertColumn(loadColumnInformation, createColumnInformation);
-        }
+        }*/
     }
 }
