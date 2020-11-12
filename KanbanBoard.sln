@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KanbanBoard.Logic", "Kanban
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KanbanBoard.Data", "KanbanBoard.Data\KanbanBoard.Data.csproj", "{2E83E2C7-C9BF-4DC7-8B44-060BAA0BF9C9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kanban.Core", "Kanban.Core\Kanban.Core.csproj", "{AB5937C0-0EBC-4CE3-97A1-6B4A4F1991EE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{2E83E2C7-C9BF-4DC7-8B44-060BAA0BF9C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E83E2C7-C9BF-4DC7-8B44-060BAA0BF9C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E83E2C7-C9BF-4DC7-8B44-060BAA0BF9C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB5937C0-0EBC-4CE3-97A1-6B4A4F1991EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB5937C0-0EBC-4CE3-97A1-6B4A4F1991EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB5937C0-0EBC-4CE3-97A1-6B4A4F1991EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB5937C0-0EBC-4CE3-97A1-6B4A4F1991EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
