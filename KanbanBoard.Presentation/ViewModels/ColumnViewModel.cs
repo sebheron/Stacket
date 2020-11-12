@@ -64,20 +64,6 @@ namespace KanbanBoard.Presentation.ViewModels
             this.Items.CollectionChanged += (o, e) => this.eventAggregator.GetEvent<RequestSaveEvent>().Publish();
         }
 
-        private void DeleteItem(Guid itemId)
-        {
-            var itemToDelete = this.Items.FirstOrDefault(item => item.Id == itemId);
-            if (itemToDelete == null) return;
-
-            if (itemToDelete.Unchanged 
-                || this.dialogService.ShowYesNo(Resources.Dialog_RemoveItem_Message, Resources.Dialog_RemoveItem_Title))
-            {
-                this.Items.Remove(itemToDelete);
-            }
-
-            this.logger.Log("Item deleted", Category.Debug, Priority.None);
-        }
-
         public ObservableCollection<ItemViewModel> Items { get; } = new ObservableCollection<ItemViewModel>();
 
         public DragHandleBehavior DragHandler { get; }
@@ -106,6 +92,20 @@ namespace KanbanBoard.Presentation.ViewModels
         }
 
         public bool Unchanged => this.Title == Resources.Board_NewColumnName && this.Items.Count <= 0;
+
+        private void DeleteItem(Guid itemId)
+        {
+            var itemToDelete = this.Items.FirstOrDefault(item => item.Id == itemId);
+            if (itemToDelete == null) return;
+
+            if (itemToDelete.Unchanged
+                || this.dialogService.ShowYesNo(Resources.Dialog_RemoveItem_Message, Resources.Dialog_RemoveItem_Title))
+            {
+                this.Items.Remove(itemToDelete);
+            }
+
+            this.logger.Log("Item deleted", Category.Debug, Priority.None);
+        }
 
         public override string ToString()
         {

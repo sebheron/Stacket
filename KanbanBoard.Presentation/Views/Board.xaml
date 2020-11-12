@@ -29,7 +29,6 @@
         <ContextMenu x:Key="TrayMenu" x:Shared="true">
             <MenuItem Header="New" Command="{Binding NewBoardCommand}" IsEnabled="{Binding NewEnabled}" />
             <MenuItem Header="Load" Command="{Binding LoadBoardCommand}" IsEnabled="{Binding LoadEnabled}" />
-            <MenuItem Header="Save" Command="{Binding SaveBoardCommand}" />
             <MenuItem Header="Settings" Command="{Binding ShowSettingsCommand}" />
             <MenuItem Header="Exit" Command="{Binding ExitCommand}" />
         </ContextMenu>

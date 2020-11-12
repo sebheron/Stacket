@@ -147,7 +147,6 @@
     <Compile Include="Behaviors\TextBoxHighlightBehavior.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\ColorToScreenColorConverter.cs" />
-    <Compile Include="Details\BaseDetails.cs" />
     <Compile Include="Dialogs\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
@@ -279,5 +278,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
