@@ -1,6 +1,5 @@
 ﻿using System;
 using Kanban.Core.Events;
-using KanbanBoard.Presentation.Behaviors;
 using Prism.Events;
 using Prism.Mvvm;
 
@@ -16,14 +15,9 @@ namespace KanbanBoard.Presentation.ViewModels
         {
             this.EventAggregator = eventAggregator;
 
-            this.DragHandler = new DragHandleBehavior();
-            this.DragHandler.DragStarted += () => this.RaisePropertyChanged(nameof(this.DragHandler));
-
             this.Id = id ?? Guid.NewGuid();
             this.title = title;
         }
-
-        public DragHandleBehavior DragHandler { get; }
 
         public Guid Id { get; }
 

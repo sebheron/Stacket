@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Input;
 using Kanban.Core.Events;
 using KanbanBoard.Logic.Properties;
+using KanbanBoard.Presentation.Behaviors;
 using KanbanBoard.Presentation.Factories;
 using KanbanBoard.Presentation.Services;
 using Prism.Commands;
@@ -34,6 +35,9 @@ namespace KanbanBoard.Presentation.ViewModels
             // Loading a column.
             this.EventAggregator.GetEvent<DeleteColumnEvent>().Subscribe(this.DeleteItem);
 
+            this.DragHandler = new DragHandleBehavior();
+            this.DragHandler.DragStarted += () => this.RaisePropertyChanged(nameof(this.DragHandler));
+
             this.dialogService = dialogService;
             this.logger = logger;
 
@@ -51,6 +55,8 @@ namespace KanbanBoard.Presentation.ViewModels
         }
 
         public ObservableCollection<ItemViewModel> Items { get; } = new ObservableCollection<ItemViewModel>();
+
+        public DragHandleBehavior DragHandler { get; }
 
         public ICommand AddItemCommand { get; }
         public ICommand DeleteColumnCommand { get; }
