@@ -1,12 +1,19 @@
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
-using KanbanBoard.Logic.BoardDataTypes;
+using Kanban.Core.Events;
 using KanbanBoard.Presentation.Behaviors;
 using KanbanBoard.Logic.Properties;
+using KanbanBoard.Presentation.Factories;
 using KanbanBoard.Presentation.Services;
 using Prism.Commands;
+using Prism.Events;
 using Prism.Logging;
 using Prism.Mvvm;
 
@@ -14,16 +21,27 @@ namespace KanbanBoard.Presentation.ViewModels
 {
     public class BoardViewModel : BindableBase
     {
+        private readonly IColumnViewModelFactory columnFactory;
         private readonly IDialogService dialogService;
         private readonly ILoggerFacade logger;
+        private readonly IEventAggregator eventAggregator;
 
-        private BoardInformation boardInformation;
-        private bool changed;
+        private string filePath => Settings.Default.CurrentBoard;
         private bool loadEnabled = true;
         private bool newEnabled = true;
+        private bool loadInProgress;
 
-        public BoardViewModel(IDialogService dialogService, ILoggerFacade logger)
+        public BoardViewModel(
+            IColumnViewModelFactory columnFactory, 
+            IDialogService dialogService, 
+            ILoggerFacade logger, 
+            IEventAggregator eventAggregator)
         {
+            this.eventAggregator = eventAggregator;
+            this.eventAggregator.GetEvent<DeleteColumnEvent>().Subscribe(this.DeleteColumn);
+            this.eventAggregator.GetEvent<RequestSaveEvent>().Subscribe(this.SaveBoard);
+
+            this.columnFactory = columnFactory;
             this.logger = logger;
             this.dialogService = dialogService;
 
@@ -34,29 +52,15 @@ namespace KanbanBoard.Presentation.ViewModels
             this.ShowSettingsCommand = new DelegateCommand(this.ShowSettings);
             this.NewBoardCommand = new DelegateCommand(this.NewBoard);
             this.LoadBoardCommand = new DelegateCommand(this.LoadBoard);
-            this.SaveBoardCommand = new DelegateCommand(this.SaveBoard, this.CanSave).ObservesProperty(() => this.Changed);
             this.ExitCommand = new DelegateCommand(this.OnClosing);
 
-            this.AddColumnLeftCommand = new DelegateCommand<object>(this.AddColumnLeft);
-            this.AddColumnRightCommand = new DelegateCommand<object>(this.AddColumnRight);
-            this.DeleteColumnCommand = new DelegateCommand<object>(this.DeleteColumn);
-            this.AddItemCommand = new DelegateCommand<object>(this.AddItem);
-            this.DeleteItemCommand = new DelegateCommand<object>(this.DeleteItem);
+            this.AddColumnLeftCommand = new DelegateCommand(this.AddColumnLeft);
+            this.AddColumnRightCommand = new DelegateCommand(this.AddColumnRight);
         }
+
+        public ObservableCollection<ColumnViewModel> Columns { get; } = new ObservableCollection<ColumnViewModel>();
 
         public DragHandleBehavior DragHandler { get; }
-
-        public bool Changed
-        {
-            get => this.changed;
-            set => SetProperty(ref this.changed, value);
-        }
-
-        public BoardInformation BoardInformation
-        {
-            get => this.boardInformation;
-            set => SetProperty(ref this.boardInformation, value);
-        }
 
         public bool LoadEnabled
         {
@@ -70,14 +74,9 @@ namespace KanbanBoard.Presentation.ViewModels
             set => SetProperty(ref this.newEnabled, value);
         }
 
-        //The width of the window.
         public double WindowWidth => SystemParameters.MaximizedPrimaryScreenWidth;
-
-        //The height of the window.
         public double WindowHeight => SystemParameters.MaximizedPrimaryScreenHeight;
-
-        //The height of an item.
-        public double ItemWidth => (WindowWidth - 120) / Math.Max(5, BoardInformation.Columns.Count);
+        public double ColumnWidth => (this.WindowWidth - 120) / Math.Max(5, this.Columns.Count);
 
         // Loaded window command.
         public ICommand OnLoadedCommand { get; }
@@ -87,29 +86,22 @@ namespace KanbanBoard.Presentation.ViewModels
 
         // Board commands.
         public ICommand NewBoardCommand { get; }
-
         public ICommand LoadBoardCommand { get; }
-        public ICommand SaveBoardCommand { get; }
 
         // Exit command
         public ICommand ExitCommand { get; }
 
         // Column commands.
         public ICommand AddColumnLeftCommand { get; }
-
         public ICommand AddColumnRightCommand { get; }
-        public ICommand DeleteColumnCommand { get; }
 
-        // Item commands.
-        public ICommand AddItemCommand { get; }
-
-        public ICommand DeleteItemCommand { get; }
-
-        public void OnWindowLoaded()
+        private void OnWindowLoaded()
         {
             this.logger.Log("Window successfully loaded", Category.Debug, Priority.None);
-            this.BoardInformation = new BoardInformation(Settings.Default.CurrentBoard);
+            this.LoadBoardFromFile();
             this.logger.Log("Board successfully loaded", Category.Debug, Priority.None);
+
+            this.Columns.CollectionChanged += this.ColumnsChanged;
         }
 
         private void ShowSettings()
@@ -117,15 +109,9 @@ namespace KanbanBoard.Presentation.ViewModels
             this.dialogService.ShowSettings();
         }
 
-        public void NewBoard()
+        private void NewBoard()
         {
             this.logger.Log("New board requested", Category.Debug, Priority.None);
-            if (!string.IsNullOrEmpty(this.BoardInformation.FilePath)
-                && this.Changed
-                && this.dialogService.ShowYesNo(Resources.Dialog_SaveChanges_Message, Resources.Dialog_SaveChanges_Title))
-            {
-                this.SaveBoard();
-            }
 
             this.NewEnabled = false;
             this.LoadEnabled = false;
@@ -137,20 +123,15 @@ namespace KanbanBoard.Presentation.ViewModels
 
             if (string.IsNullOrEmpty(input)) return;
 
-            Settings.Default.CurrentBoard = Path.Combine(FileLocations.BoardFileStorageLocation,
-                input + Resources.BoardFileExtension);
-            this.BoardInformation = new BoardInformation(Settings.Default.CurrentBoard);
+            Settings.Default.CurrentBoard = Path.Combine(FileLocations.BoardFileStorageLocation, input + Resources.BoardFileExtension);
+            this.LoadBoardFromFile();
+
             this.logger.Log("New board created and loaded", Category.Debug, Priority.None);
-            this.Changed = false;
         }
 
         private void LoadBoard()
         {
             this.logger.Log("Load board requested", Category.Debug, Priority.None);
-            if (this.Changed && this.dialogService.ShowYesNo(Resources.Dialog_SaveChanges_Message, Resources.Dialog_SaveChanges_Title))
-            {
-                this.SaveBoard();
-            }
 
             this.NewEnabled = false;
             this.LoadEnabled = false;
@@ -163,97 +144,115 @@ namespace KanbanBoard.Presentation.ViewModels
             if (string.IsNullOrEmpty(newBoard)) return;
 
             Settings.Default.CurrentBoard = newBoard;
-            this.BoardInformation = new BoardInformation(Settings.Default.CurrentBoard);
+            this.LoadBoardFromFile();
+
             this.logger.Log("Board successfully loaded", Category.Debug, Priority.None);
-            this.Changed = false;
         }
 
-        public void SaveBoard()
+        private void LoadBoardFromFile()
         {
-            this.BoardInformation.Save();
+            this.loadInProgress = true;
+            this.Columns.Clear();
+
+            if (File.Exists(this.filePath))
+            {
+                this.logger.Log("File exists, loading from file", Category.Debug, Priority.None);
+
+                // For each version in future releases migration will occur here! Via Assembly information check.
+                var lines = File.ReadAllLines(this.filePath);
+                
+                for (var i = 2; i < lines.Length; i++)
+                {
+                    this.Columns.Add(this.columnFactory.Load(lines[i]));
+                }
+
+                this.loadInProgress = false;
+            }
+            else
+            {
+                this.logger.Log("File doesn't exist, creating default board", Category.Debug, Priority.None);
+
+                this.Columns.Add(this.columnFactory.CreateColumn(Resources.ColumnName_New));
+                this.Columns.Add(this.columnFactory.CreateColumn(Resources.ColumnName_InProgress));
+                this.Columns.Add(this.columnFactory.CreateColumn(Resources.ColumnName_Done));
+
+                this.loadInProgress = false;
+
+                // Create the board file with default data.
+                this.SaveBoard();
+            }
+        }
+
+        public void SaveBoard() 
+        {
+            if (this.loadInProgress || string.IsNullOrEmpty(this.filePath)) return;
+
+            var boardData = new List<string> { Assembly.GetExecutingAssembly().GetName().Version.ToString(), string.Empty };
+
+            boardData.AddRange(this.Columns.Select(column => column.ToString()));
+
+            File.WriteAllLines(this.filePath, boardData.ToArray());
+
             this.logger.Log("Board successfully saved", Category.Debug, Priority.None);
-            this.Changed = false;
         }
 
-        public bool CanSave()
+        private void AddColumnLeft()
         {
-            return this.Changed;
-        }
-
-        private void AddColumnLeft(object arg)
-        {
-            this.BoardInformation.InsertBlankColumn(Resources.Board_NewColumnName);
-            this.RaisePropertyChanged(nameof(this.ItemWidth));
-            this.Changed = true;
+            this.Columns.Insert(0, this.columnFactory.CreateColumn());
+            this.RaisePropertyChanged(nameof(this.ColumnWidth));
+            
             this.logger.Log("New left column created", Category.Debug, Priority.None);
         }
 
-        private void AddColumnRight(object arg)
+        private void AddColumnRight()
         {
-            this.BoardInformation.AddBlankColumn(Resources.Board_NewColumnName);
-            RaisePropertyChanged(nameof(this.ItemWidth));
-            this.Changed = true;
+            this.Columns.Add(this.columnFactory.CreateColumn());
+            RaisePropertyChanged(nameof(this.ColumnWidth));
+
             this.logger.Log("New right column created", Category.Debug, Priority.None);
         }
 
-        private void DeleteColumn(object arg)
+        private void DeleteColumn(Guid columnId)
         {
-            if (!(arg is ColumnInformation columnInformation)) return;
-
-            if (this.BoardInformation.ColumnCount <= 1)
+            if (this.Columns.Count <= 1)
             {
                 this.dialogService.ShowMessage(Resources.Dialog_CannotRemoveLastColumn_Message, Resources.Dialog_RemoveColumn_Title);
                 return;
             }
 
-            if (!columnInformation.Unchanged() && !this.dialogService.ShowYesNo(Resources.Dialog_RemoveColumn_Message, Resources.Dialog_RemoveColumn_Title)) return;
+            var columnToDelete = this.Columns.FirstOrDefault(column => column.Id == columnId);
+            if (columnToDelete == null) return;
 
-            if (columnInformation.Items.Count > 0)
-            {
-                var saveItems = this.dialogService.ShowYesNo(Resources.Dialog_SaveItemsInColumn_Message, Resources.Dialog_RemoveColumn_Title);
-                if (saveItems) BoardInformation.MigrateItemsToLeftMost(columnInformation);
-            }
+            // Confirm deletion if the column is not default.
+            if (!columnToDelete.Unchanged && !this.dialogService.ShowYesNo(Resources.Dialog_RemoveColumn_Message, Resources.Dialog_RemoveColumn_Title)) return;
 
-            this.BoardInformation.RemoveColumn(columnInformation);
-            this.RaisePropertyChanged(nameof(this.ItemWidth));
-            this.Changed = true;
+            var items = columnToDelete.Items;
+
+            this.Columns.Remove(columnToDelete);
             this.logger.Log("Column deleted", Category.Debug, Priority.None);
+
+            // Ask user whether or not to save items in deleted column.
+            if (items.Count <= 0 || !this.dialogService.ShowYesNo(Resources.Dialog_SaveItemsInColumn_Message, Resources.Dialog_RemoveColumn_Title)) return;
+
+            foreach (var item in items)
+            {
+                this.Columns[0].Items.Add(item);
+            }
+
+            this.logger.Log("Items migrated to left-most column", Category.Debug, Priority.None);
         }
 
-        private void DeleteItem(object arg)
+        private void ColumnsChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (arg is ItemInformation itemInformation)
-            {
-                var remove = itemInformation.Unchanged() ||
-                             this.dialogService.ShowYesNo(Resources.Dialog_RemoveItem_Message, Resources.Dialog_RemoveItem_Title);
-                if (remove)
-                {
-                    this.BoardInformation.Columns[BoardInformation.GetItemsColumnIndex(itemInformation)].Items
-                        .Remove(itemInformation);
-                    this.Changed = true;
-                }
-            }
-            this.logger.Log("Item deleted", Category.Debug, Priority.None);
-        }
+            this.RaisePropertyChanged(nameof(this.ColumnWidth));
 
-        private void AddItem(object arg)
-        {
-            if (arg is ColumnInformation columnInformation)
-            {
-                columnInformation.Items.Add(new ItemInformation(Resources.Board_NewItemName));
-                this.Changed = true;
-            }
-            this.logger.Log("Item created", Category.Debug, Priority.None);
+            this.eventAggregator.GetEvent<RequestSaveEvent>().Publish();
         }
 
         private void OnClosing()
         {
             this.logger.Log("Stacket closing", Category.Debug, Priority.None);
-            if (!string.IsNullOrEmpty(this.BoardInformation.FilePath)
-                && this.dialogService.ShowYesNo(Resources.Dialog_SaveChanges_Message, Resources.Dialog_SaveChanges_Title))
-            {
-                this.SaveBoard();
-            }
+
             Application.Current.Shutdown();
         }
     }

@@ -2,14 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using KanbanBoard.Logic.BoardDataTypes;
 using KanbanBoard.Logic.Enums;
 
 namespace KanbanBoard.Tests
 {
     public static class BoardTestData
     {
-        public static ColumnInformation GetRandomTestColumn(Random random)
+        /*public static ColumnInformation GetRandomTestColumn(Random random)
         {
             var itemCount = random.Next(5);
             var items = new List<ItemInformation>();
@@ -52,6 +51,6 @@ namespace KanbanBoard.Tests
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             return new string(Enumerable.Repeat(chars, length).Select(s => s[random.Next(s.Length)]).ToArray());
-        }
+        }*/
     }
 }

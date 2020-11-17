@@ -1,11 +1,10 @@
-using KanbanBoard.Logic.BoardDataTypes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace KanbanBoard.Tests
 {
     public static class BoardTypeAssertions
     {
-        public static void AssertSameBoard(BoardInformation boardInformation1, BoardInformation boardInformation2)
+        /*public static void AssertSameBoard(BoardInformation boardInformation1, BoardInformation boardInformation2)
         {
             Assert.AreEqual(boardInformation1.FilePath, boardInformation2.FilePath);
             for (var i = 0; i < boardInformation1.ColumnCount; i++)
@@ -30,6 +29,6 @@ namespace KanbanBoard.Tests
             Assert.AreEqual(itemInformation1.ItemType, itemInformation2.ItemType);
             Assert.AreEqual(itemInformation1.ItemDueDate, itemInformation2.ItemDueDate);
             Assert.AreEqual(itemInformation1.ItemColor, itemInformation2.ItemColor);
-        }
+        }*/
     }
 }

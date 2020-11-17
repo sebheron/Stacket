@@ -1,11 +1,9 @@
 using System;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Reflection;
 using System.Windows;
-using System.Windows.Navigation;
 using KanbanBoard.Presentation.Behaviors;
 using KanbanBoard.Logic.Properties;
+using KanbanBoard.Presentation.Factories;
 using KanbanBoard.Presentation.Services;
 using KanbanBoard.Presentation.Views;
 using Prism.Ioc;
@@ -56,6 +54,8 @@ namespace KanbanBoard.Presentation
             containerRegistry.Register<IDialogService, DialogService>();
             containerRegistry.Register<IStartupService, StartupService>();
             containerRegistry.Register<ICrashService, CrashService>();
+            containerRegistry.Register<IItemViewModelFactory, ItemViewModelFactory>();
+            containerRegistry.Register<IColumnViewModelFactory, ColumnViewModelFactory>();
         }
 
         protected override Window CreateShell()

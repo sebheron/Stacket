@@ -152,6 +152,15 @@
     </Compile>
     <Compile Include="Dialogs\MessageBoxWindowViewModel.cs" />
     <Compile Include="Dialogs\SettingsWindowViewModel.cs" />
+    <Compile Include="Factories\ColumnViewModelFactory.cs" />
+    <Compile Include="Factories\IColumnViewModelFactory.cs" />
+    <Compile Include="Factories\IItemViewModelFactory.cs" />
+    <Compile Include="Factories\ItemViewModelFactory.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Services\CrashService.cs" />
     <Compile Include="Services\ICrashService.cs" />
     <Compile Include="Services\IDialogService.cs" />
@@ -177,7 +186,14 @@
     <Compile Include="Services\RegistryService.cs" />
     <Compile Include="Services\StartupService.cs" />
     <Compile Include="Services\StringLogger.cs" />
+    <Compile Include="ViewModels\BaseCollectionItemViewModel.cs" />
     <Compile Include="ViewModels\BoardViewModel.cs" />
+    <Compile Include="Views\Column.xaml.cs">
+      <DependentUpon>Column.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Item.xaml.cs">
+      <DependentUpon>Item.xaml</DependentUpon>
+    </Compile>
     <Page Include="Dialogs\BoardSelectorWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -206,10 +222,20 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ViewModels\ColumnViewModel.cs" />
+    <Compile Include="ViewModels\ItemViewModel.cs" />
     <Compile Include="Views\Board.xaml.cs">
       <DependentUpon>Board.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\Column.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Item.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -222,6 +248,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Kanban.Core\Kanban.Core.csproj">
+      <Project>{AB5937C0-0EBC-4CE3-97A1-6B4A4F1991EE}</Project>
+      <Name>Kanban.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\KanbanBoard.Logic\KanbanBoard.Logic.csproj">
       <Project>{F35CEDDF-8FEE-401D-B4F3-686F802989AC}</Project>
       <Name>KanbanBoard.Logic</Name>
@@ -241,6 +271,12 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
