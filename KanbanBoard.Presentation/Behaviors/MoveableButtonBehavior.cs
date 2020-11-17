@@ -64,9 +64,9 @@ namespace KanbanBoard.Presentation.Behaviors
                 {
                     this.transform.X = this.halfScreenWidth - this.halfButtonWidth;
                 }
-                else if (this.xPos < -this.halfScreenWidth + this.halfButtonWidth)
+                else if (this.xPos < -this.halfScreenWidth + this.halfButtonWidth + 40)
                 {
-                    this.transform.X = -this.halfScreenWidth + this.halfButtonWidth;
+                    this.transform.X = -this.halfScreenWidth + this.halfButtonWidth + 40;
                 }
                 else
                 {

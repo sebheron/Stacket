@@ -58,10 +58,39 @@
             </i:Interaction.Behaviors>
         </ToggleButton>
 
-        <StackPanel Visibility="{Binding IsChecked, ElementName=MainWindowToggle, Converter={StaticResource BooleanToVisibilityConverter}}" 
-                    Grid.Row="1" 
-                    HorizontalAlignment="Center" 
-                    Orientation="Horizontal" 
+        <ToggleButton Name="MenuToggle" HorizontalAlignment="Left" Margin="5 0 0 0" Width="35" Height="25" Style="{StaticResource RoundFlat3DToggleButton}" IsChecked="True" FocusVisualStyle="{x:Null}"
+                      Visibility="{Binding IsChecked, ElementName=MainWindowToggle, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+        <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5 0 0 0" Grid.Row="2"
+              Visibility="{Binding IsChecked, ElementName=MenuToggle, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Button HorizontalAlignment="Right" Width="35" Height="25" Style="{StaticResource RoundFlat3DButton}" FocusVisualStyle="{x:Null}"
+                Visibility="{Binding IsChecked, ElementName=MainWindowToggle, Converter={StaticResource BooleanToVisibilityConverter}}"
+                FontFamily="Wingdings" Content="2" Command="{Binding NewBoardCommand}" ToolTip="New" />
+
+            <Button HorizontalAlignment="Right" Width="35" Height="25" Style="{StaticResource RoundFlat3DButton}" FocusVisualStyle="{x:Null}"
+                Visibility="{Binding IsChecked, ElementName=MainWindowToggle, Converter={StaticResource BooleanToVisibilityConverter}}"
+                Grid.Row="1" FontFamily="Wingdings" Content="1" Command="{Binding LoadBoardCommand}" ToolTip="Load" />
+
+            <Button HorizontalAlignment="Right" Width="35" Height="25" Style="{StaticResource RoundFlat3DButton}" FocusVisualStyle="{x:Null}"
+                Visibility="{Binding IsChecked, ElementName=MainWindowToggle, Converter={StaticResource BooleanToVisibilityConverter}}"
+                Grid.Row="2" FontFamily="Wingdings" Content="|" Command="{Binding ShowSettingsCommand}" ToolTip="Settings" />
+
+            <Button HorizontalAlignment="Right" Width="35" Height="25" Style="{StaticResource RoundFlat3DButton}" FocusVisualStyle="{x:Null}"
+                Visibility="{Binding IsChecked, ElementName=MainWindowToggle, Converter={StaticResource BooleanToVisibilityConverter}}"
+                Grid.Row="3" FontFamily="Marlett" Content="r" Command="{Binding ExitCommand}" ToolTip="Close" />
+        </Grid>
+
+        <StackPanel Visibility="{Binding IsChecked, ElementName=MainWindowToggle, Converter={StaticResource BooleanToVisibilityConverter}}"
+                    Grid.Row="1"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal"
                     Margin="15,0,15,15">
             <StackPanel.Effect>
                 <DropShadowEffect Direction="275" Color="Gray" Opacity="0.5" />
@@ -75,18 +104,18 @@
                             TrayToolTip="{StaticResource TrayToolTip}" />
 
             <Grid Width="30" Height="45" VerticalAlignment="Top">
-                <Button Content="+" 
-                        FontSize="18" 
+                <Button Content="+"
+                        FontSize="18"
                         FontFamily="Arial Black"
                         VerticalAlignment="Center" HorizontalAlignment="Left"
                         Style="{StaticResource LeftHiddenButton}"
-                        Width="30" 
-                        Height="30" 
+                        Width="30"
+                        Height="30"
                         Margin="15 0 0 0"
                         Command="{Binding AddColumnLeftCommand}" />
             </Grid>
 
-            <ItemsControl ItemsSource="{Binding Columns}" 
+            <ItemsControl ItemsSource="{Binding Columns}"
                           Focusable="False"
                           dd:DragDrop.IsDragSource="True"
                           dd:DragDrop.IsDropTarget="True"
@@ -111,16 +140,16 @@
             </ItemsControl>
 
             <Grid Width="30" Height="45" VerticalAlignment="Top">
-                <Button Content="+" 
-                        FontSize="16" 
-                        FontFamily="Arial Black" 
-                        VerticalAlignment="Center" 
+                <Button Content="+"
+                        FontSize="16"
+                        FontFamily="Arial Black"
+                        VerticalAlignment="Center"
                         HorizontalAlignment="Right"
-                        Style="{StaticResource RightHiddenButton}" 
-                        Width="30" 
-                        Height="30" 
+                        Style="{StaticResource RightHiddenButton}"
+                        Width="30"
+                        Height="30"
                         Margin="0 0 15 0"
-                        Command="{Binding AddColumnRightCommand}" 
+                        Command="{Binding AddColumnRightCommand}"
                         FocusVisualStyle="{x:Null}" />
             </Grid>
         </StackPanel>
