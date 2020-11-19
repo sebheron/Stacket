@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:res="clr-namespace:KanbanBoard.Logic.Properties;assembly=KanbanBoard.Logic"
         mc:Ignorable="d" Topmost="True" ShowInTaskbar="False"
         Title="SettingsWindow"  Height="115" Width="255" WindowStyle="None" Background="Transparent" AllowsTransparency="True" WindowStartupLocation="CenterScreen">
 
@@ -29,7 +30,7 @@
 
                     <Button Grid.Column="1"
                             Style="{StaticResource TransparentRoundFlat3DButton}"
-                            FontFamily="Marlett" Content="r"
+                            FontFamily="{StaticResource icons}" Content="{x:Static res:Resources.FontIcon_Close}"
                             Command="{Binding CancelCommand}" />
                     <TextBlock Grid.Column="0" Margin="5" Text="Settings" />
                 </Grid>

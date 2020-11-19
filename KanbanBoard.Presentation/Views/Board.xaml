@@ -9,6 +9,7 @@
         xmlns:beh="clr-namespace:KanbanBoard.Presentation.Behaviors"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         xmlns:prism="http://prismlibrary.com/"
+        xmlns:res="clr-namespace:KanbanBoard.Logic.Properties;assembly=KanbanBoard.Logic"
         prism:ViewModelLocator.AutoWireViewModel="True"
         mc:Ignorable="d"
         Title="Board" WindowState="Maximized"
@@ -52,40 +53,45 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <ToggleButton Name="MainWindowToggle" Width="80" Height="25" Style="{StaticResource RoundFlat3DToggleButton}" IsChecked="True" FocusVisualStyle="{x:Null}" ContextMenu="{StaticResource TrayMenu}">
+        <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
             <i:Interaction.Behaviors>
-                <beh:MoveableButtonBehavior />
+                <beh:MoveableStackpanelBehavior />
             </i:Interaction.Behaviors>
-        </ToggleButton>
+            <ToggleButton Name="MainWindowToggle" Width="80" Height="25" Style="{StaticResource RoundFlat3DVerticalDropdownButton}" IsChecked="True" FocusVisualStyle="{x:Null}" ContextMenu="{StaticResource TrayMenu}">
+            </ToggleButton>
 
-        <ToggleButton Name="MenuToggle" HorizontalAlignment="Left" Margin="5 0 0 0" Width="35" Height="25" Style="{StaticResource RoundFlat3DToggleButton}" IsChecked="True" FocusVisualStyle="{x:Null}"
-                      Visibility="{Binding IsChecked, ElementName=MainWindowToggle, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            <Grid HorizontalAlignment="Center" Visibility="{Binding IsChecked, ElementName=MainWindowToggle, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
 
-        <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Margin="5 0 0 0" Grid.Row="2"
-              Visibility="{Binding IsChecked, ElementName=MenuToggle, Converter={StaticResource BooleanToVisibilityConverter}}">
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-            </Grid.RowDefinitions>
+                <ToggleButton Name="MenuToggle" FontSize="12" Width="35" Height="25" Style="{StaticResource RoundFlat3DHorizontalDropdownButton}" IsChecked="False" FocusVisualStyle="{x:Null}" />
 
-            <Button HorizontalAlignment="Right" Width="35" Height="25" Style="{StaticResource RoundFlat3DButton}" FocusVisualStyle="{x:Null}"
-                Visibility="{Binding IsChecked, ElementName=MainWindowToggle, Converter={StaticResource BooleanToVisibilityConverter}}"
-                FontFamily="Wingdings" Content="2" Command="{Binding NewBoardCommand}" ToolTip="New" />
+                <Button Width="35" Height="25" Style="{StaticResource RoundFlat3DButton}" FocusVisualStyle="{x:Null}"
+                Visibility="{Binding IsChecked, ElementName=MenuToggle, Converter={StaticResource BooleanToVisibilityConverter}}"
+                Grid.Column="1" Command="{Binding NewBoardCommand}" ToolTip="New"
+                FontFamily="{StaticResource icons}" Content="{x:Static res:Resources.FontIcon_New}" />
 
-            <Button HorizontalAlignment="Right" Width="35" Height="25" Style="{StaticResource RoundFlat3DButton}" FocusVisualStyle="{x:Null}"
-                Visibility="{Binding IsChecked, ElementName=MainWindowToggle, Converter={StaticResource BooleanToVisibilityConverter}}"
-                Grid.Row="1" FontFamily="Wingdings" Content="1" Command="{Binding LoadBoardCommand}" ToolTip="Load" />
+                <Button Width="35" Height="25" Style="{StaticResource RoundFlat3DButton}" FocusVisualStyle="{x:Null}"
+                Visibility="{Binding IsChecked, ElementName=MenuToggle, Converter={StaticResource BooleanToVisibilityConverter}}"
+                Grid.Column="2" Command="{Binding LoadBoardCommand}" ToolTip="Load"
+                FontFamily="{StaticResource icons}" Content="{x:Static res:Resources.FontIcon_Open}" />
 
-            <Button HorizontalAlignment="Right" Width="35" Height="25" Style="{StaticResource RoundFlat3DButton}" FocusVisualStyle="{x:Null}"
-                Visibility="{Binding IsChecked, ElementName=MainWindowToggle, Converter={StaticResource BooleanToVisibilityConverter}}"
-                Grid.Row="2" FontFamily="Wingdings" Content="|" Command="{Binding ShowSettingsCommand}" ToolTip="Settings" />
+                <Button Width="35" Height="25" Style="{StaticResource RoundFlat3DButton}" FocusVisualStyle="{x:Null}"
+                Visibility="{Binding IsChecked, ElementName=MenuToggle, Converter={StaticResource BooleanToVisibilityConverter}}"
+                Grid.Column="3" Command="{Binding ShowSettingsCommand}" ToolTip="Settings"
+                FontFamily="{StaticResource icons}" Content="{x:Static res:Resources.FontIcon_Settings}" />
 
-            <Button HorizontalAlignment="Right" Width="35" Height="25" Style="{StaticResource RoundFlat3DButton}" FocusVisualStyle="{x:Null}"
-                Visibility="{Binding IsChecked, ElementName=MainWindowToggle, Converter={StaticResource BooleanToVisibilityConverter}}"
-                Grid.Row="3" FontFamily="Marlett" Content="r" Command="{Binding ExitCommand}" ToolTip="Close" />
-        </Grid>
+                <Button Width="35" Height="25" Style="{StaticResource RoundFlat3DButton}" FocusVisualStyle="{x:Null}"
+                Visibility="{Binding IsChecked, ElementName=MenuToggle, Converter={StaticResource BooleanToVisibilityConverter}}"
+                Grid.Column="4" Command="{Binding ExitCommand}" ToolTip="Close"
+                FontFamily="{StaticResource icons}" Content="{x:Static res:Resources.FontIcon_Close}" />
+            </Grid>
+        </WrapPanel>
 
         <StackPanel Visibility="{Binding IsChecked, ElementName=MainWindowToggle, Converter={StaticResource BooleanToVisibilityConverter}}"
                     Grid.Row="1"
@@ -104,9 +110,8 @@
                             TrayToolTip="{StaticResource TrayToolTip}" />
 
             <Grid Width="30" Height="45" VerticalAlignment="Top">
-                <Button Content="+"
-                        FontSize="18"
-                        FontFamily="Arial Black"
+                <Button FontSize="18"
+                        Content="{x:Static res:Resources.FontIcon_Add}" FontFamily="{StaticResource icons}"
                         VerticalAlignment="Center" HorizontalAlignment="Left"
                         Style="{StaticResource LeftHiddenButton}"
                         Width="30"
@@ -140,9 +145,8 @@
             </ItemsControl>
 
             <Grid Width="30" Height="45" VerticalAlignment="Top">
-                <Button Content="+"
-                        FontSize="16"
-                        FontFamily="Arial Black"
+                <Button FontSize="16"
+                        Content="{x:Static res:Resources.FontIcon_Add}" FontFamily="{StaticResource icons}"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Right"
                         Style="{StaticResource RightHiddenButton}"

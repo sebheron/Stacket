@@ -3,31 +3,32 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:res="clr-namespace:KanbanBoard.Logic.Properties;assembly=KanbanBoard.Logic"
         mc:Ignorable="d" Topmost="True" ShowInTaskbar="False"
         Title="MessageBoxWindow"  Height="120" Width="350" WindowStyle="None" Background="Transparent" AllowsTransparency="True" WindowStartupLocation="CenterScreen">
 
     <Border CornerRadius="15" Background="#BFD3D3D3">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
-                <RowDefinition/>
-                <RowDefinition Height="35"/>
+                <RowDefinition Height="30" />
+                <RowDefinition />
+                <RowDefinition Height="35" />
             </Grid.RowDefinitions>
 
             <Border MouseDown="WindowMouseDown" Background="DarkGray" CornerRadius="5" Grid.ColumnSpan="3" Margin="0,0,0,0.4">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="30" />
                     </Grid.ColumnDefinitions>
 
-                    <Button Grid.Column="1" Style="{StaticResource TransparentRoundFlat3DButton}" FontFamily="Marlett" Content="r" Command="{Binding OkCommand}"/>
-                    <TextBlock Grid.Column="0" Margin="5" Text="{Binding Caption}"/>
+                    <Button Grid.Column="1" Style="{StaticResource TransparentRoundFlat3DButton}" FontFamily="{StaticResource icons}" Content="{x:Static res:Resources.FontIcon_Close}" Command="{Binding OkCommand}" />
+                    <TextBlock Grid.Column="0" Margin="5" Text="{Binding Caption}" />
                 </Grid>
             </Border>
 
-            <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Text="{Binding Text}" Margin="10,9.6" TextWrapping="Wrap"/>
-            <Button Grid.Row="2" Content="Ok" Margin="3,1,3,3" Style="{StaticResource TransparentRoundFlat3DButton}" Command="{Binding OkCommand}" IsDefault="True"/>
+            <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Text="{Binding Text}" Margin="10,9.6" TextWrapping="Wrap" />
+            <Button Grid.Row="2" Content="Ok" Margin="3,1,3,3" Style="{StaticResource TransparentRoundFlat3DButton}" Command="{Binding OkCommand}" IsDefault="True" />
         </Grid>
     </Border>
 </Window>

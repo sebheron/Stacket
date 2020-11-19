@@ -268,6 +268,195 @@ namespace KanbanBoard.Logic.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to H.
+        /// </summary>
+        public static string FontIcon_Add {
+            get {
+                return ResourceManager.GetString("FontIcon_Add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to B.
+        /// </summary>
+        public static string FontIcon_Bin {
+            get {
+                return ResourceManager.GetString("FontIcon_Bin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to S.
+        /// </summary>
+        public static string FontIcon_Brush {
+            get {
+                return ResourceManager.GetString("FontIcon_Brush", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to G.
+        /// </summary>
+        public static string FontIcon_Close {
+            get {
+                return ResourceManager.GetString("FontIcon_Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to V.
+        /// </summary>
+        public static string FontIcon_Comment {
+            get {
+                return ResourceManager.GetString("FontIcon_Comment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to E.
+        /// </summary>
+        public static string FontIcon_DownArrow {
+            get {
+                return ResourceManager.GetString("FontIcon_DownArrow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to T.
+        /// </summary>
+        public static string FontIcon_Download {
+            get {
+                return ResourceManager.GetString("FontIcon_Download", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to C.
+        /// </summary>
+        public static string FontIcon_LeftArrow {
+            get {
+                return ResourceManager.GetString("FontIcon_LeftArrow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Q.
+        /// </summary>
+        public static string FontIcon_Lock {
+            get {
+                return ResourceManager.GetString("FontIcon_Lock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to J.
+        /// </summary>
+        public static string FontIcon_New {
+            get {
+                return ResourceManager.GetString("FontIcon_New", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to M.
+        /// </summary>
+        public static string FontIcon_Off {
+            get {
+                return ResourceManager.GetString("FontIcon_Off", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to N.
+        /// </summary>
+        public static string FontIcon_On {
+            get {
+                return ResourceManager.GetString("FontIcon_On", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to I.
+        /// </summary>
+        public static string FontIcon_Open {
+            get {
+                return ResourceManager.GetString("FontIcon_Open", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to L.
+        /// </summary>
+        public static string FontIcon_Pin {
+            get {
+                return ResourceManager.GetString("FontIcon_Pin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to R.
+        /// </summary>
+        public static string FontIcon_Question {
+            get {
+                return ResourceManager.GetString("FontIcon_Question", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to D.
+        /// </summary>
+        public static string FontIcon_RightArrow {
+            get {
+                return ResourceManager.GetString("FontIcon_RightArrow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A.
+        /// </summary>
+        public static string FontIcon_Settings {
+            get {
+                return ResourceManager.GetString("FontIcon_Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to U.
+        /// </summary>
+        public static string FontIcon_Uncomment {
+            get {
+                return ResourceManager.GetString("FontIcon_Uncomment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to P.
+        /// </summary>
+        public static string FontIcon_Unlock {
+            get {
+                return ResourceManager.GetString("FontIcon_Unlock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to K.
+        /// </summary>
+        public static string FontIcon_Unpin {
+            get {
+                return ResourceManager.GetString("FontIcon_Unpin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to F.
+        /// </summary>
+        public static string FontIcon_UpArrow {
+            get {
+                return ResourceManager.GetString("FontIcon_UpArrow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Stacket.
         /// </summary>
         public static string Stacket {
