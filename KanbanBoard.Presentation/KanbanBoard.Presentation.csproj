@@ -241,7 +241,6 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Resource Include="Fonts\icons.ttf" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
   </ItemGroup>

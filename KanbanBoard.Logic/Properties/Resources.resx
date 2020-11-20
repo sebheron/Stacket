@@ -209,69 +209,6 @@
     <value>Should Stacket start on Windows startup?</value>
     <comment>The message for the startup dialog.</comment>
   </data>
-  <data name="FontIcon_Add" xml:space="preserve">
-    <value>H</value>
-  </data>
-  <data name="FontIcon_Bin" xml:space="preserve">
-    <value>B</value>
-  </data>
-  <data name="FontIcon_Brush" xml:space="preserve">
-    <value>S</value>
-  </data>
-  <data name="FontIcon_Close" xml:space="preserve">
-    <value>G</value>
-  </data>
-  <data name="FontIcon_Comment" xml:space="preserve">
-    <value>V</value>
-  </data>
-  <data name="FontIcon_DownArrow" xml:space="preserve">
-    <value>E</value>
-  </data>
-  <data name="FontIcon_Download" xml:space="preserve">
-    <value>T</value>
-  </data>
-  <data name="FontIcon_LeftArrow" xml:space="preserve">
-    <value>C</value>
-  </data>
-  <data name="FontIcon_Lock" xml:space="preserve">
-    <value>Q</value>
-  </data>
-  <data name="FontIcon_New" xml:space="preserve">
-    <value>J</value>
-  </data>
-  <data name="FontIcon_Off" xml:space="preserve">
-    <value>M</value>
-  </data>
-  <data name="FontIcon_On" xml:space="preserve">
-    <value>N</value>
-  </data>
-  <data name="FontIcon_Open" xml:space="preserve">
-    <value>I</value>
-  </data>
-  <data name="FontIcon_Pin" xml:space="preserve">
-    <value>L</value>
-  </data>
-  <data name="FontIcon_Question" xml:space="preserve">
-    <value>R</value>
-  </data>
-  <data name="FontIcon_RightArrow" xml:space="preserve">
-    <value>D</value>
-  </data>
-  <data name="FontIcon_Settings" xml:space="preserve">
-    <value>A</value>
-  </data>
-  <data name="FontIcon_Uncomment" xml:space="preserve">
-    <value>U</value>
-  </data>
-  <data name="FontIcon_Unlock" xml:space="preserve">
-    <value>P</value>
-  </data>
-  <data name="FontIcon_Unpin" xml:space="preserve">
-    <value>K</value>
-  </data>
-  <data name="FontIcon_UpArrow" xml:space="preserve">
-    <value>F</value>
-  </data>
   <data name="Stacket" xml:space="preserve">
     <value>Stacket</value>
     <comment>The name of the startup registry entry.</comment>

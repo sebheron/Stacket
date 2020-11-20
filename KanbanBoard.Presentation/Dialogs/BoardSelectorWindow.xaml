@@ -26,7 +26,9 @@
                         <ColumnDefinition Width="30" />
                     </Grid.ColumnDefinitions>
 
-                    <Button Grid.Column="1" Style="{StaticResource TransparentRoundFlat3DButton}" FontFamily="{StaticResource icons}" Content="{x:Static res:Resources.FontIcon_Close}" Command="{Binding CloseDialogCommand}" />
+                    <Button Grid.Column="1" Style="{StaticResource TransparentRoundFlat3DButton}" Command="{Binding CloseDialogCommand}">
+                        <Image Source="{StaticResource cancel}" Width="11" />
+                    </Button>
                     <TextBlock Margin="5" Text="Open Board" />
                 </Grid>
             </Border>

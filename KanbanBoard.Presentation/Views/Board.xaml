@@ -9,7 +9,6 @@
         xmlns:beh="clr-namespace:KanbanBoard.Presentation.Behaviors"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         xmlns:prism="http://prismlibrary.com/"
-        xmlns:res="clr-namespace:KanbanBoard.Logic.Properties;assembly=KanbanBoard.Logic"
         prism:ViewModelLocator.AutoWireViewModel="True"
         mc:Ignorable="d"
         Title="Board" WindowState="Maximized"
@@ -57,8 +56,7 @@
             <i:Interaction.Behaviors>
                 <beh:MoveableStackpanelBehavior />
             </i:Interaction.Behaviors>
-            <ToggleButton Name="MainWindowToggle" Width="80" Height="25" Style="{StaticResource RoundFlat3DVerticalDropdownButton}" IsChecked="True" FocusVisualStyle="{x:Null}" ContextMenu="{StaticResource TrayMenu}">
-            </ToggleButton>
+            <ToggleButton Name="MainWindowToggle" Width="80" Height="25" Style="{StaticResource RoundFlat3DVerticalDropdownButton}" IsChecked="True" FocusVisualStyle="{x:Null}" ContextMenu="{StaticResource TrayMenu}" />
 
             <Grid HorizontalAlignment="Center" Visibility="{Binding IsChecked, ElementName=MainWindowToggle, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <Grid.ColumnDefinitions>
@@ -69,27 +67,31 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
-                <ToggleButton Name="MenuToggle" FontSize="12" Width="35" Height="25" Style="{StaticResource RoundFlat3DHorizontalDropdownButton}" IsChecked="False" FocusVisualStyle="{x:Null}" />
+                <ToggleButton Name="MenuToggle" Width="35" Height="25" Style="{StaticResource RoundFlat3DHorizontalDropdownButton}" IsChecked="True" FocusVisualStyle="{x:Null}" />
 
                 <Button Width="35" Height="25" Style="{StaticResource RoundFlat3DButton}" FocusVisualStyle="{x:Null}"
                 Visibility="{Binding IsChecked, ElementName=MenuToggle, Converter={StaticResource BooleanToVisibilityConverter}}"
-                Grid.Column="1" Command="{Binding NewBoardCommand}" ToolTip="New"
-                FontFamily="{StaticResource icons}" Content="{x:Static res:Resources.FontIcon_New}" />
+                Grid.Column="1" Command="{Binding NewBoardCommand}" ToolTip="New" FontSize="2">
+                    <Image Source="{StaticResource doc-add}" Width="12" />
+                </Button>
 
                 <Button Width="35" Height="25" Style="{StaticResource RoundFlat3DButton}" FocusVisualStyle="{x:Null}"
                 Visibility="{Binding IsChecked, ElementName=MenuToggle, Converter={StaticResource BooleanToVisibilityConverter}}"
-                Grid.Column="2" Command="{Binding LoadBoardCommand}" ToolTip="Load"
-                FontFamily="{StaticResource icons}" Content="{x:Static res:Resources.FontIcon_Open}" />
+                Grid.Column="2" Command="{Binding LoadBoardCommand}" ToolTip="Load">
+                    <Image Source="{StaticResource folder}" Width="15" />
+                </Button>
 
                 <Button Width="35" Height="25" Style="{StaticResource RoundFlat3DButton}" FocusVisualStyle="{x:Null}"
                 Visibility="{Binding IsChecked, ElementName=MenuToggle, Converter={StaticResource BooleanToVisibilityConverter}}"
-                Grid.Column="3" Command="{Binding ShowSettingsCommand}" ToolTip="Settings"
-                FontFamily="{StaticResource icons}" Content="{x:Static res:Resources.FontIcon_Settings}" />
+                Grid.Column="3" Command="{Binding ShowSettingsCommand}" ToolTip="Settings">
+                    <Image Source="{StaticResource cog-alt}" Width="15" />
+                </Button>
 
                 <Button Width="35" Height="25" Style="{StaticResource RoundFlat3DButton}" FocusVisualStyle="{x:Null}"
                 Visibility="{Binding IsChecked, ElementName=MenuToggle, Converter={StaticResource BooleanToVisibilityConverter}}"
-                Grid.Column="4" Command="{Binding ExitCommand}" ToolTip="Close"
-                FontFamily="{StaticResource icons}" Content="{x:Static res:Resources.FontIcon_Close}" />
+                Grid.Column="4" Command="{Binding ExitCommand}" ToolTip="Close">
+                    <Image Source="{StaticResource cancel}" Width="11" />
+                </Button>
             </Grid>
         </WrapPanel>
 
@@ -111,13 +113,14 @@
 
             <Grid Width="30" Height="45" VerticalAlignment="Top">
                 <Button FontSize="18"
-                        Content="{x:Static res:Resources.FontIcon_Add}" FontFamily="{StaticResource icons}"
                         VerticalAlignment="Center" HorizontalAlignment="Left"
                         Style="{StaticResource LeftHiddenButton}"
                         Width="30"
                         Height="30"
                         Margin="15 0 0 0"
-                        Command="{Binding AddColumnLeftCommand}" />
+                        Command="{Binding AddColumnLeftCommand}">
+                    <Image Source="{StaticResource plus}" Width="16" />
+                </Button>
             </Grid>
 
             <ItemsControl ItemsSource="{Binding Columns}"
@@ -146,7 +149,6 @@
 
             <Grid Width="30" Height="45" VerticalAlignment="Top">
                 <Button FontSize="16"
-                        Content="{x:Static res:Resources.FontIcon_Add}" FontFamily="{StaticResource icons}"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Right"
                         Style="{StaticResource RightHiddenButton}"
@@ -154,7 +156,9 @@
                         Height="30"
                         Margin="0 0 15 0"
                         Command="{Binding AddColumnRightCommand}"
-                        FocusVisualStyle="{x:Null}" />
+                        FocusVisualStyle="{x:Null}">
+                    <Image Source="{StaticResource plus}" Width="16" />
+                </Button>
             </Grid>
         </StackPanel>
     </Grid>

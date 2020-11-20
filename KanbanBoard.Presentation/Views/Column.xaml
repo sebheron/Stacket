@@ -37,9 +37,9 @@
                             VerticalAlignment="Top"
                             Height="30"
                             Command="{Binding AddItemCommand}"
-                            FontFamily="{StaticResource icons}"
-                            Content="{x:Static res:Resources.FontIcon_Add}"
-                            FocusVisualStyle="{x:Null}" />
+                            FocusVisualStyle="{x:Null}">
+                        <Image Source="{StaticResource plus}" Width="13" />
+                    </Button>
 
                     <Grid Grid.Column="1" HorizontalAlignment="Left">
                         <Grid.RowDefinitions>
@@ -67,9 +67,9 @@
                             VerticalAlignment="Top"
                             Height="30"
                             Command="{Binding DeleteColumnCommand}"
-                            FontFamily="{StaticResource icons}"
-                            Content="{x:Static res:Resources.FontIcon_Close}"
-                            FocusVisualStyle="{x:Null}" />
+                            FocusVisualStyle="{x:Null}">
+                        <Image Source="{StaticResource cancel}" Width="13" />
+                    </Button>
                 </Grid>
             </Border>
 
