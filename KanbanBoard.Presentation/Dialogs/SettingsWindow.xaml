@@ -47,7 +47,7 @@
                     Command="{Binding AcceptCommand}"
                     IsDefault="True" />
 
-            <Grid Grid.Row="1" Grid.ColumnSpan="3" Margin="10">
+            <Grid Grid.Row="1" Grid.ColumnSpan="3" Margin="10 5" HorizontalAlignment="Left">
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
@@ -55,10 +55,12 @@
 
                 <CheckBox IsChecked="{Binding LockToggle, Mode=TwoWay}"
                         HorizontalAlignment="Left" VerticalAlignment="Top"
-                        Content="Lock toggle button" Grid.Row="1" Grid.ColumnSpan="3" />
+                        Content="Lock toggle button" Grid.Row="1" Grid.ColumnSpan="3"
+                        Style="{StaticResource RoundFlatCheckbox}" Margin="1" />
                 <CheckBox IsChecked="{Binding StartOnStartup, Mode=TwoWay}"
-                          HorizontalAlignment="Left" VerticalAlignment="Top"
-                          Content="Start Stacket on Windows startup" Grid.ColumnSpan="3" />
+                        HorizontalAlignment="Left" VerticalAlignment="Top"
+                        Content="Start Stacket on Windows startup" Grid.ColumnSpan="3"
+                        Style="{StaticResource RoundFlatCheckbox}" Margin="1" />
             </Grid>
         </Grid>
     </Border>

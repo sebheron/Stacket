@@ -203,6 +203,39 @@
             <GradientStop Color="#888" Offset="1" />
         </LinearGradientBrush>
 
+        <Style x:Key="RoundFlatCheckbox" TargetType="CheckBox">
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="SnapsToDevicePixels" Value="False" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <BulletDecorator Background="Transparent">
+                            <BulletDecorator.Bullet>
+                                <Border x:Name="Border" Width="15" Height="15" BorderBrush="DarkSlateGray" BorderThickness="2" ClipToBounds="True" CornerRadius="3">
+                                    <Path x:Name="CheckMark" Width="8" Height="8" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M 0 0 L 8 8 M 0 8 L 8 0" Stretch="Fill"
+                                          Stroke="Black" StrokeEndLineCap="Round" StrokeStartLineCap="Round" StrokeThickness="2" />
+                                </Border>
+                            </BulletDecorator.Bullet>
+                            <ContentPresenter Margin="4,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" RecognizesAccessKey="True" />
+                        </BulletDecorator>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="false">
+                                <Setter TargetName="CheckMark" Property="Visibility" Value="Collapsed" />
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="true">
+                                <Setter TargetName="Border" Property="BorderBrush" Value="Black" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter TargetName="Border" Property="BorderBrush" Value="Black" />
+                                <Setter TargetName="CheckMark" Property="Stroke" Value="Black" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <Style x:Key="RoundFlat3DButton" TargetType="{x:Type Button}">
             <Setter Property="Template">
                 <Setter.Value>
