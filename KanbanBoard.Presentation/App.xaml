@@ -261,11 +261,12 @@
         </Style>
 
         <Style x:Key="RoundFlat3DButton" TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="#9AE6E6E6" />
             <Setter Property="Margin" Value="3" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Name="border" Background="#4FE6E6E6" BorderBrush="{StaticResource FlatReverse3DBorderBrush}" BorderThickness="0" CornerRadius="8" Margin="{TemplateBinding Margin}">
+                        <Border Name="border" Background="{TemplateBinding Background}" BorderBrush="{StaticResource FlatReverse3DBorderBrush}" BorderThickness="0" CornerRadius="8" Margin="{TemplateBinding Margin}">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Border>
 
@@ -448,7 +449,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ToggleButton">
-                        <Border Name="border" Background="#4FE6E6E6" BorderBrush="{StaticResource FlatReverse3DBorderBrush}" BorderThickness="0" CornerRadius="8" Margin="3">
+                        <Border Name="border" Background="#7BFCFCFC" BorderBrush="{StaticResource FlatReverse3DBorderBrush}" BorderThickness="0" CornerRadius="8" Margin="3">
                             <Grid>
                                 <Image Name="img" Width="15" />
                             </Grid>
@@ -474,7 +475,7 @@
             </Setter>
         </Style>
 
-        <Style x:Key="RoundFlat3DHorizontalDropdownButton" TargetType="{x:Type ToggleButton}">
+        <Style x:Key="RoundFlat3DHorizontalMenuBarButton" TargetType="{x:Type ToggleButton}">
             <Setter Property="Margin" Value="3" />
             <Setter Property="Template">
                 <Setter.Value>

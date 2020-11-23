@@ -53,6 +53,9 @@
         </Grid.RowDefinitions>
 
         <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <WrapPanel.Effect>
+                <DropShadowEffect Direction="275" Color="Gray" Opacity="0.5" />
+            </WrapPanel.Effect>
             <i:Interaction.Behaviors>
                 <beh:MoveableStackpanelBehavior />
             </i:Interaction.Behaviors>
@@ -67,27 +70,27 @@
                     <ColumnDefinition MaxWidth="30" />
                 </Grid.ColumnDefinitions>
 
-                <ToggleButton HorizontalAlignment="Left" Width="30" Margin="0 3" Name="MenuToggle" Height="25" Style="{StaticResource RoundFlat3DHorizontalDropdownButton}" IsChecked="True" FocusVisualStyle="{x:Null}" />
+                <ToggleButton HorizontalAlignment="Left" Width="30" Margin="0 3" Name="MenuToggle" Height="25" Style="{StaticResource RoundFlat3DHorizontalMenuBarButton}" IsChecked="True" FocusVisualStyle="{x:Null}" />
 
-                <Button Width="40" Margin="0 3" Height="25" Style="{StaticResource RoundFlat3DButton}" FocusVisualStyle="{x:Null}"
+                <Button Width="40" Margin="0 3" Height="25" Background="#4FE6E6E6" Style="{StaticResource RoundFlat3DButton}" FocusVisualStyle="{x:Null}"
                 Visibility="{Binding IsChecked, ElementName=MenuToggle, Converter={StaticResource BooleanToVisibilityConverter}}"
                 Grid.Column="1" Command="{Binding NewBoardCommand}" ToolTip="New" FontSize="2" HorizontalAlignment="Center">
                     <Image Source="{StaticResource doc-add}" Width="12" />
                 </Button>
 
-                <Button Width="40" Margin="0 3" Height="25" Style="{StaticResource RoundFlat3DButton}" FocusVisualStyle="{x:Null}"
+                <Button Width="40" Margin="0 3" Height="25" Background="#4FE6E6E6" Style="{StaticResource RoundFlat3DButton}" FocusVisualStyle="{x:Null}"
                 Visibility="{Binding IsChecked, ElementName=MenuToggle, Converter={StaticResource BooleanToVisibilityConverter}}"
                 Grid.Column="2" Command="{Binding LoadBoardCommand}" ToolTip="Load" HorizontalAlignment="Center">
                     <Image Source="{StaticResource folder}" Width="15" />
                 </Button>
 
-                <Button Width="40" Margin="0 3" Height="25" Style="{StaticResource RoundFlat3DButton}" FocusVisualStyle="{x:Null}"
+                <Button Width="40" Margin="0 3" Height="25" Background="#4FE6E6E6" Style="{StaticResource RoundFlat3DButton}" FocusVisualStyle="{x:Null}"
                 Visibility="{Binding IsChecked, ElementName=MenuToggle, Converter={StaticResource BooleanToVisibilityConverter}}"
                 Grid.Column="3" Command="{Binding ShowSettingsCommand}" ToolTip="Settings" HorizontalAlignment="Center">
                     <Image Source="{StaticResource cog-alt}" Width="15" />
                 </Button>
 
-                <Button Width="40" Margin="0 3" Height="25" Style="{StaticResource RoundFlat3DButton}" FocusVisualStyle="{x:Null}"
+                <Button Width="40" Margin="0 3" Height="25" Background="#4FE6E6E6" Style="{StaticResource RoundFlat3DButton}" FocusVisualStyle="{x:Null}"
                 Visibility="{Binding IsChecked, ElementName=MenuToggle, Converter={StaticResource BooleanToVisibilityConverter}}"
                 Grid.Column="4" Command="{Binding ExitCommand}" ToolTip="Close" HorizontalAlignment="Right">
                     <Image Source="{StaticResource cancel}" Width="11" Margin="7.5 0 0 0" />
@@ -103,7 +106,6 @@
             <StackPanel.Effect>
                 <DropShadowEffect Direction="275" Color="Gray" Opacity="0.5" />
             </StackPanel.Effect>
-
             <tb:TaskbarIcon Visibility="Visible"
                             ToolTipText="Stacket"
                             IconSource="..\icon.ico"
