@@ -60,37 +60,37 @@
 
             <Grid HorizontalAlignment="Center" Visibility="{Binding IsChecked, ElementName=MainWindowToggle, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
+                    <ColumnDefinition MaxWidth="30" />
+                    <ColumnDefinition MaxWidth="30" />
+                    <ColumnDefinition MaxWidth="30" />
+                    <ColumnDefinition MaxWidth="30" />
+                    <ColumnDefinition MaxWidth="30" />
                 </Grid.ColumnDefinitions>
 
-                <ToggleButton Name="MenuToggle" Width="35" Height="25" Style="{StaticResource RoundFlat3DHorizontalDropdownButton}" IsChecked="True" FocusVisualStyle="{x:Null}" />
+                <ToggleButton HorizontalAlignment="Left" Width="30" Margin="0 3" Name="MenuToggle" Height="25" Style="{StaticResource RoundFlat3DHorizontalDropdownButton}" IsChecked="True" FocusVisualStyle="{x:Null}" />
 
-                <Button Width="35" Height="25" Style="{StaticResource RoundFlat3DButton}" FocusVisualStyle="{x:Null}"
+                <Button Width="40" Margin="0 3" Height="25" Style="{StaticResource RoundFlat3DButton}" FocusVisualStyle="{x:Null}"
                 Visibility="{Binding IsChecked, ElementName=MenuToggle, Converter={StaticResource BooleanToVisibilityConverter}}"
-                Grid.Column="1" Command="{Binding NewBoardCommand}" ToolTip="New" FontSize="2">
+                Grid.Column="1" Command="{Binding NewBoardCommand}" ToolTip="New" FontSize="2" HorizontalAlignment="Center">
                     <Image Source="{StaticResource doc-add}" Width="12" />
                 </Button>
 
-                <Button Width="35" Height="25" Style="{StaticResource RoundFlat3DButton}" FocusVisualStyle="{x:Null}"
+                <Button Width="40" Margin="0 3" Height="25" Style="{StaticResource RoundFlat3DButton}" FocusVisualStyle="{x:Null}"
                 Visibility="{Binding IsChecked, ElementName=MenuToggle, Converter={StaticResource BooleanToVisibilityConverter}}"
-                Grid.Column="2" Command="{Binding LoadBoardCommand}" ToolTip="Load">
+                Grid.Column="2" Command="{Binding LoadBoardCommand}" ToolTip="Load" HorizontalAlignment="Center">
                     <Image Source="{StaticResource folder}" Width="15" />
                 </Button>
 
-                <Button Width="35" Height="25" Style="{StaticResource RoundFlat3DButton}" FocusVisualStyle="{x:Null}"
+                <Button Width="40" Margin="0 3" Height="25" Style="{StaticResource RoundFlat3DButton}" FocusVisualStyle="{x:Null}"
                 Visibility="{Binding IsChecked, ElementName=MenuToggle, Converter={StaticResource BooleanToVisibilityConverter}}"
-                Grid.Column="3" Command="{Binding ShowSettingsCommand}" ToolTip="Settings">
+                Grid.Column="3" Command="{Binding ShowSettingsCommand}" ToolTip="Settings" HorizontalAlignment="Center">
                     <Image Source="{StaticResource cog-alt}" Width="15" />
                 </Button>
 
-                <Button Width="35" Height="25" Style="{StaticResource RoundFlat3DButton}" FocusVisualStyle="{x:Null}"
+                <Button Width="40" Margin="0 3" Height="25" Style="{StaticResource RoundFlat3DButton}" FocusVisualStyle="{x:Null}"
                 Visibility="{Binding IsChecked, ElementName=MenuToggle, Converter={StaticResource BooleanToVisibilityConverter}}"
-                Grid.Column="4" Command="{Binding ExitCommand}" ToolTip="Close">
-                    <Image Source="{StaticResource cancel}" Width="11" />
+                Grid.Column="4" Command="{Binding ExitCommand}" ToolTip="Close" HorizontalAlignment="Right">
+                    <Image Source="{StaticResource cancel}" Width="11" Margin="7.5 0 0 0" />
                 </Button>
             </Grid>
         </WrapPanel>
