@@ -10,6 +10,7 @@
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:enums="clr-namespace:KanbanBoard.Logic.Enums;assembly=KanbanBoard.Logic"
              xmlns:converters="clr-namespace:KanbanBoard.Presentation.Converters"
+             xmlns:res="clr-namespace:KanbanBoard.Logic.Properties;assembly=KanbanBoard.Logic"
              mc:Ignorable="d"
              d:DesignWidth="300">
 
@@ -35,41 +36,33 @@
                         <ColumnDefinition Width="30" />
                     </Grid.ColumnDefinitions>
 
-                    <Grid HorizontalAlignment="Left">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="6" />
-                            <RowDefinition />
-                            <RowDefinition Height="6" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="5" />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
+                    <TextBox Margin="6 5 0 6" MaxLines="3" Grid.Row="1" dd:DragDrop.IsDropTarget="True" Style="{StaticResource CappedHiddenTextBox}" Text="{Binding Title}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" HorizontalAlignment="Left">
+                        <b:Interaction.Behaviors>
+                            <behaviors:TextBoxFocusBehavior />
+                        </b:Interaction.Behaviors>
+                    </TextBox>
 
-                        <TextBox MaxLines="3" Grid.Column="1" Grid.Row="1" dd:DragDrop.IsDropTarget="True" Style="{StaticResource CappedHiddenTextBox}" Text="{Binding Title}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left">
-                            <b:Interaction.Behaviors>
-                                <behaviors:TextBoxFocusBehavior />
-                            </b:Interaction.Behaviors>
-                        </TextBox>
-                    </Grid>
-
-                    <ToggleButton Grid.Column="1" 
-                                  Style="{StaticResource MinimizeFlat3DToggleButton}" 
-                                  VerticalAlignment="Top" 
+                    <ToggleButton Grid.Column="1"
+                                  Style="{StaticResource TransparentRoundFlat3DDescriptionButton}"
+                                  VerticalAlignment="Top"
                                   Height="30"
-                                  IsChecked="{Binding DescriptionVisible, Mode=TwoWay}" 
-                                  FocusVisualStyle="{x:Null}" />
+                                  IsChecked="{Binding DescriptionVisible, Mode=TwoWay}"
+                                  FocusVisualStyle="{x:Null}"
+                                  Visibility="{Binding IsChecked, ElementName=Lock, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
-                    <ComboBox Style="{StaticResource TransparentRoundComboBox}" 
-                              Grid.Column="2" 
-                              SelectedValue="{Binding ItemTypeView}" 
-                              ItemsSource="{Binding Source={StaticResource ItemTypes}}" 
-                              VerticalAlignment="Top" 
-                              Height="30" />
+                    <ComboBox Style="{StaticResource TransparentRoundComboBox}"
+                              Grid.Column="2"
+                              SelectedValue="{Binding ItemTypeView}"
+                              ItemsSource="{Binding Source={StaticResource ItemTypes}}"
+                              VerticalAlignment="Top"
+                              Height="30"
+                              Visibility="{Binding IsChecked, ElementName=Lock, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
-                    <Button Content="r" FontFamily="Marlett" Grid.Column="3" Style="{StaticResource TransparentRoundFlat3DButton}" VerticalAlignment="Top" Height="30"
+                    <Button Grid.Column="3" Style="{StaticResource TransparentRoundFlat3DButton}" VerticalAlignment="Top" Height="30"
                             Command="{Binding DeleteItemCommand}"
-                            FocusVisualStyle="{x:Null}" />
+                            FocusVisualStyle="{x:Null}">
+                        <Image Source="{StaticResource cancel}" Width="13" />
+                    </Button>
                 </Grid>
             </Border>
 

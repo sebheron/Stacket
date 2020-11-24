@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:res="clr-namespace:KanbanBoard.Logic.Properties;assembly=KanbanBoard.Logic"
         mc:Ignorable="d" Topmost="True" ShowInTaskbar="False"
         Title="SettingsWindow"  Height="115" Width="255" WindowStyle="None" Background="Transparent" AllowsTransparency="True" WindowStartupLocation="CenterScreen">
 
@@ -27,10 +28,9 @@
                         <ColumnDefinition Width="30" />
                     </Grid.ColumnDefinitions>
 
-                    <Button Grid.Column="1"
-                            Style="{StaticResource TransparentRoundFlat3DButton}"
-                            FontFamily="Marlett" Content="r"
-                            Command="{Binding CancelCommand}" />
+                    <Button Grid.Column="1" Style="{StaticResource TransparentRoundFlat3DButton}" Command="{Binding CancelCommand}">
+                        <Image Source="{StaticResource cancel}" Width="11" />
+                    </Button>
                     <TextBlock Grid.Column="0" Margin="5" Text="Settings" />
                 </Grid>
             </Border>
@@ -47,7 +47,7 @@
                     Command="{Binding AcceptCommand}"
                     IsDefault="True" />
 
-            <Grid Grid.Row="1" Grid.ColumnSpan="3" Margin="10">
+            <Grid Grid.Row="1" Grid.ColumnSpan="3" Margin="10 5" HorizontalAlignment="Left">
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
@@ -55,10 +55,12 @@
 
                 <CheckBox IsChecked="{Binding LockToggle, Mode=TwoWay}"
                         HorizontalAlignment="Left" VerticalAlignment="Top"
-                        Content="Lock toggle button" Grid.Row="1" Grid.ColumnSpan="3" />
+                        Content="Lock toggle button" Grid.Row="1" Grid.ColumnSpan="3"
+                        Style="{StaticResource RoundFlatCheckbox}" Margin="1" />
                 <CheckBox IsChecked="{Binding StartOnStartup, Mode=TwoWay}"
-                          HorizontalAlignment="Left" VerticalAlignment="Top"
-                          Content="Start Stacket on Windows startup" Grid.ColumnSpan="3" />
+                        HorizontalAlignment="Left" VerticalAlignment="Top"
+                        Content="Start Stacket on Windows startup" Grid.ColumnSpan="3"
+                        Style="{StaticResource RoundFlatCheckbox}" Margin="1" />
             </Grid>
         </Grid>
     </Border>
