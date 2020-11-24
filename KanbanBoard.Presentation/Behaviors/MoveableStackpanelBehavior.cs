@@ -20,11 +20,10 @@ namespace KanbanBoard.Presentation.Behaviors
         private const int SnapThreshold = 15;
 
         private bool dragging;
-        private bool flipped = false;
         private Point prevPos;
 
         private double halfScreenWidth;
-        private double horizontalAdjustment = 0;
+        private bool locked;
 
         private double xPos;
         private readonly TranslateTransform transform = new TranslateTransform();
@@ -38,6 +37,7 @@ namespace KanbanBoard.Presentation.Behaviors
             this.wrapPanel.RenderTransform = this.transform;
             this.xPos = this.transform.X = Settings.Default.TogglePosition;
             this.halfScreenWidth = SystemParameters.MaximizedPrimaryScreenWidth / 2;
+            this.wrapPanel.Margin = new Thickness(this.halfScreenWidth, 0, 0, 0);
 
             this.wrapPanel.PreviewMouseLeftButtonDown += this.AssociatedObject_PreviewMouseLeftButtonDown;
             this.wrapPanel.PreviewMouseLeftButtonUp += this.AssociatedObject_PreviewMouseLeftButtonUp;
@@ -71,32 +71,29 @@ namespace KanbanBoard.Presentation.Behaviors
 
         private void UpdatePanelPosition(object sender, EventArgs e)
         {
-            if (Math.Abs(this.xPos) < SnapThreshold)
+            if (e is SizeChangedEventArgs sce && locked)
             {
-                this.transform.X = 0;
+                double sizeDiff = sce.PreviousSize.Width - sce.NewSize.Width;
+                this.xPos += sizeDiff;
             }
-            else if (this.xPos - horizontalAdjustment > this.halfScreenWidth - this.wrapPanel.ActualWidth / 2)
+
+            if (this.xPos < -40 + SnapThreshold && this.xPos > -40 - SnapThreshold)
             {
-                this.transform.X = this.halfScreenWidth - this.wrapPanel.ActualWidth / 2;
+                this.transform.X = -40;
             }
-            else if (this.xPos - horizontalAdjustment < -this.halfScreenWidth + this.wrapPanel.ActualWidth / 2)
+            else if (this.xPos > this.halfScreenWidth - this.wrapPanel.ActualWidth - SnapThreshold / 2)
             {
-                this.transform.X = -this.halfScreenWidth + this.wrapPanel.ActualWidth / 2;
+                this.transform.X = this.halfScreenWidth - this.wrapPanel.ActualWidth - 2;
+                locked = true;
+            }
+            else if (this.xPos < -this.halfScreenWidth + SnapThreshold / 2)
+            {
+                this.transform.X = -this.halfScreenWidth + 2;
             }
             else
             {
                 this.transform.X = this.xPos;
-            }
-
-            if (this.xPos < this.halfScreenWidth && flipped)
-            {
-                flipped = false;
-                this.wrapPanel.FlowDirection = FlowDirection.LeftToRight;
-            }
-            else if (this.xPos > this.halfScreenWidth && !flipped)
-            {
-                flipped = true;
-                this.wrapPanel.FlowDirection = FlowDirection.RightToLeft;
+                locked = false;
             }
         }
 

@@ -51,8 +51,7 @@
             <RowDefinition Height="30" />
             <RowDefinition />
         </Grid.RowDefinitions>
-
-        <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
             <WrapPanel.Effect>
                 <DropShadowEffect Direction="275" Color="Gray" Opacity="0.5" />
             </WrapPanel.Effect>
