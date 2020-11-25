@@ -196,6 +196,24 @@ namespace KanbanBoard.Logic.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure want to delete this board?.
+        /// </summary>
+        public static string Dialog_RemoveBoard_Message {
+            get {
+                return ResourceManager.GetString("Dialog_RemoveBoard_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove board.
+        /// </summary>
+        public static string Dialog_RemoveBoard_Title {
+            get {
+                return ResourceManager.GetString("Dialog_RemoveBoard_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to remove this column?.
         /// </summary>
         public static string Dialog_RemoveColumn_Message {

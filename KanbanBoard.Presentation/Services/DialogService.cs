@@ -14,7 +14,7 @@ namespace KanbanBoard.Presentation.Services
             this.logger = logger;
         }
 
-        public bool ShowYesNo(string text, string caption)
+        public bool? ShowYesNo(string text, string caption)
         {
             this.logger.Log("Requested yes no dialog", Category.Debug, Priority.None);
             var dialog = new DialogBoxWindow();

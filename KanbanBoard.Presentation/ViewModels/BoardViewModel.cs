@@ -32,9 +32,9 @@ namespace KanbanBoard.Presentation.ViewModels
         private bool loadInProgress;
 
         public BoardViewModel(
-            IColumnViewModelFactory columnFactory, 
-            IDialogService dialogService, 
-            ILoggerFacade logger, 
+            IColumnViewModelFactory columnFactory,
+            IDialogService dialogService,
+            ILoggerFacade logger,
             IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
@@ -86,6 +86,7 @@ namespace KanbanBoard.Presentation.ViewModels
 
         // Board commands.
         public ICommand NewBoardCommand { get; }
+
         public ICommand LoadBoardCommand { get; }
 
         // Exit command
@@ -93,6 +94,7 @@ namespace KanbanBoard.Presentation.ViewModels
 
         // Column commands.
         public ICommand AddColumnLeftCommand { get; }
+
         public ICommand AddColumnRightCommand { get; }
 
         private void OnWindowLoaded()
@@ -160,7 +162,7 @@ namespace KanbanBoard.Presentation.ViewModels
 
                 // For each version in future releases migration will occur here! Via Assembly information check.
                 var lines = File.ReadAllLines(this.filePath);
-                
+
                 for (var i = 2; i < lines.Length; i++)
                 {
                     this.Columns.Add(this.columnFactory.Load(lines[i]));
@@ -183,7 +185,7 @@ namespace KanbanBoard.Presentation.ViewModels
             }
         }
 
-        public void SaveBoard() 
+        public void SaveBoard()
         {
             if (this.loadInProgress || string.IsNullOrEmpty(this.filePath)) return;
 
@@ -200,7 +202,7 @@ namespace KanbanBoard.Presentation.ViewModels
         {
             this.Columns.Insert(0, this.columnFactory.CreateColumn());
             this.RaisePropertyChanged(nameof(this.ColumnWidth));
-            
+
             this.logger.Log("New left column created", Category.Debug, Priority.None);
         }
 
@@ -223,16 +225,15 @@ namespace KanbanBoard.Presentation.ViewModels
             var columnToDelete = this.Columns.FirstOrDefault(column => column.Id == columnId);
             if (columnToDelete == null) return;
 
-            // Confirm deletion if the column is not default.
-            if (!columnToDelete.Unchanged && !this.dialogService.ShowYesNo(Resources.Dialog_RemoveColumn_Message, Resources.Dialog_RemoveColumn_Title)) return;
-
             var items = columnToDelete.Items;
+
+            var result = items.Count > 0 ? this.dialogService.ShowYesNo(Resources.Dialog_SaveItemsInColumn_Message, Resources.Dialog_RemoveColumn_Title) : false;
+            if (!result.HasValue) return; //Cancelled selected on the dialog.
 
             this.Columns.Remove(columnToDelete);
             this.logger.Log("Column deleted", Category.Debug, Priority.None);
 
-            // Ask user whether or not to save items in deleted column.
-            if (items.Count <= 0 || !this.dialogService.ShowYesNo(Resources.Dialog_SaveItemsInColumn_Message, Resources.Dialog_RemoveColumn_Title)) return;
+            if (!result.Value) return; //No selected on the dialog or there's no items to move across.
 
             foreach (var item in items)
             {
