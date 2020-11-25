@@ -196,38 +196,11 @@ namespace KanbanBoard.Logic.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Are you sure you want to remove this column?.
-        /// </summary>
-        public static string Dialog_RemoveColumn_Message {
-            get {
-                return ResourceManager.GetString("Dialog_RemoveColumn_Message", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Remove column.
         /// </summary>
         public static string Dialog_RemoveColumn_Title {
             get {
                 return ResourceManager.GetString("Dialog_RemoveColumn_Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Are you sure you want to remove this item?.
-        /// </summary>
-        public static string Dialog_RemoveItem_Message {
-            get {
-                return ResourceManager.GetString("Dialog_RemoveItem_Message", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Remove Item.
-        /// </summary>
-        public static string Dialog_RemoveItem_Title {
-            get {
-                return ResourceManager.GetString("Dialog_RemoveItem_Title", resourceCulture);
             }
         }
         

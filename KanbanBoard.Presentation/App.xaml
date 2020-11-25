@@ -18,20 +18,11 @@
                 </GeometryDrawing>
             </DrawingImage.Drawing>
         </DrawingImage>
-        <DrawingImage x:Key="pin">
+        <DrawingImage x:Key="ellipsis">
             <DrawingImage.Drawing>
                 <GeometryDrawing Brush="#FF000000">
                     <GeometryDrawing.Geometry>
-                        <PathGeometry FillRule="Nonzero" Figures="M574.25,-767.1875C587.25,-767.5625,599.5,-762.5,611,-752L819,-543C833,-527.666687011719 837.666687011719,-511 833,-493 828.333312988281,-475 817.666687011719,-463 801,-457 716.333312988281,-415 659,-364.333343505859 629,-305 591.666687011719,-231.66667175293 573,-142.33332824707 573,-36.9999961853027 573,-21.6666660308838 568,-9 558,1.00000548362732 548,11 535.666687011719,16 521,15.9999990463257 507,16 494.666656494141,10.6666669845581 484,5.04404306411743E-06L315,-169 0,66.9999923706055 236,-248 68,-417C52,-432.333343505859 48,-451 55.9999961853027,-473 65.3333358764648,-494.333343505859 81.3333358764648,-505 104.000007629395,-505 208.66667175293,-505 298.666656494141,-524 374,-562 434,-592 484.333343505859,-649 525,-733 531,-749 543,-759.666687011719 561,-765 565.5,-766.333312988281 569.916687011719,-767.0625 574.25,-767.1875z" />
-                    </GeometryDrawing.Geometry>
-                </GeometryDrawing>
-            </DrawingImage.Drawing>
-        </DrawingImage>
-        <DrawingImage x:Key="pin-outline">
-            <DrawingImage.Drawing>
-                <GeometryDrawing Brush="#FF000000">
-                    <GeometryDrawing.Geometry>
-                        <PathGeometry FillRule="Nonzero" Figures="M574,-690C528,-592.666687011719,469.333343505859,-526,398,-490L385,-484C305,-446,211.33332824707,-427,104,-427L520,-10.9999952316284C520,-123 541,-220.66667175293 583,-304 618.333312988281,-375.333343505859 683.666687011719,-433.666656494141 779,-479L574,-690z M574,-793C603.333312988281,-792.333312988281,628,-782,648,-762L856,-554C876,-534 886,-509.666656494141 886,-481 886,-452.333343505859 876,-427.333343505859 856,-406 845.333312988281,-395.333343505859 833.333312988281,-387.333343505859 820,-382 749.333312988281,-348 701.333312988281,-306.333343505859 676,-257 642,-189 625,-107 625,-10.9999952316284 625,19 615.333312988281,43.6666679382324 596,63.0000038146973 576.666687011719,82.3333358764648 551.666687011719,92.3333358764648 521,93 489.666656494141,93 464.666656494141,83 446,63.0000038146973L279,-106 3.36002904077759E-06,93 199,-186 29.9999980926514,-354C16.6666660308838,-366 7.66666650772095,-382.333343505859 2.99999499320984,-403 -1.66666662693024,-423.666656494141 0,-445 8.00000286102295,-467 26,-510.333343505859 58,-532 104,-532 201.33332824707,-532 283.333343505859,-548.666687011719 350,-582L361,-589C407,-613.666687011719 446.333343505859,-660.666687011719 479,-730 483.666656494141,-743.333312988281 490.666656494141,-754.666687011719 500,-764 520,-784 544.666687011719,-793.666687011719 574,-793z" />
+                        <PathGeometry FillRule="Nonzero" Figures="M625,-493L732,-493C747.333312988281,-493 760,-487.666656494141 770,-477 780,-466.333343505859 785.333312988281,-453.666656494141 786,-439L786,-332C786,-317.333343505859 780.666687011719,-304.666656494141 770,-294 759.333312988281,-283.333343505859 746.666687011719,-278.333343505859 732,-279L625,-279C610.333312988281,-279 597.666687011719,-284 587,-294 576.333312988281,-304 571,-316.666656494141 571,-332L571,-439C571,-454.333343505859 576.333312988281,-467 587,-477 597.666687011719,-487 610.333312988281,-492.333343505859 625,-493z M339,-493L446,-493C461.333343505859,-493 474,-487.666656494141 484,-477 494,-466.333343505859 499.333343505859,-453.666656494141 500,-439L500,-332C500,-317.333343505859 494.666656494141,-304.666656494141 484,-294 473.333343505859,-283.333343505859 460.666656494141,-278.333343505859 446,-279L339,-279C324.333343505859,-279 311.666656494141,-284 301,-294 290.333343505859,-304 285.333343505859,-316.666656494141 286,-332L286,-439C286,-454.333343505859 291,-467 301,-477 311,-487 323.666656494141,-492.333343505859 339,-493z M54.0000038146973,-493L161,-493C175.66667175293,-493 188.33332824707,-487.666656494141 199,-477 209.66667175293,-466.333343505859 214.66667175293,-453.666656494141 214,-439L214,-332C214,-317.333343505859 209,-304.666656494141 199,-294 189,-283.333343505859 176.33332824707,-278.333343505859 161,-279L54.0000038146973,-279C38.6666679382324,-279 26,-284 16.0000038146973,-294 6,-304 0.666666686534882,-316.666656494141 5.6843418860808E-14,-332L5.6843418860808E-14,-439C0,-454.333343505859 5.33333349227905,-467 16.0000038146973,-477 26.6666660308838,-487 39.3333320617676,-492.333343505859 54.0000038146973,-493z" />
                     </GeometryDrawing.Geometry>
                 </GeometryDrawing>
             </DrawingImage.Drawing>
@@ -346,11 +337,38 @@
             </Setter>
         </Style>
 
+        <Style x:Key="TransparentRoundFlat3DShowOptionsButton" TargetType="{x:Type ToggleButton}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border Name="border" Background="#01FFFFFF" BorderBrush="{StaticResource FlatReverse3DBorderBrush}" BorderThickness="0" CornerRadius="8" Margin="3">
+                            <Grid>
+                                <Image Source="{StaticResource ellipsis}" Width="14" VerticalAlignment="Center" Margin="1 1 0 0" />
+                            </Grid>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#6BB8B8B8" />
+                                <Setter TargetName="border" Property="BorderThickness" Value="3" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#6BE6E6E6" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="border" Property="Background" Value="#6BB8B8B8" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <Style x:Key="TransparentRoundFlat3DDescriptionButton" TargetType="{x:Type ToggleButton}">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ToggleButton">
-                        <Border Name="border" BorderBrush="{StaticResource FlatReverse3DBorderBrush}" BorderThickness="0" CornerRadius="8" Margin="3">
+                        <Border Name="border" Background="#01FFFFFF" BorderBrush="{StaticResource FlatReverse3DBorderBrush}" BorderThickness="0" CornerRadius="8" Margin="3">
                             <Grid>
                                 <Image Name="img" Width="13" VerticalAlignment="Center" />
                             </Grid>
@@ -383,7 +401,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ToggleButton">
-                        <Border Name="border" BorderBrush="{StaticResource FlatReverse3DBorderBrush}" BorderThickness="0" CornerRadius="8" Margin="3">
+                        <Border Name="border" Background="#01FFFFFF" BorderBrush="{StaticResource FlatReverse3DBorderBrush}" BorderThickness="0" CornerRadius="8" Margin="3">
                             <Grid>
                                 <Image Name="img" Width="13" VerticalAlignment="Center" />
                             </Grid>
@@ -395,13 +413,13 @@
                                 <Setter TargetName="border" Property="BorderThickness" Value="3" />
                             </Trigger>
                             <Trigger Property="IsChecked" Value="False">
-                                <Setter TargetName="img" Property="Source" Value="{StaticResource lock-open}" />
+                                <Setter TargetName="img" Property="Source" Value="{StaticResource lock-filled}" />
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="border" Property="Background" Value="#6BE6E6E6" />
                             </Trigger>
                             <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="img" Property="Source" Value="{StaticResource lock-filled}" />
+                                <Setter TargetName="img" Property="Source" Value="{StaticResource lock-open}" />
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
                                 <Setter TargetName="border" Property="Background" Value="#6BB8B8B8" />
@@ -416,7 +434,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ToggleButton">
-                        <Border Name="border" BorderBrush="{StaticResource FlatReverse3DBorderBrush}" BorderThickness="0" CornerRadius="8" Margin="3">
+                        <Border Name="border" Background="#01FFFFFF" BorderBrush="{StaticResource FlatReverse3DBorderBrush}" BorderThickness="0" CornerRadius="8" Margin="3">
                             <Grid>
                                 <Image Name="img" Width="16" VerticalAlignment="Center" />
                             </Grid>
@@ -758,7 +776,7 @@
         </Style>
         <Style x:Key="FadeOutAndIn" TargetType="FrameworkElement">
             <Style.Triggers>
-                <Trigger Property="IsEnabled" Value="False">
+                <Trigger Property="IsHitTestVisible" Value="False">
                     <Trigger.EnterActions>
                         <BeginStoryboard>
                             <Storyboard>

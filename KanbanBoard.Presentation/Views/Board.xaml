@@ -20,11 +20,6 @@
         xmlns:views="clr-namespace:KanbanBoard.Presentation.Views"
         Background="Transparent" SizeToContent="Height">
 
-    <Window.InputBindings>
-        <KeyBinding Modifiers="Ctrl" Key="S" Command="{Binding SaveBoardCommand}" />
-        <KeyBinding Modifiers="Ctrl" Key="O" Command="{Binding LoadBoardCommand}" />
-    </Window.InputBindings>
-
     <Window.Resources>
         <ContextMenu x:Key="TrayMenu" x:Shared="true">
             <MenuItem Header="New" Command="{Binding NewBoardCommand}" IsEnabled="{Binding NewEnabled}" />

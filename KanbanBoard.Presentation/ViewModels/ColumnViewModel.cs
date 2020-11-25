@@ -14,12 +14,13 @@ using Prism.Logging;
 
 namespace KanbanBoard.Presentation.ViewModels
 {
-    public class ColumnViewModel : BaseCollectionItemViewModel
+    public class ColumnViewModel : BaseCollectionItemViewModel, IOptions
     {
         private readonly IDialogService dialogService;
         private readonly ILoggerFacade logger;
 
         private bool columnVisible;
+        private bool optionsOpen;
 
         public ColumnViewModel(
             IItemViewModelFactory itemFactory,
@@ -29,7 +30,7 @@ namespace KanbanBoard.Presentation.ViewModels
             Guid? id = null,
             string title = null,
             bool columnVisible = true,
-            IEnumerable<ItemViewModel> items = null) 
+            IEnumerable<ItemViewModel> items = null)
             : base(id, title ?? Resources.Board_NewColumnName, eventAggregator)
         {
             // Loading a column.
@@ -47,7 +48,7 @@ namespace KanbanBoard.Presentation.ViewModels
             {
                 this.Items.AddRange(items);
             }
-            
+
             this.AddItemCommand = new DelegateCommand(() => this.Items.Add(itemFactory.CreateItem()));
             this.DeleteColumnCommand = new DelegateCommand(() => this.EventAggregator.GetEvent<DeleteColumnEvent>().Publish(this.Id));
 
@@ -67,6 +68,19 @@ namespace KanbanBoard.Presentation.ViewModels
             set => SetProperty(ref columnVisible, value);
         }
 
+        public bool OptionsOpen
+        {
+            get => this.optionsOpen;
+            set
+            {
+                if (value)
+                {
+                    this.EventAggregator.GetEvent<OpenOptionsEvent>().Publish(this.Id);
+                }
+                this.SetProperty(ref this.optionsOpen, value);
+            }
+        }
+
         public bool Unchanged => this.Title == Resources.Board_NewColumnName && this.Items.Count <= 0;
 
         private void DeleteItem(Guid itemId)
@@ -74,11 +88,7 @@ namespace KanbanBoard.Presentation.ViewModels
             var itemToDelete = this.Items.FirstOrDefault(item => item.Id == itemId);
             if (itemToDelete == null) return;
 
-            if (itemToDelete.Unchanged
-                || this.dialogService.ShowYesNo(Resources.Dialog_RemoveItem_Message, Resources.Dialog_RemoveItem_Title))
-            {
-                this.Items.Remove(itemToDelete);
-            }
+            this.Items.Remove(itemToDelete);
 
             this.logger.Log("Item deleted", Category.Debug, Priority.None);
         }
@@ -87,6 +97,11 @@ namespace KanbanBoard.Presentation.ViewModels
         {
             var columnData = $"{this.Id + Properties.Resources.NewItemBreak + this.Title + Properties.Resources.NewItemBreak + this.ColumnVisible + Properties.Resources.NewItemBreak}";
             return this.Items.Aggregate(columnData, (current, item) => current + item + Properties.Resources.NewItemBreak);
+        }
+
+        public void ResetOptionsOpen()
+        {
+            this.OptionsOpen = false;
         }
     }
 }

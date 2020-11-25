@@ -7,8 +7,6 @@ namespace KanbanBoard.Presentation.Converters
 {
     public class BooleanToVisibilityConverter : IValueConverter
     {
-        public bool InvertVisibility { get; set; }
-
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (targetType != typeof(Visibility))
@@ -17,11 +15,12 @@ namespace KanbanBoard.Presentation.Converters
             }
 
             var visible = System.Convert.ToBoolean(value, culture);
-            if (this.InvertVisibility)
+
+            if (parameter is bool reverse && reverse)
             {
                 visible = !visible;
             }
-                
+
             return visible ? Visibility.Visible : Visibility.Collapsed;
         }
 

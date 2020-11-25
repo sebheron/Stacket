@@ -32,14 +32,15 @@ namespace KanbanBoard.Presentation.ViewModels
         private bool loadInProgress;
 
         public BoardViewModel(
-            IColumnViewModelFactory columnFactory, 
-            IDialogService dialogService, 
-            ILoggerFacade logger, 
+            IColumnViewModelFactory columnFactory,
+            IDialogService dialogService,
+            ILoggerFacade logger,
             IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
             this.eventAggregator.GetEvent<DeleteColumnEvent>().Subscribe(this.DeleteColumn);
             this.eventAggregator.GetEvent<RequestSaveEvent>().Subscribe(this.SaveBoard);
+            this.eventAggregator.GetEvent<OpenOptionsEvent>().Subscribe(this.OpenedOptions);
 
             this.columnFactory = columnFactory;
             this.logger = logger;
@@ -86,6 +87,7 @@ namespace KanbanBoard.Presentation.ViewModels
 
         // Board commands.
         public ICommand NewBoardCommand { get; }
+
         public ICommand LoadBoardCommand { get; }
 
         // Exit command
@@ -93,6 +95,7 @@ namespace KanbanBoard.Presentation.ViewModels
 
         // Column commands.
         public ICommand AddColumnLeftCommand { get; }
+
         public ICommand AddColumnRightCommand { get; }
 
         private void OnWindowLoaded()
@@ -160,7 +163,7 @@ namespace KanbanBoard.Presentation.ViewModels
 
                 // For each version in future releases migration will occur here! Via Assembly information check.
                 var lines = File.ReadAllLines(this.filePath);
-                
+
                 for (var i = 2; i < lines.Length; i++)
                 {
                     this.Columns.Add(this.columnFactory.Load(lines[i]));
@@ -183,7 +186,7 @@ namespace KanbanBoard.Presentation.ViewModels
             }
         }
 
-        public void SaveBoard() 
+        public void SaveBoard()
         {
             if (this.loadInProgress || string.IsNullOrEmpty(this.filePath)) return;
 
@@ -200,7 +203,7 @@ namespace KanbanBoard.Presentation.ViewModels
         {
             this.Columns.Insert(0, this.columnFactory.CreateColumn());
             this.RaisePropertyChanged(nameof(this.ColumnWidth));
-            
+
             this.logger.Log("New left column created", Category.Debug, Priority.None);
         }
 
@@ -223,9 +226,6 @@ namespace KanbanBoard.Presentation.ViewModels
             var columnToDelete = this.Columns.FirstOrDefault(column => column.Id == columnId);
             if (columnToDelete == null) return;
 
-            // Confirm deletion if the column is not default.
-            if (!columnToDelete.Unchanged && !this.dialogService.ShowYesNo(Resources.Dialog_RemoveColumn_Message, Resources.Dialog_RemoveColumn_Title)) return;
-
             var items = columnToDelete.Items;
 
             this.Columns.Remove(columnToDelete);
@@ -240,6 +240,17 @@ namespace KanbanBoard.Presentation.ViewModels
             }
 
             this.logger.Log("Items migrated to left-most column", Category.Debug, Priority.None);
+        }
+
+        private void OpenedOptions(Guid id)
+        {
+            var vals = this.Columns.SelectMany(column => column.Items.Where(item => item.Id != id && item.OptionsOpen).Select(item => (IOptions)item)).ToList();
+            vals.AddRange(this.Columns.Where(column => column.Id != id && column.OptionsOpen).Select(column => (IOptions)column).ToList());
+
+            foreach (var val in vals)
+            {
+                val.ResetOptionsOpen();
+            }
         }
 
         private void ColumnsChanged(object sender, NotifyCollectionChangedEventArgs e)
