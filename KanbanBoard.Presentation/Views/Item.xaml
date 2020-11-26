@@ -38,7 +38,7 @@
 
                     <TextBox Margin="6 5 0 6" MaxLines="3" Grid.Row="1" dd:DragDrop.IsDropTarget="True" Style="{StaticResource CappedHiddenTextBox}" Text="{Binding Title}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" HorizontalAlignment="Left">
                         <b:Interaction.Behaviors>
-                            <behaviors:TextBoxFocusBehavior />
+                            <behaviors:PrimeTextBoxFocusBehavior />
                         </b:Interaction.Behaviors>
                     </TextBox>
 

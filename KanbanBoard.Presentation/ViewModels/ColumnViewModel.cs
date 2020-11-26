@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 using Kanban.Core.Events;
@@ -18,6 +20,7 @@ namespace KanbanBoard.Presentation.ViewModels
     {
         private readonly IDialogService dialogService;
         private readonly ILoggerFacade logger;
+        private readonly IItemViewModelFactory itemFactory;
 
         private bool columnVisible;
 
@@ -32,7 +35,8 @@ namespace KanbanBoard.Presentation.ViewModels
             IEnumerable<ItemViewModel> items = null) 
             : base(id, title ?? Resources.Board_NewColumnName, eventAggregator)
         {
-            // Loading a column.
+            this.itemFactory = itemFactory;
+
             this.EventAggregator.GetEvent<DeleteColumnEvent>().Subscribe(this.DeleteItem);
 
             this.DragHandler = new DragHandleBehavior();
@@ -43,15 +47,42 @@ namespace KanbanBoard.Presentation.ViewModels
 
             this.columnVisible = columnVisible;
 
-            if (items != null)
+            this.Items.CollectionChanged += CollectionChanged;
+            foreach (var item in items)
             {
-                this.Items.AddRange(items);
+                this.Items.Add(item);
             }
-            
-            this.AddItemCommand = new DelegateCommand(() => this.Items.Add(itemFactory.CreateItem()));
+
+            this.AddItemCommand = new DelegateCommand(this.AddItem);
             this.DeleteColumnCommand = new DelegateCommand(() => this.EventAggregator.GetEvent<DeleteColumnEvent>().Publish(this.Id));
 
             this.Items.CollectionChanged += (o, e) => this.EventAggregator.GetEvent<RequestSaveEvent>().Publish();
+        }
+
+        private void CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.OldItems != null)
+            {
+                foreach (INotifyPropertyChanged item in e.OldItems)
+                {
+                    item.PropertyChanged -= ItemPropertyChanged;
+                }
+            }
+            if (e.NewItems != null)
+            {
+                foreach (INotifyPropertyChanged item in e.NewItems)
+                {
+                    item.PropertyChanged += ItemPropertyChanged;
+                }
+            }
+        }
+
+        private void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "Request New")
+            {
+                this.AddItem();
+            }
         }
 
         public ObservableCollection<ItemViewModel> Items { get; } = new ObservableCollection<ItemViewModel>();
@@ -68,6 +99,11 @@ namespace KanbanBoard.Presentation.ViewModels
         }
 
         public bool Unchanged => this.Title == Resources.Board_NewColumnName && this.Items.Count <= 0;
+
+        private void AddItem()
+        {
+            this.Items.Add(itemFactory.CreateItem());
+        }
 
         private void DeleteItem(Guid itemId)
         {

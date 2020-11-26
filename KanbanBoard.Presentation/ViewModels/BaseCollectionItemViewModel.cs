@@ -8,18 +8,19 @@ namespace KanbanBoard.Presentation.ViewModels
     public abstract class BaseCollectionItemViewModel : BindableBase
     {
         protected readonly IEventAggregator EventAggregator;
-
         private string title;
 
         protected BaseCollectionItemViewModel(Guid? id, string title, IEventAggregator eventAggregator)
         {
             this.EventAggregator = eventAggregator;
 
+            this.New = !id.HasValue;
             this.Id = id ?? Guid.NewGuid();
             this.title = title;
         }
 
         public Guid Id { get; }
+        public bool New { get; set; }
 
         public string Title
         {
@@ -31,6 +32,11 @@ namespace KanbanBoard.Presentation.ViewModels
                 this.SetProperty(ref title, value);
                 this.EventAggregator.GetEvent<RequestSaveEvent>().Publish();
             }
+        }
+
+        public void RequestNew()
+        {
+            this.RaisePropertyChanged("Request New");
         }
     }
 }
