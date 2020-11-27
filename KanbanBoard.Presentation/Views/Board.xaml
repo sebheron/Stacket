@@ -73,7 +73,7 @@
 
                 <ToggleButton HorizontalAlignment="Left" Width="30" Margin="0 3" Name="MenuToggle" Height="25" Style="{StaticResource RoundFlat3DHorizontalMenuBarButton}" IsChecked="True" FocusVisualStyle="{x:Null}" />
 
-                <Grid Grid.Column="1" Grid.ColumnSpan="4" Width="120" IsEnabled="{Binding IsChecked, ElementName=MenuToggle}" Style="{StaticResource GrowAndShrinkWidth}">
+                <Grid Grid.Column="1" Grid.ColumnSpan="4" Width="120" IsHitTestVisible="{Binding IsChecked, ElementName=MenuToggle}" Style="{StaticResource GrowAndShrinkWidth}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition MaxWidth="30" />
                         <ColumnDefinition MaxWidth="30" />
