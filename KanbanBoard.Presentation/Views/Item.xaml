@@ -42,7 +42,7 @@
                         <TextBox.Style>
                             <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource CappedHiddenTextBox}">
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding TextBoxHasFocus}" Value="True">
+                                    <DataTrigger Binding="{Binding NewlyCreatedItem}" Value="True">
                                         <Setter Property="FocusManager.FocusedElement" Value="{Binding RelativeSource={RelativeSource Mode=Self}}" />
                                     </DataTrigger>
                                 </Style.Triggers>

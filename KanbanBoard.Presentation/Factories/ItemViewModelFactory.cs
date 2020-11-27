@@ -24,8 +24,8 @@ namespace KanbanBoard.Presentation.Factories
             }
             else
             {
-                // New item so trigger focus.
-                item.TextBoxHasFocus = true;
+                // New item so set the property respectively.
+                item.NewlyCreatedItem = true;
             }
 
             return item;
