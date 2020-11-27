@@ -2,7 +2,7 @@
 {
     public interface IDialogService
     {
-        bool ShowYesNo(string text, string caption);
+        bool? ShowYesNo(string text, string caption);
 
         void ShowMessage(string text, string caption);
 

@@ -177,6 +177,14 @@
     <value>New Board</value>
     <comment>The title for the new board dialog.</comment>
   </data>
+  <data name="Dialog_RemoveBoard_Message" xml:space="preserve">
+    <value>Are you sure want to delete this board?</value>
+    <comment>The title for the remove board dialog.</comment>
+  </data>
+  <data name="Dialog_RemoveBoard_Title" xml:space="preserve">
+    <value>Remove board</value>
+    <comment>The message to display when removing a board.</comment>
+  </data>
   <data name="Dialog_RemoveColumn_Message" xml:space="preserve">
     <value>Are you sure you want to remove this column?</value>
     <comment>The message displayed when removing a column.</comment>

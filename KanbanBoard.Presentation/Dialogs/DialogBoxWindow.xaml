@@ -22,7 +22,7 @@
                         <ColumnDefinition Width="30" />
                     </Grid.ColumnDefinitions>
 
-                    <Button Grid.Column="1" Style="{StaticResource TransparentRoundFlat3DButton}" Command="{Binding NoButtonCommand}">
+                    <Button Grid.Column="1" Style="{StaticResource TransparentRoundFlat3DButton}" Command="{Binding CancelButtonCommand}">
                         <Image Source="{StaticResource cancel}" Width="11" />
                     </Button>
                     <TextBlock Grid.Column="0" Margin="5" Text="{Binding Caption}" />

@@ -29,7 +29,7 @@ namespace KanbanBoard.Presentation.ViewModels
             Guid? id = null,
             string title = null,
             bool columnVisible = true,
-            IEnumerable<ItemViewModel> items = null) 
+            IEnumerable<ItemViewModel> items = null)
             : base(id, title ?? Resources.Board_NewColumnName, eventAggregator)
         {
             // Loading a column.
@@ -47,7 +47,7 @@ namespace KanbanBoard.Presentation.ViewModels
             {
                 this.Items.AddRange(items);
             }
-            
+
             this.AddItemCommand = new DelegateCommand(() => this.Items.Add(itemFactory.CreateItem()));
             this.DeleteColumnCommand = new DelegateCommand(() => this.EventAggregator.GetEvent<DeleteColumnEvent>().Publish(this.Id));
 
@@ -74,11 +74,7 @@ namespace KanbanBoard.Presentation.ViewModels
             var itemToDelete = this.Items.FirstOrDefault(item => item.Id == itemId);
             if (itemToDelete == null) return;
 
-            if (itemToDelete.Unchanged
-                || this.dialogService.ShowYesNo(Resources.Dialog_RemoveItem_Message, Resources.Dialog_RemoveItem_Title))
-            {
-                this.Items.Remove(itemToDelete);
-            }
+            this.Items.Remove(itemToDelete);
 
             this.logger.Log("Item deleted", Category.Debug, Priority.None);
         }
