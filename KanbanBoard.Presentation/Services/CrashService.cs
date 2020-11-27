@@ -15,12 +15,11 @@ namespace KanbanBoard.Presentation.Services
 
         public void SendCrash(string emailBody)
         {
-            if (dialogService.ShowYesNo(Resources.Crash_Message, Resources.Stacket))
-            {
-                Process.Start(Resources.Crash_Email_MailTo
-                    + string.Format(Resources.Crash_Email_Subject, Assembly.GetExecutingAssembly().GetName().Version)
-                    + string.Format(Resources.Crash_Email_Body, emailBody));
-            }
+            var result = this.dialogService.ShowYesNo(Resources.Crash_Message, Resources.Stacket);
+            if (!result.HasValue || !result.Value) return;
+            Process.Start(Resources.Crash_Email_MailTo
+                + string.Format(Resources.Crash_Email_Subject, Assembly.GetExecutingAssembly().GetName().Version)
+                + string.Format(Resources.Crash_Email_Body, emailBody));
         }
     }
 }

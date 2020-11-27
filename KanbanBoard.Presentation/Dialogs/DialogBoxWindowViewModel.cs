@@ -20,16 +20,18 @@ namespace KanbanBoard.Presentation.Dialogs
             this.Caption = caption;
 
             this.YesButtonCommand = new DelegateCommand(this.YesButton);
-            this.NoButtonCommand = new DelegateCommand(this.Close);
+            this.NoButtonCommand = new DelegateCommand(this.NoButton);
+            this.CancelButtonCommand = new DelegateCommand(this.CancelButton);
         }
 
-        public bool Result { get; private set; }
+        public bool? Result { get; private set; }
 
         public string Caption { get; }
         public string Text { get; }
 
         public ICommand YesButtonCommand { get; }
         public ICommand NoButtonCommand { get; }
+        public ICommand CancelButtonCommand { get; }
 
         public void YesButton()
         {
@@ -38,9 +40,16 @@ namespace KanbanBoard.Presentation.Dialogs
             this.closeDialog.Invoke();
         }
 
-        private void Close()
+        private void NoButton()
         {
+            this.Result = false;
             this.logger.Log("No selected", Category.Debug, Priority.None);
+            this.closeDialog.Invoke();
+        }
+
+        private void CancelButton()
+        {
+            this.logger.Log("Cancel selected", Category.Debug, Priority.None);
             this.closeDialog.Invoke();
         }
     }

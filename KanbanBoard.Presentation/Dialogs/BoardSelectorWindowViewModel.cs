@@ -73,7 +73,8 @@ namespace KanbanBoard.Presentation.Dialogs
 
         private void DeleteButton()
         {
-            if (!this.dialogService.ShowYesNo("Are you sure want to delete this board?", "Delete board")) return;
+            var result = this.dialogService.ShowYesNo(Resources.Dialog_RemoveBoard_Message, Resources.Dialog_RemoveBoard_Title);
+            if (!result.HasValue || !result.Value) return;
 
             File.Delete(Path.Combine(FileLocations.BoardFileStorageLocation, this.SelectedBoard + Resources.BoardFileExtension));
             this.BoardFiles.Remove(this.SelectedBoard);

@@ -228,11 +228,13 @@ namespace KanbanBoard.Presentation.ViewModels
 
             var items = columnToDelete.Items;
 
+            var result = items.Count > 0 ? this.dialogService.ShowYesNo(Resources.Dialog_SaveItemsInColumn_Message, Resources.Dialog_RemoveColumn_Title) : false;
+            if (!result.HasValue) return; //Cancelled selected on the dialog.
+
             this.Columns.Remove(columnToDelete);
             this.logger.Log("Column deleted", Category.Debug, Priority.None);
 
-            // Ask user whether or not to save items in deleted column.
-            if (items.Count <= 0 || !this.dialogService.ShowYesNo(Resources.Dialog_SaveItemsInColumn_Message, Resources.Dialog_RemoveColumn_Title)) return;
+            if (!result.Value) return; //No selected on the dialog or there's no items to move across.
 
             foreach (var item in items)
             {
