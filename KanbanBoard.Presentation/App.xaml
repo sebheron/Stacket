@@ -758,7 +758,7 @@
         </Style>
         <Style x:Key="FadeOutAndIn" TargetType="FrameworkElement">
             <Style.Triggers>
-                <Trigger Property="IsEnabled" Value="False">
+                <Trigger Property="IsHitTestVisible" Value="False">
                     <Trigger.EnterActions>
                         <BeginStoryboard>
                             <Storyboard>
@@ -778,7 +778,7 @@
         </Style>
         <Style x:Key="GrowAndShrinkWidth" TargetType="FrameworkElement">
             <Style.Triggers>
-                <Trigger Property="IsEnabled" Value="False">
+                <Trigger Property="IsHitTestVisible" Value="False">
                     <Trigger.EnterActions>
                         <BeginStoryboard>
                             <Storyboard>

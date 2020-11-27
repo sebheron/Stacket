@@ -61,7 +61,7 @@
             <ToggleButton Name="MainWindowToggle" Width="80" Height="25" Style="{StaticResource RoundFlat3DVerticalDropdownButton}" IsChecked="True" FocusVisualStyle="{x:Null}" ContextMenu="{StaticResource TrayMenu}" />
 
             <Grid HorizontalAlignment="Center"
-                    IsEnabled="{Binding IsChecked, ElementName=MainWindowToggle}"
+                    IsHitTestVisible="{Binding IsChecked, ElementName=MainWindowToggle}"
                     Style="{StaticResource FadeOutAndIn}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition MaxWidth="30" />
@@ -103,7 +103,7 @@
             </Grid>
         </WrapPanel>
 
-        <StackPanel IsEnabled="{Binding IsChecked, ElementName=MainWindowToggle}"
+        <StackPanel IsHitTestVisible="{Binding IsChecked, ElementName=MainWindowToggle}"
                     Style="{StaticResource FadeOutAndIn}"
                     Grid.Row="1"
                     HorizontalAlignment="Center"
