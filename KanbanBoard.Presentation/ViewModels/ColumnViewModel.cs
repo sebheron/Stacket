@@ -14,13 +14,12 @@ using Prism.Logging;
 
 namespace KanbanBoard.Presentation.ViewModels
 {
-    public class ColumnViewModel : BaseCollectionItemViewModel, IOptions
+    public class ColumnViewModel : BaseCollectionItemViewModel
     {
         private readonly IDialogService dialogService;
         private readonly ILoggerFacade logger;
 
         private bool columnVisible;
-        private bool optionsOpen;
 
         public ColumnViewModel(
             IItemViewModelFactory itemFactory,
@@ -68,19 +67,6 @@ namespace KanbanBoard.Presentation.ViewModels
             set => SetProperty(ref columnVisible, value);
         }
 
-        public bool OptionsOpen
-        {
-            get => this.optionsOpen;
-            set
-            {
-                if (value)
-                {
-                    this.EventAggregator.GetEvent<OpenOptionsEvent>().Publish(this.Id);
-                }
-                this.SetProperty(ref this.optionsOpen, value);
-            }
-        }
-
         public bool Unchanged => this.Title == Resources.Board_NewColumnName && this.Items.Count <= 0;
 
         private void DeleteItem(Guid itemId)
@@ -97,11 +83,6 @@ namespace KanbanBoard.Presentation.ViewModels
         {
             var columnData = $"{this.Id + Properties.Resources.NewItemBreak + this.Title + Properties.Resources.NewItemBreak + this.ColumnVisible + Properties.Resources.NewItemBreak}";
             return this.Items.Aggregate(columnData, (current, item) => current + item + Properties.Resources.NewItemBreak);
-        }
-
-        public void ResetOptionsOpen()
-        {
-            this.OptionsOpen = false;
         }
     }
 }

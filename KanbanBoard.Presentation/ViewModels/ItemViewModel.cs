@@ -9,13 +9,12 @@ using Prism.Events;
 
 namespace KanbanBoard.Presentation.ViewModels
 {
-    public class ItemViewModel : BaseCollectionItemViewModel, IOptions
+    public class ItemViewModel : BaseCollectionItemViewModel
     {
         private string description;
         private bool descriptionVisible;
         private ItemTypes itemType;
         private Color itemColor;
-        private bool optionsOpen;
 
         public ItemViewModel(
             IEventAggregator eventAggregator,
@@ -80,19 +79,6 @@ namespace KanbanBoard.Presentation.ViewModels
             set => this.SetProperty(ref this.itemColor, value);
         }
 
-        public bool OptionsOpen
-        {
-            get => this.optionsOpen;
-            set
-            {
-                if (value)
-                {
-                    this.EventAggregator.GetEvent<OpenOptionsEvent>().Publish(this.Id);
-                }
-                this.SetProperty(ref this.optionsOpen, value);
-            }
-        }
-
         public bool Unchanged => this.Title == Resources.Board_NewItemName && string.IsNullOrEmpty(this.Description);
 
         private void SetColor(ItemTypes item)
@@ -126,11 +112,6 @@ namespace KanbanBoard.Presentation.ViewModels
             return this.Id + Properties.Resources.NewItemData + this.Title + Properties.Resources.NewItemData + this.Description
                    + Properties.Resources.NewItemData + this.ItemType + Properties.Resources.NewItemData + DateTime.Now.ToShortDateString()
                    + Properties.Resources.NewItemData + this.DescriptionVisible;
-        }
-
-        public void ResetOptionsOpen()
-        {
-            this.OptionsOpen = false;
         }
     }
 }

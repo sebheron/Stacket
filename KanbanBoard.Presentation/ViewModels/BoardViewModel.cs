@@ -244,12 +244,12 @@ namespace KanbanBoard.Presentation.ViewModels
 
         private void OpenedOptions(Guid id)
         {
-            var vals = this.Columns.SelectMany(column => column.Items.Where(item => item.Id != id && item.OptionsOpen).Select(item => (IOptions)item)).ToList();
-            vals.AddRange(this.Columns.Where(column => column.Id != id && column.OptionsOpen).Select(column => (IOptions)column).ToList());
+            var vals = this.Columns.SelectMany(column => column.Items.Where(item => item.Id != id && item.OptionsOpen).Select(item => (BaseCollectionItemViewModel)item)).ToList();
+            vals.AddRange(this.Columns.Where(column => column.Id != id && column.OptionsOpen).Select(column => (BaseCollectionItemViewModel)column).ToList());
 
             foreach (var val in vals)
             {
-                val.ResetOptionsOpen();
+                val.OptionsOpen = false;
             }
         }
 
