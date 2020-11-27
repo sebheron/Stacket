@@ -188,7 +188,6 @@
     <Compile Include="Services\StringLogger.cs" />
     <Compile Include="ViewModels\BaseCollectionItemViewModel.cs" />
     <Compile Include="ViewModels\BoardViewModel.cs" />
-    <Compile Include="ViewModels\IOptions.cs" />
     <Compile Include="Views\Column.xaml.cs">
       <DependentUpon>Column.xaml</DependentUpon>
     </Compile>
