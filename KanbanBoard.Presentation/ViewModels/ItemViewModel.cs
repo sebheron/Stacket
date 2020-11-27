@@ -15,6 +15,7 @@ namespace KanbanBoard.Presentation.ViewModels
         private bool descriptionVisible;
         private ItemTypes itemType;
         private Color itemColor;
+        private bool textBoxHasFocus;
 
         public ItemViewModel(
             IEventAggregator eventAggregator,
@@ -77,6 +78,12 @@ namespace KanbanBoard.Presentation.ViewModels
         {
             get => this.itemColor;
             set => this.SetProperty(ref this.itemColor, value);
+        }
+
+        public bool TextBoxHasFocus
+        {
+            get => this.textBoxHasFocus;
+            set => this.SetProperty(ref this.textBoxHasFocus, value);
         }
 
         public bool Unchanged => this.Title == Resources.Board_NewItemName && string.IsNullOrEmpty(this.Description);

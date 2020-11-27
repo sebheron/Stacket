@@ -3,14 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:KanbanBoard.Presentation.Views"
              xmlns:dd="urn:gong-wpf-dragdrop"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:behaviors="clr-namespace:KanbanBoard.Presentation.Behaviors"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:enums="clr-namespace:KanbanBoard.Logic.Enums;assembly=KanbanBoard.Logic"
              xmlns:converters="clr-namespace:KanbanBoard.Presentation.Converters"
-             xmlns:res="clr-namespace:KanbanBoard.Logic.Properties;assembly=KanbanBoard.Logic"
              mc:Ignorable="d"
              d:DesignWidth="300">
 
@@ -36,10 +34,20 @@
                         <ColumnDefinition Width="30" />
                     </Grid.ColumnDefinitions>
 
-                    <TextBox Margin="6 5 0 6" MaxLines="3" Grid.Row="1" dd:DragDrop.IsDropTarget="True" Style="{StaticResource CappedHiddenTextBox}" Text="{Binding Title}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" HorizontalAlignment="Left">
+                    <TextBox Margin="6 5 0 6" MaxLines="3" dd:DragDrop.IsDropTarget="True" Text="{Binding Title}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" HorizontalAlignment="Left">
                         <b:Interaction.Behaviors>
                             <behaviors:TextBoxFocusBehavior />
                         </b:Interaction.Behaviors>
+
+                        <TextBox.Style>
+                            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource CappedHiddenTextBox}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding FocusTextBox}" Value="True">
+                                        <Setter Property="FocusManager.FocusedElement" Value="{Binding RelativeSource={RelativeSource Mode=Self}}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBox.Style>
                     </TextBox>
 
                     <ToggleButton Grid.Column="1"

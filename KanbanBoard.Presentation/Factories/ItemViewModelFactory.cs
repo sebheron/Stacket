@@ -22,6 +22,11 @@ namespace KanbanBoard.Presentation.Factories
             {
                 item.Title = title;
             }
+            else
+            {
+                // New item so trigger focus.
+                item.TextBoxHasFocus = true;
+            }
 
             return item;
         }
