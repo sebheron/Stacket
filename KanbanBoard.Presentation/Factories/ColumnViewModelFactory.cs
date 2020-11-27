@@ -12,16 +12,12 @@ namespace KanbanBoard.Presentation.Factories
         private readonly IItemViewModelFactory itemFactory;
         private readonly IDialogService dialogService;
         private readonly ILoggerFacade logger;
-        private readonly IEventAggregator eventAggregator;
 
         public ColumnViewModelFactory(
-            IItemViewModelFactory itemFactory, 
-            IDialogService dialogService, 
-            ILoggerFacade logger, 
-            IEventAggregator eventAggregator)
+            IItemViewModelFactory itemFactory,
+            IDialogService dialogService,
+            ILoggerFacade logger)
         {
-            this.eventAggregator = eventAggregator;
-
             this.itemFactory = itemFactory;
             this.dialogService = dialogService;
             this.logger = logger;
@@ -29,7 +25,7 @@ namespace KanbanBoard.Presentation.Factories
 
         public ColumnViewModel CreateColumn(string title = null)
         {
-            var column = new ColumnViewModel(this.itemFactory, this.dialogService, this.logger, this.eventAggregator);
+            var column = new ColumnViewModel(this.itemFactory, this.logger);
 
             if (!string.IsNullOrEmpty(title))
             {
@@ -51,10 +47,8 @@ namespace KanbanBoard.Presentation.Factories
             }
 
             return new ColumnViewModel(
-                this.itemFactory, 
-                this.dialogService, 
-                this.logger, 
-                this.eventAggregator,
+                this.itemFactory,
+                this.logger,
                 Guid.Parse(parsedColumn[0]),
                 parsedColumn[1],
                 columnVisible,

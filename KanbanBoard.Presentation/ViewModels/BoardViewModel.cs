@@ -16,6 +16,7 @@ using Prism.Commands;
 using Prism.Events;
 using Prism.Logging;
 using Prism.Mvvm;
+using System.ComponentModel;
 
 namespace KanbanBoard.Presentation.ViewModels
 {
@@ -24,7 +25,6 @@ namespace KanbanBoard.Presentation.ViewModels
         private readonly IColumnViewModelFactory columnFactory;
         private readonly IDialogService dialogService;
         private readonly ILoggerFacade logger;
-        private readonly IEventAggregator eventAggregator;
 
         private string filePath => Settings.Default.CurrentBoard;
         private bool loadEnabled = true;
@@ -34,14 +34,8 @@ namespace KanbanBoard.Presentation.ViewModels
         public BoardViewModel(
             IColumnViewModelFactory columnFactory,
             IDialogService dialogService,
-            ILoggerFacade logger,
-            IEventAggregator eventAggregator)
+            ILoggerFacade logger)
         {
-            this.eventAggregator = eventAggregator;
-            this.eventAggregator.GetEvent<DeleteColumnEvent>().Subscribe(this.DeleteColumn);
-            this.eventAggregator.GetEvent<RequestSaveEvent>().Subscribe(this.SaveBoard);
-            this.eventAggregator.GetEvent<OpenOptionsEvent>().Subscribe(this.OpenedOptions);
-
             this.columnFactory = columnFactory;
             this.logger = logger;
             this.dialogService = dialogService;
@@ -104,7 +98,7 @@ namespace KanbanBoard.Presentation.ViewModels
             this.LoadBoardFromFile();
             this.logger.Log("Board successfully loaded", Category.Debug, Priority.None);
 
-            this.Columns.CollectionChanged += this.ColumnsChanged;
+            this.Columns.CollectionChanged += (o, e) => this.RaisePropertyChanged(nameof(this.ColumnWidth));
         }
 
         private void ShowSettings()
@@ -156,6 +150,7 @@ namespace KanbanBoard.Presentation.ViewModels
         {
             this.loadInProgress = true;
             this.Columns.Clear();
+            this.Columns.CollectionChanged += this.BoardPropertiesChanged;
 
             if (File.Exists(this.filePath))
             {
@@ -166,7 +161,8 @@ namespace KanbanBoard.Presentation.ViewModels
 
                 for (var i = 2; i < lines.Length; i++)
                 {
-                    this.Columns.Add(this.columnFactory.Load(lines[i]));
+                    var column = this.columnFactory.Load(lines[i]);
+                    this.Columns.Add(column);
                 }
 
                 this.loadInProgress = false;
@@ -215,49 +211,100 @@ namespace KanbanBoard.Presentation.ViewModels
             this.logger.Log("New right column created", Category.Debug, Priority.None);
         }
 
-        private void DeleteColumn(Guid columnId)
+        private void OpenedOptions(BaseCollectionItemViewModel vm)
         {
-            if (this.Columns.Count <= 1)
-            {
-                this.dialogService.ShowMessage(Resources.Dialog_CannotRemoveLastColumn_Message, Resources.Dialog_RemoveColumn_Title);
-                return;
-            }
-
-            var columnToDelete = this.Columns.FirstOrDefault(column => column.Id == columnId);
-            if (columnToDelete == null) return;
-
-            var items = columnToDelete.Items;
-
-            this.Columns.Remove(columnToDelete);
-            this.logger.Log("Column deleted", Category.Debug, Priority.None);
-
-            // Ask user whether or not to save items in deleted column.
-            if (items.Count <= 0 || !this.dialogService.ShowYesNo(Resources.Dialog_SaveItemsInColumn_Message, Resources.Dialog_RemoveColumn_Title)) return;
-
-            foreach (var item in items)
-            {
-                this.Columns[0].Items.Add(item);
-            }
-
-            this.logger.Log("Items migrated to left-most column", Category.Debug, Priority.None);
-        }
-
-        private void OpenedOptions(Guid id)
-        {
-            var vals = this.Columns.SelectMany(column => column.Items.Where(item => item.Id != id && item.OptionsOpen).Select(item => (IOptions)item)).ToList();
-            vals.AddRange(this.Columns.Where(column => column.Id != id && column.OptionsOpen).Select(column => (IOptions)column).ToList());
+            var vals = this.Columns.SelectMany(column => column.Items.Where(item => item.Id != vm.Id && item.OptionsOpen).Select(item => (BaseCollectionItemViewModel)item)).ToList();
+            vals.AddRange(this.Columns.Where(column => column.Id != vm.Id && column.OptionsOpen).Select(column => (BaseCollectionItemViewModel)column).ToList());
 
             foreach (var val in vals)
             {
-                val.ResetOptionsOpen();
+                val.OptionsOpen = false;
             }
         }
 
-        private void ColumnsChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void DeleteBaseCollection(BaseCollectionItemViewModel vm)
         {
-            this.RaisePropertyChanged(nameof(this.ColumnWidth));
+            if (vm is ItemViewModel ivm)
+            {
+                var column = this.Columns.Where(c => c.Items.Contains(ivm)).FirstOrDefault();
+                if (column != null)
+                {
+                    column.Items.Remove(ivm);
+                }
+                this.logger.Log("Item deleted", Category.Debug, Priority.None);
+            }
+            else if (vm is ColumnViewModel cvm)
+            {
+                if (this.Columns.Count <= 1)
+                {
+                    this.dialogService.ShowMessage(Resources.Dialog_CannotRemoveLastColumn_Message, Resources.Dialog_RemoveColumn_Title);
+                    return;
+                }
 
-            this.eventAggregator.GetEvent<RequestSaveEvent>().Publish();
+                this.Columns.Remove(cvm);
+                this.logger.Log("Column deleted", Category.Debug, Priority.None);
+
+                // Ask user whether or not to save items in deleted column.
+                if (cvm.Items.Count <= 0 || !this.dialogService.ShowYesNo(Resources.Dialog_SaveItemsInColumn_Message, Resources.Dialog_RemoveColumn_Title)) return;
+
+                foreach (var item in cvm.Items)
+                {
+                    this.Columns[0].Items.Add(item);
+                }
+
+                this.logger.Log("Items migrated to left-most column", Category.Debug, Priority.None);
+            }
+        }
+
+        private void BoardPropertiesChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.OldItems != null)
+            {
+                foreach (BaseCollectionItemViewModel property in e.OldItems)
+                {
+                    if (property is ColumnViewModel column)
+                    {
+                        column.Items.CollectionChanged -= BoardPropertiesChanged;
+                    }
+                    property.PropertyChanged -= BoardPropertyChanged;
+                }
+            }
+
+            if (e.NewItems != null)
+            {
+                foreach (BaseCollectionItemViewModel property in e.NewItems)
+                {
+                    if (property is ColumnViewModel column)
+                    {
+                        foreach (var item in column.Items) item.PropertyChanged += BoardPropertyChanged;
+                        column.Items.CollectionChanged += BoardPropertiesChanged;
+                    }
+                    property.PropertyChanged += BoardPropertyChanged;
+                }
+            }
+
+            if (e.OldItems != null || e.NewItems != null)
+            {
+                this.SaveBoard();
+            }
+        }
+
+        private void BoardPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            var vm = sender as BaseCollectionItemViewModel;
+
+            if (e.PropertyName == "OptionsOpen" && vm.OptionsOpen)
+            {
+                this.OpenedOptions(vm);
+                return;
+            }
+            else if (e.PropertyName == "Delete")
+            {
+                this.DeleteBaseCollection(vm);
+                return;
+            }
+
+            this.SaveBoard();
         }
 
         private void OnClosing()

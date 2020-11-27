@@ -14,45 +14,37 @@ using Prism.Logging;
 
 namespace KanbanBoard.Presentation.ViewModels
 {
-    public class ColumnViewModel : BaseCollectionItemViewModel, IOptions
+    public class ColumnViewModel : BaseCollectionItemViewModel
     {
-        private readonly IDialogService dialogService;
         private readonly ILoggerFacade logger;
 
         private bool columnVisible;
-        private bool optionsOpen;
 
         public ColumnViewModel(
             IItemViewModelFactory itemFactory,
-            IDialogService dialogService,
             ILoggerFacade logger,
-            IEventAggregator eventAggregator,
             Guid? id = null,
             string title = null,
             bool columnVisible = true,
-            IEnumerable<ItemViewModel> items = null)
-            : base(id, title ?? Resources.Board_NewColumnName, eventAggregator)
+            IList<ItemViewModel> items = null)
+            : base(id, title ?? Resources.Board_NewColumnName)
         {
             // Loading a column.
-            this.EventAggregator.GetEvent<DeleteColumnEvent>().Subscribe(this.DeleteItem);
 
             this.DragHandler = new DragHandleBehavior();
             this.DragHandler.DragStarted += () => this.RaisePropertyChanged(nameof(this.DragHandler));
 
-            this.dialogService = dialogService;
             this.logger = logger;
 
             this.columnVisible = columnVisible;
 
-            if (items != null)
+            for (int i = 0; i < (items?.Count ?? 0); i++)
             {
-                this.Items.AddRange(items);
+                this.Items.Add(items[i]);
             }
 
             this.AddItemCommand = new DelegateCommand(() => this.Items.Add(itemFactory.CreateItem()));
-            this.DeleteColumnCommand = new DelegateCommand(() => this.EventAggregator.GetEvent<DeleteColumnEvent>().Publish(this.Id));
-
-            this.Items.CollectionChanged += (o, e) => this.EventAggregator.GetEvent<RequestSaveEvent>().Publish();
+            this.DeleteColumnCommand = new DelegateCommand(() => this.RaisePropertyChanged("Delete"));
         }
 
         public ObservableCollection<ItemViewModel> Items { get; } = new ObservableCollection<ItemViewModel>();
@@ -68,40 +60,12 @@ namespace KanbanBoard.Presentation.ViewModels
             set => SetProperty(ref columnVisible, value);
         }
 
-        public bool OptionsOpen
-        {
-            get => this.optionsOpen;
-            set
-            {
-                if (value)
-                {
-                    this.EventAggregator.GetEvent<OpenOptionsEvent>().Publish(this.Id);
-                }
-                this.SetProperty(ref this.optionsOpen, value);
-            }
-        }
-
         public bool Unchanged => this.Title == Resources.Board_NewColumnName && this.Items.Count <= 0;
-
-        private void DeleteItem(Guid itemId)
-        {
-            var itemToDelete = this.Items.FirstOrDefault(item => item.Id == itemId);
-            if (itemToDelete == null) return;
-
-            this.Items.Remove(itemToDelete);
-
-            this.logger.Log("Item deleted", Category.Debug, Priority.None);
-        }
 
         public override string ToString()
         {
             var columnData = $"{this.Id + Properties.Resources.NewItemBreak + this.Title + Properties.Resources.NewItemBreak + this.ColumnVisible + Properties.Resources.NewItemBreak}";
             return this.Items.Aggregate(columnData, (current, item) => current + item + Properties.Resources.NewItemBreak);
-        }
-
-        public void ResetOptionsOpen()
-        {
-            this.OptionsOpen = false;
         }
     }
 }

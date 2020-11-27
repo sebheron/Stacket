@@ -7,14 +7,11 @@ namespace KanbanBoard.Presentation.ViewModels
 {
     public abstract class BaseCollectionItemViewModel : BindableBase
     {
-        protected readonly IEventAggregator EventAggregator;
-
+        private bool optionsOpen;
         private string title;
 
-        protected BaseCollectionItemViewModel(Guid? id, string title, IEventAggregator eventAggregator)
+        protected BaseCollectionItemViewModel(Guid? id, string title)
         {
-            this.EventAggregator = eventAggregator;
-
             this.Id = id ?? Guid.NewGuid();
             this.title = title;
         }
@@ -29,8 +26,13 @@ namespace KanbanBoard.Presentation.ViewModels
                 if (string.IsNullOrEmpty(value)) return;
 
                 this.SetProperty(ref title, value);
-                this.EventAggregator.GetEvent<RequestSaveEvent>().Publish();
             }
+        }
+
+        public bool OptionsOpen
+        {
+            get => this.optionsOpen;
+            set => this.SetProperty(ref this.optionsOpen, value);
         }
     }
 }

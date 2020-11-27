@@ -7,16 +7,9 @@ namespace KanbanBoard.Presentation.Factories
 {
     public class ItemViewModelFactory : IItemViewModelFactory
     {
-        private readonly IEventAggregator eventAggregator;
-
-        public ItemViewModelFactory(IEventAggregator eventAggregator)
-        {
-            this.eventAggregator = eventAggregator;
-        }
-
         public ItemViewModel CreateItem(string title = null)
         {
-            var item = new ItemViewModel(this.eventAggregator);
+            var item = new ItemViewModel();
 
             if (!string.IsNullOrEmpty(title))
             {
@@ -39,7 +32,7 @@ namespace KanbanBoard.Presentation.Factories
 
             bool.TryParse(parsedItemData[5], out var itemDescriptionVisible);
 
-            return new ItemViewModel(this.eventAggregator, itemId, itemTitle, itemDescription, itemDescriptionVisible, itemType);
+            return new ItemViewModel(itemId, itemTitle, itemDescription, itemDescriptionVisible, itemType);
         }
     }
 }
