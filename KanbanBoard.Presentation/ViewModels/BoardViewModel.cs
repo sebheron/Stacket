@@ -16,6 +16,7 @@ using Prism.Commands;
 using Prism.Events;
 using Prism.Logging;
 using Prism.Mvvm;
+using Microsoft.Win32;
 
 namespace KanbanBoard.Presentation.ViewModels
 {
@@ -56,6 +57,8 @@ namespace KanbanBoard.Presentation.ViewModels
 
             this.AddColumnLeftCommand = new DelegateCommand(this.AddColumnLeft);
             this.AddColumnRightCommand = new DelegateCommand(this.AddColumnRight);
+
+            SystemEvents.SessionSwitch += SessionSwitched;
         }
 
         public ObservableCollection<ColumnViewModel> Columns { get; } = new ObservableCollection<ColumnViewModel>();
@@ -248,6 +251,16 @@ namespace KanbanBoard.Presentation.ViewModels
             this.RaisePropertyChanged(nameof(this.ColumnWidth));
 
             this.eventAggregator.GetEvent<RequestSaveEvent>().Publish();
+        }
+
+        private void SessionSwitched(object sender, SessionSwitchEventArgs e)
+        {
+            if (e.Reason == SessionSwitchReason.SessionUnlock)
+            {
+                this.RaisePropertyChanged(nameof(this.WindowWidth));
+                this.RaisePropertyChanged(nameof(this.WindowHeight));
+                this.RaisePropertyChanged(nameof(this.ColumnWidth));
+            }
         }
 
         private void OnClosing()
