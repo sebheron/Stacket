@@ -83,6 +83,8 @@
                               dd:DragDrop.UseVisualSourceItemSizeForDragAdorner="True"
                               dd:DragDrop.DragMouseAnchorPoint="{Binding DragHandler.DragPosition}"
                               dd:DragDrop.DragHandler="{Binding DragHandler}"
+                              dd:DragDrop.DropHandler="{Binding DropHandler}"
+                              dd:DragDrop.ShowAlwaysDropTargetAdorner="True"
                               MinHeight="40"
                               Focusable="False"
                               Padding="0,0,0,10"

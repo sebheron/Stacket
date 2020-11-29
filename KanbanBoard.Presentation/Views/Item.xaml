@@ -10,8 +10,9 @@
              xmlns:enums="clr-namespace:KanbanBoard.Logic.Enums;assembly=KanbanBoard.Logic"
              xmlns:converters="clr-namespace:KanbanBoard.Presentation.Converters"
              mc:Ignorable="d"
-             d:DesignWidth="300">
-
+             d:DesignWidth="300"
+             IsHitTestVisible="{Binding IsItemEnabled}">
+    
     <UserControl.Resources>
         <ObjectDataProvider x:Key="ItemTypes" MethodName="GetValues" ObjectType="{x:Type system:Enum}">
             <ObjectDataProvider.MethodParameters>
@@ -19,78 +20,94 @@
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
 
+        <system:Int32 x:Key="InvertVisibility">1</system:Int32>
+        <system:Int32 x:Key="HiddenVisibility">2</system:Int32>
+
         <converters:ColorToScreenColorConverter x:Key="ColorToScreenColor" />
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
 
-    <Border Background="LightGray" CornerRadius="15" Margin="10,5" FocusVisualStyle="{x:Null}">
-        <StackPanel>
-            <Border Background="{Binding ItemColor, Converter={StaticResource ColorToScreenColor}}" CornerRadius="4" MinHeight="30" FocusVisualStyle="{x:Null}">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition Width="30" />
-                        <ColumnDefinition Width="30" />
-                        <ColumnDefinition Width="30" />
-                    </Grid.ColumnDefinitions>
+    <Grid>
+        <Border Background="LightGray" CornerRadius="15" Margin="10,5" FocusVisualStyle="{x:Null}"
+                Visibility="{Binding IsItemEnabled, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter={StaticResource HiddenVisibility}}">
+            <StackPanel>
+                <Border Background="{Binding ItemColor, Converter={StaticResource ColorToScreenColor}}" CornerRadius="4" MinHeight="30" FocusVisualStyle="{x:Null}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="30" />
+                            <ColumnDefinition Width="30" />
+                            <ColumnDefinition Width="30" />
+                        </Grid.ColumnDefinitions>
 
-                    <TextBox Margin="6 5 0 6" MaxLines="3" dd:DragDrop.IsDropTarget="True" Text="{Binding Title}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" HorizontalAlignment="Left">
-                        <b:Interaction.Behaviors>
-                            <behaviors:TextBoxFocusBehavior />
-                        </b:Interaction.Behaviors>
+                        <TextBox Margin="6 5 0 6" MaxLines="3" Text="{Binding Title}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" HorizontalAlignment="Left">
+                            <b:Interaction.Behaviors>
+                                <behaviors:TextBoxFocusBehavior />
+                            </b:Interaction.Behaviors>
 
-                        <TextBox.Style>
-                            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource CappedHiddenTextBox}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding NewlyCreatedItem}" Value="True">
-                                        <Setter Property="FocusManager.FocusedElement" Value="{Binding RelativeSource={RelativeSource Mode=Self}}" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBox.Style>
-                    </TextBox>
+                            <TextBox.Style>
+                                <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource CappedHiddenTextBox}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding NewlyCreatedItem}" Value="True">
+                                            <Setter Property="FocusManager.FocusedElement" Value="{Binding RelativeSource={RelativeSource Mode=Self}}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
 
-                    <ToggleButton Grid.Column="1"
+                        <ToggleButton Grid.Column="1"
                                   Style="{StaticResource TransparentRoundFlat3DDescriptionButton}"
                                   VerticalAlignment="Top"
                                   Height="30"
                                   IsChecked="{Binding DescriptionVisible, Mode=TwoWay}"
-                                  FocusVisualStyle="{x:Null}"
-                                  Visibility="{Binding IsChecked, ElementName=Lock, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                  FocusVisualStyle="{x:Null}" />
 
-                    <ComboBox Style="{StaticResource TransparentRoundComboBox}"
+                        <ComboBox Style="{StaticResource TransparentRoundComboBox}"
                               Grid.Column="2"
                               SelectedValue="{Binding ItemTypeView}"
                               ItemsSource="{Binding Source={StaticResource ItemTypes}}"
                               VerticalAlignment="Top"
-                              Height="30"
-                              Visibility="{Binding IsChecked, ElementName=Lock, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                              Height="30" />
 
-                    <Button Grid.Column="3" Style="{StaticResource TransparentRoundFlat3DButton}" VerticalAlignment="Top" Height="30"
+                        <Button Grid.Column="3" Style="{StaticResource TransparentRoundFlat3DButton}" VerticalAlignment="Top" Height="30"
                             Command="{Binding DeleteItemCommand}"
                             FocusVisualStyle="{x:Null}">
-                        <Image Source="{StaticResource cancel}" Width="13" />
-                    </Button>
+                            <Image Source="{StaticResource cancel}" Width="13" />
+                        </Button>
+                    </Grid>
+                </Border>
+
+                <Grid Visibility="{Binding DescriptionVisible, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}" MinHeight="60">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="6" />
+                        <RowDefinition />
+                        <RowDefinition Height="6" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox Grid.Column="1" Grid.Row="1" Style="{StaticResource HiddenTextBox}" Text="{Binding Description}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left">
+                        <b:Interaction.Behaviors>
+                            <behaviors:TextBoxFocusBehavior />
+                        </b:Interaction.Behaviors>
+                    </TextBox>
                 </Grid>
-            </Border>
-
-            <Grid Visibility="{Binding DescriptionVisible, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}" MinHeight="60">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="6" />
-                    <RowDefinition />
-                    <RowDefinition Height="6" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="5" />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-
-                <TextBox Grid.Column="1" Grid.Row="1" dd:DragDrop.IsDropTarget="True" Style="{StaticResource HiddenTextBox}" Text="{Binding Description}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left">
-                    <b:Interaction.Behaviors>
-                        <behaviors:TextBoxFocusBehavior />
-                    </b:Interaction.Behaviors>
-                </TextBox>
-            </Grid>
-        </StackPanel>
-    </Border>
+            </StackPanel>
+        </Border>
+        <Border CornerRadius="5" Margin="10,5"
+                Visibility="{Binding IsItemEnabled,
+                                     Converter={StaticResource BooleanToVisibilityConverter},
+                                     ConverterParameter={StaticResource InvertVisibility}}"
+                BorderBrush="{StaticResource FlatReverse3DBorderBrush}" BorderThickness="2">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0, 0" EndPoint="1, 1" Opacity="0.3">
+                    <GradientStop Color="Gray" Offset="0" />
+                    <GradientStop Color="#737373" Offset="1" />
+                </LinearGradientBrush>
+            </Border.Background>
+        </Border>
+    </Grid>
 </UserControl>

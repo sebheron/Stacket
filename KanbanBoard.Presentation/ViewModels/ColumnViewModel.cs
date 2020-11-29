@@ -37,6 +37,7 @@ namespace KanbanBoard.Presentation.ViewModels
 
             this.DragHandler = new DragHandleBehavior();
             this.DragHandler.DragStarted += () => this.RaisePropertyChanged(nameof(this.DragHandler));
+            this.DropHandler = new DropHandleBehavior();
 
             this.dialogService = dialogService;
             this.logger = logger;
@@ -57,6 +58,7 @@ namespace KanbanBoard.Presentation.ViewModels
         public ObservableCollection<ItemViewModel> Items { get; } = new ObservableCollection<ItemViewModel>();
 
         public DragHandleBehavior DragHandler { get; }
+        public DropHandleBehavior DropHandler { get; }
 
         public ICommand AddItemCommand { get; }
         public ICommand DeleteColumnCommand { get; }

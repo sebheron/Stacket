@@ -17,11 +17,21 @@ namespace KanbanBoard.Presentation.Converters
             }
 
             var visible = System.Convert.ToBoolean(value, culture);
-            if (this.InvertVisibility)
+            var state = System.Convert.ToInt32(parameter);
+            if (state == 1)
             {
                 visible = !visible;
             }
-                
+            else if (state == 2)
+            {
+                return visible ? Visibility.Visible : Visibility.Hidden;
+            }
+            else if (state == 3)
+            {
+                visible = !visible;
+                return visible ? Visibility.Visible : Visibility.Hidden;
+            }
+
             return visible ? Visibility.Visible : Visibility.Collapsed;
         }
 
