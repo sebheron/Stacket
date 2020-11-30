@@ -4,12 +4,16 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using GongSolutions.Wpf.DragDrop;
+using Kanban.Core.Events;
 using KanbanBoard.Presentation.ViewModels;
+using Prism.Events;
 
 namespace KanbanBoard.Presentation.Behaviors
 {
     public class DragHandleBehavior : DefaultDragHandler
     {
+        private IEventAggregator eventAggregator;
+
         private bool dropped;
 
         public delegate void DragEventHandler();
@@ -17,6 +21,11 @@ namespace KanbanBoard.Presentation.Behaviors
         public event DragEventHandler DragStarted;
 
         public Point DragPosition { get; private set; }
+
+        public DragHandleBehavior(IEventAggregator eventAggregator)
+        {
+            this.eventAggregator = eventAggregator;
+        }
 
         public override void StartDrag(IDragInfo dragInfo)
         {
@@ -39,6 +48,7 @@ namespace KanbanBoard.Presentation.Behaviors
                 var item = (ItemViewModel)dragInfo.SourceItem;
                 ((IList<ItemViewModel>)((ItemsControl)dragInfo.VisualSource).ItemsSource).Remove(item);
 
+                this.eventAggregator.GetEvent<DisableBackgroundEvent>().Publish(true);
                 dropped = false;
             }
         }
@@ -57,6 +67,7 @@ namespace KanbanBoard.Presentation.Behaviors
 
                 //Set back the minimum width so columns can be added and the items will size accordingly.
                 ((FrameworkElement)dragInfo.VisualSourceItem).MinWidth = 0;
+                this.eventAggregator.GetEvent<DisableBackgroundEvent>().Publish(false);
             }
         }
 
@@ -68,8 +79,7 @@ namespace KanbanBoard.Presentation.Behaviors
 
         public override void Dropped(IDropInfo dropInfo)
         {
-            //True because we've successfully dropped. We need this as we can drop items in some text documents (XAML documents for example).
-            //These text documents will not call this method so we can confirm a "legal" drop inside here.
+            //True because we've successfully dropped.
             this.dropped = true;
         }
     }

@@ -35,7 +35,7 @@ namespace KanbanBoard.Presentation.ViewModels
             // Loading a column.
             this.EventAggregator.GetEvent<DeleteColumnEvent>().Subscribe(this.DeleteItem);
 
-            this.DragHandler = new DragHandleBehavior();
+            this.DragHandler = new DragHandleBehavior(this.EventAggregator);
             this.DragHandler.DragStarted += () => this.RaisePropertyChanged(nameof(this.DragHandler));
             this.DropHandler = new DropHandleBehavior();
 
