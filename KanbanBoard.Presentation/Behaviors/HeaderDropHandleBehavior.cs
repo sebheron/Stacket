@@ -17,7 +17,6 @@ namespace KanbanBoard.Presentation.Behaviors
         public override void DragOver(IDropInfo dropInfo)
         {
             dropInfo.Effects = DragDropEffects.Move;
-            dropInfo.DropTargetAdorner = DropTargetAdorners.Insert;
         }
 
         public override void Drop(IDropInfo dropInfo)
