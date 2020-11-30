@@ -11,8 +11,6 @@ namespace KanbanBoard.Presentation.ViewModels
 
         private string title;
 
-        private bool optionsOpen;
-
         protected BaseCollectionItemViewModel(Guid? id, string title, IEventAggregator eventAggregator)
         {
             this.EventAggregator = eventAggregator;
@@ -32,19 +30,6 @@ namespace KanbanBoard.Presentation.ViewModels
 
                 this.SetProperty(ref title, value);
                 this.EventAggregator.GetEvent<RequestSaveEvent>().Publish();
-            }
-        }
-
-        public bool OptionsOpen
-        {
-            get => this.optionsOpen;
-            set
-            {
-                if (value)
-                {
-                    this.EventAggregator.GetEvent<OpenOptionsEvent>().Publish(this.Id);
-                }
-                this.SetProperty(ref this.optionsOpen, value);
             }
         }
     }

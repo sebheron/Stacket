@@ -105,7 +105,7 @@
                     <ToggleButton Name="OptionsToggle" Grid.Column="3" Style="{StaticResource TransparentRoundFlat3DShowOptionsButton}"
                             VerticalAlignment="Top" Height="30"
                             FocusVisualStyle="{x:Null}"
-                            IsChecked="{Binding OptionsOpen}" />
+                            IsChecked="False" />
                 </Grid>
             </Border>
 

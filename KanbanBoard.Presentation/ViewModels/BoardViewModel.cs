@@ -40,7 +40,6 @@ namespace KanbanBoard.Presentation.ViewModels
             this.eventAggregator = eventAggregator;
             this.eventAggregator.GetEvent<DeleteColumnEvent>().Subscribe(this.DeleteColumn);
             this.eventAggregator.GetEvent<RequestSaveEvent>().Subscribe(this.SaveBoard);
-            this.eventAggregator.GetEvent<OpenOptionsEvent>().Subscribe(this.OpenedOptions);
 
             this.columnFactory = columnFactory;
             this.logger = logger;
@@ -242,17 +241,6 @@ namespace KanbanBoard.Presentation.ViewModels
             }
 
             this.logger.Log("Items migrated to left-most column", Category.Debug, Priority.None);
-        }
-
-        private void OpenedOptions(Guid id)
-        {
-            var vals = this.Columns.SelectMany(column => column.Items.Where(item => item.Id != id && item.OptionsOpen).Select(item => (BaseCollectionItemViewModel)item)).ToList();
-            vals.AddRange(this.Columns.Where(column => column.Id != id && column.OptionsOpen).Select(column => (BaseCollectionItemViewModel)column).ToList());
-
-            foreach (var val in vals)
-            {
-                val.OptionsOpen = false;
-            }
         }
 
         private void ColumnsChanged(object sender, NotifyCollectionChangedEventArgs e)
