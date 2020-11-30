@@ -49,10 +49,8 @@ namespace KanbanBoard.Presentation.ViewModels
                 this.Items.AddRange(items);
             }
 
-            this.AddItemCommand = new DelegateCommand(() => this.Items.Add(itemFactory.CreateItem()));
+            this.AddItemCommand = new DelegateCommand(() => this.AddItem(itemFactory));
             this.DeleteColumnCommand = new DelegateCommand(() => this.EventAggregator.GetEvent<DeleteColumnEvent>().Publish(this.Id));
-
-            this.Items.CollectionChanged += (o, e) => this.EventAggregator.GetEvent<RequestSaveEvent>().Publish();
         }
 
         public ObservableCollection<ItemViewModel> Items { get; } = new ObservableCollection<ItemViewModel>();
@@ -71,6 +69,12 @@ namespace KanbanBoard.Presentation.ViewModels
 
         public bool Unchanged => this.Title == Resources.Board_NewColumnName && this.Items.Count <= 0;
 
+        public void AddItem(IItemViewModelFactory itemFactory)
+        {
+            this.Items.Add(itemFactory.CreateItem());
+            this.EventAggregator.GetEvent<RequestSaveEvent>().Publish();
+        }
+
         private void DeleteItem(Guid itemId)
         {
             var itemToDelete = this.Items.FirstOrDefault(item => item.Id == itemId);
@@ -79,6 +83,7 @@ namespace KanbanBoard.Presentation.ViewModels
             this.Items.Remove(itemToDelete);
 
             this.logger.Log("Item deleted", Category.Debug, Priority.None);
+            this.EventAggregator.GetEvent<RequestSaveEvent>().Publish();
         }
 
         public override string ToString()

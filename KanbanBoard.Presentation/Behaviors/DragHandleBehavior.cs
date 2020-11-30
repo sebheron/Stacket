@@ -68,6 +68,7 @@ namespace KanbanBoard.Presentation.Behaviors
                 //Set back the minimum width so columns can be added and the items will size accordingly.
                 ((FrameworkElement)dragInfo.VisualSourceItem).MinWidth = 0;
                 this.eventAggregator.GetEvent<DisableBackgroundEvent>().Publish(false);
+                this.eventAggregator.GetEvent<RequestSaveEvent>().Publish();
             }
         }
 
