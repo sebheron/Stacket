@@ -1,7 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using GongSolutions.Wpf.DragDrop;
+using GongSolutions.Wpf.DragDrop.Utilities;
 using KanbanBoard.Presentation.ViewModels;
 using Prism.Events;
 
@@ -9,11 +14,13 @@ namespace KanbanBoard.Presentation.Behaviors
 {
     public class DropHandleBehavior : DefaultDropHandler
     {
+        private int insertIndex;
+
         private ItemViewModel separator;
 
         private ItemsControl container;
 
-        private IList<ItemViewModel> items;
+        private IList items;
 
         public DropHandleBehavior()
         {
@@ -41,7 +48,7 @@ namespace KanbanBoard.Presentation.Behaviors
                     //If the items aren't referenced, get them.
                     if (this.items == null)
                     {
-                        this.items = ((IList<ItemViewModel>)this.container.ItemsSource);
+                        this.items = ((IList)this.container.ItemsSource);
                     }
                     else
                     {
@@ -52,14 +59,7 @@ namespace KanbanBoard.Presentation.Behaviors
                         }
 
                         //Get the drop index, this is usually used for the adorner.
-                        var index = dropInfo.UnfilteredInsertIndex;
-
-                        //See if the separator needs to be moved, if it does move it.
-                        if (index != this.container.Items.IndexOf(this.separator))
-                        {
-                            this.items.Remove(this.separator);
-                            this.items.Insert(index <= this.items.Count ? index : this.items.Count, this.separator);
-                        }
+                        this.insertIndex = this.InsertDropSeparator(this.container, dropInfo.DropPosition.Y, this.separator);
                     }
                 }
             }
@@ -73,12 +73,66 @@ namespace KanbanBoard.Presentation.Behaviors
 
         public override void Drop(IDropInfo dropInfo)
         {
+            //Taken from DefaultDropHandler
+            if (dropInfo?.DragInfo == null)
+            {
+                return;
+            }
 
-            base.Drop(dropInfo);
-            if (dropInfo.DragInfo.SourceItem is ItemViewModel)
+            var insertIndex = this.insertIndex;
+            var destinationList = dropInfo.TargetCollection.TryGetList();
+            var data = ExtractData(dropInfo.Data).OfType<object>().ToList();
+            bool forceMoveBehavior = false;
+
+            if (destinationList != null)
+            {
+                var objects2Insert = new List<object>();
+
+                // check for cloning
+                var cloneData = dropInfo.Effects.HasFlag(DragDropEffects.Copy) || dropInfo.Effects.HasFlag(DragDropEffects.Link);
+
+                foreach (var o in data)
+                {
+                    var obj2Insert = o;
+                    if (cloneData)
+                    {
+                        if (o is ICloneable cloneable)
+                        {
+                            obj2Insert = cloneable.Clone();
+                        }
+                    }
+
+                    objects2Insert.Add(obj2Insert);
+
+                    if (!cloneData && forceMoveBehavior)
+                    {
+                        var index = destinationList.IndexOf(o);
+                        if (insertIndex > index)
+                        {
+                            insertIndex--;
+                        }
+
+                        Move(destinationList, index, insertIndex++);
+                    }
+                    else
+                    {
+                        destinationList.Insert(insertIndex++, obj2Insert);
+                    }
+                }
+
+                SelectDroppedItems(dropInfo, objects2Insert);
+            }
+            //End of taking from DefaultDropHandler
+            if (this.items.Contains(separator))
             {
                 this.items.Remove(separator);
             }
+        }
+
+        protected static void Move(IList list, int sourceIndex, int destinationIndex)
+        {
+            var method = list.GetType().GetMethod("Move", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+            method.Invoke(list, new object[] { sourceIndex, destinationIndex });
         }
 
         private void DragLeave(object sender, DragEventArgs e)
@@ -87,6 +141,30 @@ namespace KanbanBoard.Presentation.Behaviors
             {
                 ((IList<ItemViewModel>)this.container.ItemsSource).Remove(separator);
             }
+        }
+
+        private int InsertDropSeparator(ItemsControl itemsControl, double mouseY, ItemViewModel separator)
+        {
+            //This method is similar to the one used by gong but doesn't check for greater than the mouseY, improving speed and appearance.
+            this.items.Remove(separator);
+            double totalHeight = 0;
+            int i = 0;
+            while (i < itemsControl.Items.Count)
+            {
+                var newHeight = totalHeight + ((UIElement)itemsControl.ItemContainerGenerator.ContainerFromIndex(i)).RenderSize.Height;
+                if (newHeight < mouseY)
+                {
+                    totalHeight = newHeight;
+                    i++;
+                }
+                else
+                {
+                    this.items.Insert(i, separator);
+                    return i;
+                }
+            }
+            this.items.Insert(i, separator);
+            return i;
         }
     }
 }
