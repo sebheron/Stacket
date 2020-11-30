@@ -81,7 +81,7 @@
                               Height="30"
                               Visibility="{Binding IsChecked, ElementName=Lock, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
-                    <Border Grid.ColumnSpan="4" IsHitTestVisible="{Binding IsChecked, ElementName=OptionsToggle}" Style="{StaticResource FadeOutAndIn}" Opacity="0" Background="#DCBCBCBC" CornerRadius="4">
+                    <Border Grid.ColumnSpan="4" Margin="-1" IsHitTestVisible="{Binding IsChecked, ElementName=OptionsToggle}" Style="{StaticResource FadeOutAndIn}" Opacity="0" Background="#DCBCBCBC" CornerRadius="4">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
