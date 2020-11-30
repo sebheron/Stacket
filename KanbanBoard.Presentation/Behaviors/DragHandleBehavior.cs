@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using GongSolutions.Wpf.DragDrop;
 using KanbanBoard.Presentation.ViewModels;
 
@@ -8,7 +10,7 @@ namespace KanbanBoard.Presentation.Behaviors
 {
     public class DragHandleBehavior : DefaultDragHandler
     {
-        private bool cancelled;
+        private bool dropped;
 
         public delegate void DragEventHandler();
 
@@ -36,6 +38,8 @@ namespace KanbanBoard.Presentation.Behaviors
                 //If we don't do this the seperator item created in the DropHandler will appear as an extra space in the original column and it looks broken.
                 var item = (ItemViewModel)dragInfo.SourceItem;
                 ((IList<ItemViewModel>)((ItemsControl)dragInfo.VisualSource).ItemsSource).Remove(item);
+
+                dropped = false;
             }
         }
 
@@ -43,24 +47,30 @@ namespace KanbanBoard.Presentation.Behaviors
         {
             if (dragInfo.SourceItem is ItemViewModel)
             {
-                //If we've cancelled the operation we need to add the item back to its original place as we removed it earlier.
-                if (this.cancelled)
+                //If we haven't been dropped we need to return back to our original place.
+                if (!this.dropped)
                 {
                     var item = (ItemViewModel)dragInfo.SourceItem;
                     ((IList<ItemViewModel>)((ItemsControl)dragInfo.VisualSource).ItemsSource).Insert(dragInfo.SourceIndex, item);
-                    this.cancelled = false;
+                    this.dropped = false;
                 }
 
                 //Set back the minimum width so columns can be added and the items will size accordingly.
                 ((FrameworkElement)dragInfo.VisualSourceItem).MinWidth = 0;
             }
-            base.DragDropOperationFinished(operationResult, dragInfo);
         }
 
         public override void DragCancelled()
         {
-            this.cancelled = true;
-            base.DragCancelled();
+            //False because we're not allowed to drop here.
+            this.dropped = false;
+        }
+
+        public override void Dropped(IDropInfo dropInfo)
+        {
+            //True because we've successfully dropped. We need this as we can drop items in some text documents (XAML documents for example).
+            //These text documents will not call this method so we can confirm a "legal" drop inside here.
+            this.dropped = true;
         }
     }
 }

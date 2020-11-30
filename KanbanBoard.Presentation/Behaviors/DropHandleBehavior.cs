@@ -62,10 +62,10 @@ namespace KanbanBoard.Presentation.Behaviors
                     }
                 }
             }
-            base.DragOver(dropInfo);
-            if (isItem)
+            if (CanAcceptData(dropInfo))
             {
                 dropInfo.DropTargetAdorner = null;
+                dropInfo.Effects = DragDropEffects.Move;
             }
         }
 
@@ -73,7 +73,7 @@ namespace KanbanBoard.Presentation.Behaviors
         {
             //In some very strange cases you can drop the item outside of the window into a text file or something.
             //This will just put the item back in its original column if this happens so you don't lose the items.
-            if (!(dropInfo.VisualTarget is ItemsControl itemsControl) || !(itemsControl.Items.GetItemAt(0) is ItemViewModel))
+            if (!(dropInfo.VisualTarget is ItemsControl itemsControl) || itemsControl.Items.Count <= 0 || !(itemsControl.Items.GetItemAt(0) is ItemViewModel))
             {
                 var item = (ItemViewModel)dropInfo.DragInfo.SourceItem;
                 ((IList<ItemViewModel>)((ItemsControl)dropInfo.DragInfo.VisualSource).ItemsSource).Insert(dropInfo.DragInfo.SourceIndex, item);
