@@ -22,6 +22,11 @@ namespace KanbanBoard.Presentation.Factories
             {
                 item.Title = title;
             }
+            else
+            {
+                // New item so set the property respectively.
+                item.NewlyCreatedItem = true;
+            }
 
             return item;
         }
