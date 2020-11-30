@@ -33,8 +33,7 @@ namespace KanbanBoard.Presentation.Behaviors
         public override void DragOver(IDropInfo dropInfo)
         {
             //Check to make sure we're only modifying the DragOver for items.
-            var isItem = dropInfo.DragInfo.SourceItem is ItemViewModel;
-            if (isItem)
+            if (CanAcceptData(dropInfo))
             {
                 //If the container is null set it to the target column.
                 //Also a dragleave function will be added to hide the separator when no columns are hovered over.
@@ -62,10 +61,6 @@ namespace KanbanBoard.Presentation.Behaviors
                         this.insertIndex = this.InsertDropSeparator(this.container, dropInfo.DropPosition.Y, this.separator);
                     }
                 }
-            }
-            //Same as base call with excess uneeded stuff removed.
-            if (CanAcceptData(dropInfo))
-            {
                 dropInfo.DropTargetAdorner = null;
                 dropInfo.Effects = DragDropEffects.Move;
             }
