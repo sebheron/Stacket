@@ -5,9 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.WPF.DragDrop"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-        xmlns:con="clr-namespace:KanbanBoard.Presentation.Converters"
         xmlns:beh="clr-namespace:KanbanBoard.Presentation.Behaviors"
-        xmlns:system="clr-namespace:System;assembly=mscorlib"
         xmlns:prism="http://prismlibrary.com/"
         prism:ViewModelLocator.AutoWireViewModel="True"
         mc:Ignorable="d"
@@ -36,8 +34,6 @@
         <ToolTip x:Key="TrayToolTip">
             <Label Margin="0" Padding="0" Content="Stacket" />
         </ToolTip>
-
-        <con:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Window.Resources>
 
     <i:Interaction.Triggers>
@@ -74,12 +70,17 @@
                 <ToggleButton HorizontalAlignment="Left" Width="30" Margin="0 3" Name="MenuToggle" Height="25" Style="{StaticResource RoundFlat3DHorizontalMenuBarButton}" IsChecked="True" FocusVisualStyle="{x:Null}" />
 
                 <Grid Grid.Column="1" Grid.ColumnSpan="4" Width="120" IsHitTestVisible="{Binding IsChecked, ElementName=MenuToggle}" Style="{StaticResource GrowAndShrinkWidth}">
+                    <Grid.RenderTransform>
+                        <ScaleTransform ScaleX="1" />
+                    </Grid.RenderTransform>
+
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition MaxWidth="30" />
                         <ColumnDefinition MaxWidth="30" />
                         <ColumnDefinition MaxWidth="30" />
                         <ColumnDefinition MaxWidth="30" />
                     </Grid.ColumnDefinitions>
+
                     <Button Width="40" Margin="0 3" Height="25" Background="#4FE6E6E6" Style="{StaticResource RoundFlat3DButton}" FocusVisualStyle="{x:Null}"
                     Grid.Column="0" Command="{Binding NewBoardCommand}" ToolTip="New" FontSize="2" HorizontalAlignment="Center">
                         <Image Source="{StaticResource doc-add}" Width="12" />
