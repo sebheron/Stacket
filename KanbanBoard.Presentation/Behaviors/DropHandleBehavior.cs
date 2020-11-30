@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using GongSolutions.Wpf.DragDrop;
 using KanbanBoard.Presentation.ViewModels;
+using Prism.Events;
 
 namespace KanbanBoard.Presentation.Behaviors
 {
@@ -17,8 +18,8 @@ namespace KanbanBoard.Presentation.Behaviors
         public DropHandleBehavior()
         {
             //Create the separator, just an empty ItemViewModel.
-            //Hopefully there's an alternative to this solution it seems a bit hacky, but it does work.
-            this.separator = new ItemViewModel(null);
+            //Decided against passing in the real aggregator so we don't start publishing to the rest of the application.
+            this.separator = new ItemViewModel(new EventAggregator());
             this.separator.IsItemEnabled = false;
         }
 
@@ -62,6 +63,7 @@ namespace KanbanBoard.Presentation.Behaviors
                     }
                 }
             }
+            //Same as base call with excess uneeded stuff removed.
             if (CanAcceptData(dropInfo))
             {
                 dropInfo.DropTargetAdorner = null;
@@ -71,13 +73,7 @@ namespace KanbanBoard.Presentation.Behaviors
 
         public override void Drop(IDropInfo dropInfo)
         {
-            //In some very strange cases you can drop the item outside of the window into a text file or something.
-            //This will just put the item back in its original column if this happens so you don't lose the items.
-            if (!(dropInfo.VisualTarget is ItemsControl itemsControl) || itemsControl.Items.Count <= 0 || !(itemsControl.Items.GetItemAt(0) is ItemViewModel))
-            {
-                var item = (ItemViewModel)dropInfo.DragInfo.SourceItem;
-                ((IList<ItemViewModel>)((ItemsControl)dropInfo.DragInfo.VisualSource).ItemsSource).Insert(dropInfo.DragInfo.SourceIndex, item);
-            }
+
             base.Drop(dropInfo);
             if (dropInfo.DragInfo.SourceItem is ItemViewModel)
             {

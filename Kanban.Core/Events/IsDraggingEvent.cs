@@ -2,7 +2,7 @@
 
 namespace Kanban.Core.Events
 {
-    public class DisableBackgroundEvent : PubSubEvent<bool>
+    public class IsDraggingEvent : PubSubEvent<bool>
     {
     }
 }

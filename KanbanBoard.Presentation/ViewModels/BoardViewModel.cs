@@ -41,7 +41,7 @@ namespace KanbanBoard.Presentation.ViewModels
             this.eventAggregator = eventAggregator;
             this.eventAggregator.GetEvent<DeleteColumnEvent>().Subscribe(this.DeleteColumn);
             this.eventAggregator.GetEvent<RequestSaveEvent>().Subscribe(this.SaveBoard);
-            this.eventAggregator.GetEvent<DisableBackgroundEvent>().Subscribe((d) => this.DisableBackground = d);
+            this.eventAggregator.GetEvent<IsDraggingEvent>().Subscribe((d) => this.DisableBackground = d);
 
             this.columnFactory = columnFactory;
             this.logger = logger;
