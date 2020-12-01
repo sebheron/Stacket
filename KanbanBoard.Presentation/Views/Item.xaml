@@ -55,14 +55,8 @@
                     <TextBlock Margin="6 5 0 6" Grid.Row="1" dd:DragDrop.IsDropTarget="True"
                              Text="{Binding Title}"
                              TextAlignment="Left" HorizontalAlignment="Left"
-                             TextWrapping="Wrap" TextTrimming="WordEllipsis" behaviors:MaxLinesBehavior.MaxLines="3">
-                        <TextBlock.Visibility>
-                            <Binding Path="IsChecked" ElementName="Lock" Converter="{StaticResource BooleanToVisibilityConverter}">
-                                <Binding.ConverterParameter>
-                                    <system:Boolean>True</system:Boolean>
-                                </Binding.ConverterParameter>
-                            </Binding>
-                        </TextBlock.Visibility>
+                             TextWrapping="Wrap" TextTrimming="WordEllipsis" behaviors:MaxLinesBehavior.MaxLines="3"
+                             Visibility="{Binding IsChecked, ElementName=Lock, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter={StaticResource InvertVisibility}}">
                     </TextBlock>
 
                     <ToggleButton Grid.Column="1"
