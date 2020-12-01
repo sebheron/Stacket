@@ -296,9 +296,6 @@
                                 <Setter TargetName="border" Property="Background" Value="#6BE6E6E6" />
                                 <Setter TargetName="border" Property="BorderBrush" Value="#6BE6E6E6" />
                             </Trigger>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter TargetName="border" Property="Background" Value="#6BB8B8B8" />
-                            </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
@@ -329,9 +326,6 @@
                             <Trigger Property="IsChecked" Value="True">
                                 <Setter TargetName="img" Property="Source" Value="{StaticResource tag}" />
                             </Trigger>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter TargetName="border" Property="Background" Value="#6BB8B8B8" />
-                            </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
@@ -355,9 +349,6 @@
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="border" Property="Background" Value="#6BE6E6E6" />
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter TargetName="border" Property="Background" Value="#6BB8B8B8" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -389,9 +380,6 @@
                             <Trigger Property="IsChecked" Value="True">
                                 <Setter TargetName="img" Property="Source" Value="{StaticResource comment-inv}" />
                             </Trigger>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter TargetName="border" Property="Background" Value="#6BB8B8B8" />
-                            </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
@@ -422,9 +410,6 @@
                             <Trigger Property="IsChecked" Value="True">
                                 <Setter TargetName="img" Property="Source" Value="{StaticResource lock-open}" />
                             </Trigger>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter TargetName="border" Property="Background" Value="#6BB8B8B8" />
-                            </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
@@ -454,9 +439,6 @@
                             </Trigger>
                             <Trigger Property="IsChecked" Value="True">
                                 <Setter TargetName="img" Property="Source" Value="{StaticResource toggle-on}" />
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter TargetName="border" Property="Background" Value="#6BB8B8B8" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -775,6 +757,34 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        
+        <Style x:Key="MainFadeOutAndIn" TargetType="FrameworkElement">
+            <Style.Triggers>
+                <Trigger Property="IsHitTestVisible" Value="False">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.2" />
+                                <BooleanAnimationUsingKeyFrames BeginTime="0:0:0.2" Duration="0:0:0" Storyboard.TargetProperty="IsEnabled">
+                                    <DiscreteBooleanKeyFrame Value="False" />
+                                </BooleanAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.2" />
+                                <BooleanAnimationUsingKeyFrames BeginTime="0:0:0.2" Duration="0:0:0" Storyboard.TargetProperty="IsEnabled">
+                                    <DiscreteBooleanKeyFrame Value="True" />
+                                </BooleanAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
         <Style x:Key="FadeOutAndIn" TargetType="FrameworkElement">
             <Style.Triggers>
                 <Trigger Property="IsHitTestVisible" Value="False">
@@ -789,6 +799,27 @@
                         <BeginStoryboard>
                             <Storyboard>
                                 <DoubleAnimation Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.2" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="GrowAndShrinkWidth" TargetType="FrameworkElement">
+            <Style.Triggers>
+                <Trigger Property="IsHitTestVisible" Value="False">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)" To="0" Duration="0:0:0.2" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)" To="1" Duration="0:0:0.2" />
                             </Storyboard>
                         </BeginStoryboard>
                     </Trigger.ExitActions>

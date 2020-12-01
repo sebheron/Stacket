@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using GongSolutions.Wpf.DragDrop;
+using KanbanBoard.Presentation.ViewModels;
 
 namespace KanbanBoard.Presentation.Behaviors
 {
@@ -13,6 +14,11 @@ namespace KanbanBoard.Presentation.Behaviors
 
         public override void StartDrag(IDragInfo dragInfo)
         {
+            if (dragInfo.SourceItem is ItemViewModel item)
+            {
+                item.NewlyCreatedItem = false;
+            }
+
             var position = dragInfo.PositionInDraggedItem;
             this.DragPosition = new Point(position.X / dragInfo.VisualSourceItem.RenderSize.Width, position.Y / dragInfo.VisualSourceItem.RenderSize.Height);
 
