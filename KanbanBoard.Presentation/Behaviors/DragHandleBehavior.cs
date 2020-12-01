@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using GongSolutions.Wpf.DragDrop;
 using Kanban.Core.Events;
 using KanbanBoard.Presentation.ViewModels;
@@ -12,7 +10,7 @@ namespace KanbanBoard.Presentation.Behaviors
 {
     public class DragHandleBehavior : DefaultDragHandler
     {
-        private IEventAggregator eventAggregator;
+        private readonly IEventAggregator eventAggregator;
 
         private bool dropped;
 
