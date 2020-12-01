@@ -304,9 +304,6 @@
                                 <Setter TargetName="border" Property="Background" Value="#6BE6E6E6" />
                                 <Setter TargetName="border" Property="BorderBrush" Value="#6BE6E6E6" />
                             </Trigger>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter TargetName="border" Property="Background" Value="#6BB8B8B8" />
-                            </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
@@ -336,9 +333,6 @@
                             </Trigger>
                             <Trigger Property="IsChecked" Value="True">
                                 <Setter TargetName="img" Property="Source" Value="{StaticResource tag}" />
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter TargetName="border" Property="Background" Value="#6BB8B8B8" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -370,9 +364,6 @@
                             <Trigger Property="IsChecked" Value="True">
                                 <Setter TargetName="img" Property="Source" Value="{StaticResource comment-inv}" />
                             </Trigger>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter TargetName="border" Property="Background" Value="#6BB8B8B8" />
-                            </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
@@ -403,9 +394,6 @@
                             <Trigger Property="IsChecked" Value="True">
                                 <Setter TargetName="img" Property="Source" Value="{StaticResource lock-filled}" />
                             </Trigger>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter TargetName="border" Property="Background" Value="#6BB8B8B8" />
-                            </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
@@ -435,9 +423,6 @@
                             </Trigger>
                             <Trigger Property="IsChecked" Value="True">
                                 <Setter TargetName="img" Property="Source" Value="{StaticResource toggle-on}" />
-                            </Trigger>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter TargetName="border" Property="Background" Value="#6BB8B8B8" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
