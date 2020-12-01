@@ -6,7 +6,6 @@
         xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.WPF.DragDrop"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:beh="clr-namespace:KanbanBoard.Presentation.Behaviors"
-        xmlns:converters="clr-namespace:KanbanBoard.Presentation.Converters"
         xmlns:prism="http://prismlibrary.com/"
         prism:ViewModelLocator.AutoWireViewModel="True"
         mc:Ignorable="d"
@@ -35,8 +34,6 @@
         <ToolTip x:Key="TrayToolTip">
             <Label Margin="0" Padding="0" Content="Stacket" />
         </ToolTip>
-
-        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Window.Resources>
 
     <i:Interaction.Triggers>

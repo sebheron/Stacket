@@ -4,27 +4,19 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
-             xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.WPF.DragDrop"
              xmlns:behaviors="clr-namespace:KanbanBoard.Presentation.Behaviors"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:enums="clr-namespace:KanbanBoard.Logic.Enums;assembly=KanbanBoard.Logic"
-             xmlns:converters="clr-namespace:KanbanBoard.Presentation.Converters"
              mc:Ignorable="d"
              d:DesignWidth="300"
              IsHitTestVisible="{Binding IsItemEnabled}">
-    
+
     <UserControl.Resources>
         <ObjectDataProvider x:Key="ItemTypes" MethodName="GetValues" ObjectType="{x:Type system:Enum}">
             <ObjectDataProvider.MethodParameters>
                 <x:Type TypeName="enums:ItemTypes" />
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
-
-        <system:Int32 x:Key="InvertVisibility">1</system:Int32>
-        <system:Int32 x:Key="HiddenVisibility">2</system:Int32>
-
-        <converters:ColorToScreenColorConverter x:Key="ColorToScreenColor" />
-        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
 
     <Grid>
