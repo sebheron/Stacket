@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using Kanban.Core.Events;
@@ -16,6 +17,7 @@ namespace KanbanBoard.Presentation.ViewModels
         private ItemTypes itemType;
         private Color itemColor;
         private bool newlyCreatedItem;
+        private bool isItemEnabled;
 
         public ItemViewModel(
             IEventAggregator eventAggregator,
@@ -30,6 +32,8 @@ namespace KanbanBoard.Presentation.ViewModels
             this.Description = description;
             this.DescriptionVisible = descriptionVisible;
             this.ItemType = itemType ?? Settings.Default.LastItemType;
+
+            this.IsItemEnabled = true;
 
             this.DeleteItemCommand = new DelegateCommand(() => this.EventAggregator.GetEvent<DeleteColumnEvent>().Publish(this.Id));
         }
@@ -84,6 +88,12 @@ namespace KanbanBoard.Presentation.ViewModels
         {
             get => this.newlyCreatedItem;
             set => this.SetProperty(ref this.newlyCreatedItem, value);
+        }
+
+        public bool IsItemEnabled
+        {
+            get => this.isItemEnabled;
+            set => this.SetProperty(ref this.isItemEnabled, value);
         }
 
         public bool Unchanged => this.Title == Resources.Board_NewItemName && string.IsNullOrEmpty(this.Description);

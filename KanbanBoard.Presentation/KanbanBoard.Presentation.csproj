@@ -141,6 +141,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Behaviors\DragHandleBehavior.cs" />
+    <Compile Include="Behaviors\DropHandleBehavior.cs" />
+    <Compile Include="Behaviors\HeaderDropHandleBehavior.cs" />
     <Compile Include="Behaviors\MaxLinesBehavior.cs" />
     <Compile Include="Behaviors\MoveableStackpanelBehavior.cs" />
     <Compile Include="Behaviors\TextBoxFocusBehavior.cs" />
