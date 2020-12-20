@@ -15,8 +15,7 @@
         WindowStyle="None" AllowsTransparency="True" ResizeMode="NoResize"
         ShowInTaskbar="False"
         Topmost="True" Tag="MainWindow"
-        Height="{Binding WindowHeight}" Width="{Binding WindowWidth}"
-        Background="Transparent" SizeToContent="Height">
+        Background="Transparent">
 
     <Window.InputBindings>
         <KeyBinding Modifiers="Ctrl" Key="S" Command="{Binding SaveBoardCommand}" />
