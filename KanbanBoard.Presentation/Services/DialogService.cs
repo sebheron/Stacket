@@ -1,17 +1,22 @@
 using KanbanBoard.Presentation.Dialogs;
+using Prism.Events;
 using Prism.Logging;
 
 namespace KanbanBoard.Presentation.Services
 {
     public class DialogService : IDialogService
     {
+        private readonly IEventAggregator eventAggregator;
         private readonly IRegistryService registryService;
         private readonly ILoggerFacade logger;
+        private readonly IFTPService ftpService;
 
-        public DialogService(IRegistryService registryService, ILoggerFacade logger)
+        public DialogService(IEventAggregator eventAggregator, IRegistryService registryService, ILoggerFacade logger, IFTPService ftpService)
         {
             this.registryService = registryService;
             this.logger = logger;
+            this.ftpService = ftpService;
+            this.eventAggregator = eventAggregator;
         }
 
         public bool? ShowYesNo(string text, string caption)
@@ -52,7 +57,7 @@ namespace KanbanBoard.Presentation.Services
         {
             this.logger.Log("Requested board window", Category.Debug, Priority.None);
             var dialog = new BoardSelectorWindow();
-            var dialogViewModel = new BoardSelectorWindowViewModel(this, this.logger, dialog.Close);
+            var dialogViewModel = new BoardSelectorWindowViewModel(this.eventAggregator, this, this.logger, this.ftpService, dialog.Close);
             dialog.DataContext = dialogViewModel;
 
             dialog.ShowDialog();

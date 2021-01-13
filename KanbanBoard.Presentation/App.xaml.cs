@@ -8,6 +8,7 @@ using KanbanBoard.Presentation.Services;
 using KanbanBoard.Presentation.Views;
 using Prism.Ioc;
 using Prism.Logging;
+using Prism.Events;
 
 namespace KanbanBoard.Presentation
 {
@@ -50,6 +51,7 @@ namespace KanbanBoard.Presentation
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterInstance<ILoggerFacade>(new StringLogger());
+            containerRegistry.RegisterInstance<IFTPService>(new FTPService(Container.Resolve<IEventAggregator>()));
             containerRegistry.Register<IRegistryService, RegistryService>();
             containerRegistry.Register<IDialogService, DialogService>();
             containerRegistry.Register<IStartupService, StartupService>();

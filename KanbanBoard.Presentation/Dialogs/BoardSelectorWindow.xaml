@@ -24,9 +24,14 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition Width="30" />
+                        <ColumnDefinition Width="30" />
                     </Grid.ColumnDefinitions>
 
-                    <Button Grid.Column="1" Style="{StaticResource TransparentRoundFlat3DButton}" Command="{Binding CloseDialogCommand}">
+                    <ToggleButton Grid.Column="1" Style="{StaticResource TransparentRoundFlat3DToggleButton}" IsChecked="{Binding IsOnline, Mode=OneWay}" Command="{Binding ToggleConnectionCommand}">
+                        <Image Source="{StaticResource globe}" Width="11" />
+                    </ToggleButton>
+                    
+                    <Button Grid.Column="2" Style="{StaticResource TransparentRoundFlat3DButton}" Command="{Binding CloseDialogCommand}">
                         <Image Source="{StaticResource cancel}" Width="11" />
                     </Button>
                     <TextBlock Margin="5" Text="Open Board" />

@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 using KanbanBoard.Logic.Properties;
 using Prism.Logging;
 
@@ -10,12 +11,14 @@ namespace KanbanBoard.Presentation.Services
         private readonly IDialogService dialogService;
         private readonly IRegistryService registryService;
         private readonly ILoggerFacade logger;
+        private readonly IFTPService ftpService;
 
-        public StartupService(IDialogService dialogService, IRegistryService registryService, ILoggerFacade logger)
+        public StartupService(IDialogService dialogService, IRegistryService registryService, ILoggerFacade logger, IFTPService ftpService)
         {
             this.dialogService = dialogService;
             this.registryService = registryService;
             this.logger = logger;
+            this.ftpService = ftpService;
         }
 
         public bool Initialize()
@@ -72,6 +75,10 @@ namespace KanbanBoard.Presentation.Services
                 {
                     return false;
                 }
+            }
+            else if (Settings.Default.IsOnline)
+            {
+                //Add some code here.
             }
             else if (!File.Exists(Settings.Default.CurrentBoard))
             {

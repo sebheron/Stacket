@@ -16,6 +16,7 @@ using Prism.Commands;
 using Prism.Events;
 using Prism.Logging;
 using Prism.Mvvm;
+using System.Threading.Tasks;
 
 namespace KanbanBoard.Presentation.ViewModels
 {
@@ -25,18 +26,22 @@ namespace KanbanBoard.Presentation.ViewModels
         private readonly IDialogService dialogService;
         private readonly ILoggerFacade logger;
         private readonly IEventAggregator eventAggregator;
+        private readonly IFTPService ftpService;
 
         private string filePath => Settings.Default.CurrentBoard;
         private bool loadEnabled = true;
         private bool newEnabled = true;
+        private bool isBoardShown;
         private bool loadInProgress;
         private bool disableBackground;
+        private DateTime modifiedDate;
 
         public BoardViewModel(
             IColumnViewModelFactory columnFactory,
             IDialogService dialogService,
             ILoggerFacade logger,
-            IEventAggregator eventAggregator)
+            IEventAggregator eventAggregator,
+            IFTPService ftpService)
         {
             this.eventAggregator = eventAggregator;
             this.eventAggregator.GetEvent<DeleteColumnEvent>().Subscribe(this.DeleteColumn);
@@ -46,6 +51,7 @@ namespace KanbanBoard.Presentation.ViewModels
             this.columnFactory = columnFactory;
             this.logger = logger;
             this.dialogService = dialogService;
+            this.ftpService = ftpService;
 
             this.DragHandler = new DragHandleBehavior(this.eventAggregator);
             this.DragHandler.DragStarted += () => this.RaisePropertyChanged(nameof(this.DragHandler));
@@ -82,6 +88,12 @@ namespace KanbanBoard.Presentation.ViewModels
             set => SetProperty(ref this.newEnabled, value);
         }
 
+        public bool IsBoardShown
+        {
+            get => this.isBoardShown;
+            set => SetProperty(ref this.isBoardShown, value);
+        }
+
         public double WindowWidth => SystemParameters.MaximizedPrimaryScreenWidth;
         public double WindowHeight => SystemParameters.MaximizedPrimaryScreenHeight;
         public double ColumnWidth => (this.WindowWidth - 120) / Math.Max(5, this.Columns.Count);
@@ -111,6 +123,8 @@ namespace KanbanBoard.Presentation.ViewModels
             this.LoadBoardFromFile();
             this.logger.Log("Board successfully loaded", Category.Debug, Priority.None);
 
+            this.IsBoardShown = false;
+
             this.Columns.CollectionChanged += this.ColumnsChanged;
         }
 
@@ -133,9 +147,16 @@ namespace KanbanBoard.Presentation.ViewModels
 
             if (string.IsNullOrEmpty(input)) return;
 
-            Settings.Default.CurrentBoard = Path.Combine(FileLocations.BoardFileStorageLocation, input + Resources.BoardFileExtension);
-            this.LoadBoardFromFile();
+            if (Settings.Default.IsOnline)
+            {
+                Settings.Default.CurrentBoard = input + Resources.BoardFileExtension;
+            }
+            else
+            {
+                Settings.Default.CurrentBoard = Path.Combine(FileLocations.BoardFileStorageLocation, input + Resources.BoardFileExtension);
+            }
 
+            this.LoadBoardFromFile();
             this.logger.Log("New board created and loaded", Category.Debug, Priority.None);
         }
 
@@ -164,33 +185,48 @@ namespace KanbanBoard.Presentation.ViewModels
             this.loadInProgress = true;
             this.Columns.Clear();
 
-            if (File.Exists(this.filePath))
+            List<string> lines = new List<string>();
+
+            if (Settings.Default.IsOnline)
             {
-                this.logger.Log("File exists, loading from file", Category.Debug, Priority.None);
-
-                // For each version in future releases migration will occur here! Via Assembly information check.
-                var lines = File.ReadAllLines(this.filePath);
-
-                for (var i = 2; i < lines.Length; i++)
-                {
-                    this.Columns.Add(this.columnFactory.Load(lines[i]));
-                }
-
-                this.loadInProgress = false;
+                lines.AddRange(this.ftpService.ReadAllLines(this.filePath));
             }
             else
             {
-                this.logger.Log("File doesn't exist, creating default board", Category.Debug, Priority.None);
-
-                this.Columns.Add(this.columnFactory.CreateColumn(Resources.ColumnName_New));
-                this.Columns.Add(this.columnFactory.CreateColumn(Resources.ColumnName_InProgress));
-                this.Columns.Add(this.columnFactory.CreateColumn(Resources.ColumnName_Done));
-
-                this.loadInProgress = false;
-
-                // Create the board file with default data.
-                this.SaveBoard();
+                if (File.Exists(this.filePath))
+                {
+                    // For each version in future releases migration will occur here! Via Assembly information check.
+                    lines.AddRange(File.ReadAllLines(this.filePath));
+                }
             }
+
+            if (lines.Count <= 0)
+            {
+                this.CreateDefaultBoard();
+            }
+            else
+            {
+                for (var i = 2; i < lines.Count; i++)
+                {
+                    this.Columns.Add(this.columnFactory.Load(lines.ElementAt(i)));
+                }
+            }
+
+            this.loadInProgress = false;
+        }
+
+        public void CreateDefaultBoard()
+        {
+            this.logger.Log("File doesn't exist, creating default board", Category.Debug, Priority.None);
+
+            this.Columns.Add(this.columnFactory.CreateColumn(Resources.ColumnName_New));
+            this.Columns.Add(this.columnFactory.CreateColumn(Resources.ColumnName_InProgress));
+            this.Columns.Add(this.columnFactory.CreateColumn(Resources.ColumnName_Done));
+
+            this.loadInProgress = false;
+
+            // Create the board file with default data.
+            this.SaveBoard();
         }
 
         public void SaveBoard()
@@ -201,7 +237,14 @@ namespace KanbanBoard.Presentation.ViewModels
 
             boardData.AddRange(this.Columns.Select(column => column.ToString()));
 
-            File.WriteAllLines(this.filePath, boardData.ToArray());
+            if (Settings.Default.IsOnline)
+            {
+                this.ftpService.WriteAllLines(this.filePath, boardData.ToArray());
+            }
+            else
+            {
+                File.WriteAllLines(this.filePath, boardData.ToArray());
+            }
 
             this.logger.Log("Board successfully saved", Category.Debug, Priority.None);
         }
@@ -224,14 +267,14 @@ namespace KanbanBoard.Presentation.ViewModels
 
         private void DeleteColumn(Guid columnId)
         {
+            var columnToDelete = this.Columns.FirstOrDefault(column => column.Id == columnId);
+            if (columnToDelete == null) return;
+
             if (this.Columns.Count <= 1)
             {
                 this.dialogService.ShowMessage(Resources.Dialog_CannotRemoveLastColumn_Message, Resources.Dialog_RemoveColumn_Title);
                 return;
             }
-
-            var columnToDelete = this.Columns.FirstOrDefault(column => column.Id == columnId);
-            if (columnToDelete == null) return;
 
             var items = columnToDelete.Items;
 
