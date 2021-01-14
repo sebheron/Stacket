@@ -7,6 +7,7 @@
              xmlns:dd="urn:gong-wpf-dragdrop"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:behaviors="clr-namespace:KanbanBoard.Presentation.Behaviors"
+             xmlns:converters="clr-namespace:KanbanBoard.Presentation.Converters"
              mc:Ignorable="d"
              d:DesignWidth="400">
 
