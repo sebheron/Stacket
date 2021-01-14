@@ -30,6 +30,7 @@ namespace KanbanBoard.Presentation.ViewModels
         private bool loadEnabled = true;
         private bool newEnabled = true;
         private bool loadInProgress;
+        private bool disableBackground;
 
         public BoardViewModel(
             IColumnViewModelFactory columnFactory,
@@ -40,12 +41,13 @@ namespace KanbanBoard.Presentation.ViewModels
             this.eventAggregator = eventAggregator;
             this.eventAggregator.GetEvent<DeleteColumnEvent>().Subscribe(this.DeleteColumn);
             this.eventAggregator.GetEvent<RequestSaveEvent>().Subscribe(this.SaveBoard);
+            this.eventAggregator.GetEvent<IsDraggingEvent>().Subscribe((d) => this.DisableBackground = d);
 
             this.columnFactory = columnFactory;
             this.logger = logger;
             this.dialogService = dialogService;
 
-            this.DragHandler = new DragHandleBehavior();
+            this.DragHandler = new DragHandleBehavior(this.eventAggregator);
             this.DragHandler.DragStarted += () => this.RaisePropertyChanged(nameof(this.DragHandler));
 
             this.OnLoadedCommand = new DelegateCommand(this.OnWindowLoaded);
@@ -61,6 +63,12 @@ namespace KanbanBoard.Presentation.ViewModels
         public ObservableCollection<ColumnViewModel> Columns { get; } = new ObservableCollection<ColumnViewModel>();
 
         public DragHandleBehavior DragHandler { get; }
+
+        public bool DisableBackground
+        {
+            get => this.disableBackground;
+            set => SetProperty(ref this.disableBackground, value);
+        }
 
         public bool LoadEnabled
         {

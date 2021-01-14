@@ -7,7 +7,6 @@
              xmlns:dd="urn:gong-wpf-dragdrop"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:behaviors="clr-namespace:KanbanBoard.Presentation.Behaviors"
-             xmlns:converters="clr-namespace:KanbanBoard.Presentation.Converters"
              mc:Ignorable="d"
              d:DesignWidth="400">
 
@@ -48,7 +47,7 @@
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
 
-                                <TextBox MaxLines="3" Grid.Row="1" dd:DragDrop.IsDropTarget="True" Style="{StaticResource CappedHiddenTextBox}" Text="{Binding Title}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left">
+                                <TextBox MaxLines="3" Grid.Row="1" IsHitTestVisible="{Binding NotDragging}" dd:DragDrop.IsDropTarget="True" Style="{StaticResource CappedHiddenTextBox}" Text="{Binding Title}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left">
                                     <b:Interaction.Behaviors>
                                         <behaviors:TextBoxFocusBehavior />
                                     </b:Interaction.Behaviors>
@@ -80,6 +79,8 @@
                               dd:DragDrop.UseVisualSourceItemSizeForDragAdorner="True"
                               dd:DragDrop.DragMouseAnchorPoint="{Binding DragHandler.DragPosition}"
                               dd:DragDrop.DragHandler="{Binding DragHandler}"
+                              dd:DragDrop.DropHandler="{Binding DropHandler}"
+                              dd:DragDrop.ShowAlwaysDropTargetAdorner="True"
                               MinHeight="40"
                               Focusable="False"
                               Padding="0,0,0,10"

@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="Events\DeleteColumnEvent.cs" />
     <Compile Include="Events\DeleteItemEvent.cs" />
+    <Compile Include="Events\IsDraggingEvent.cs" />
     <Compile Include="Events\RequestSaveEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

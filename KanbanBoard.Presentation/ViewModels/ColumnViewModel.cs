@@ -35,8 +35,10 @@ namespace KanbanBoard.Presentation.ViewModels
             // Loading a column.
             this.EventAggregator.GetEvent<DeleteColumnEvent>().Subscribe(this.DeleteItem);
 
-            this.DragHandler = new DragHandleBehavior();
+            this.DragHandler = new DragHandleBehavior(this.EventAggregator);
             this.DragHandler.DragStarted += () => this.RaisePropertyChanged(nameof(this.DragHandler));
+            this.DropHandler = new DropHandleBehavior();
+            this.HeaderDropHandler = new HeaderDropHandleBehavior(this.Items);
 
             this.dialogService = dialogService;
             this.logger = logger;
@@ -48,15 +50,15 @@ namespace KanbanBoard.Presentation.ViewModels
                 this.Items.AddRange(items);
             }
 
-            this.AddItemCommand = new DelegateCommand(() => this.Items.Add(itemFactory.CreateItem()));
+            this.AddItemCommand = new DelegateCommand(() => this.AddItem(itemFactory));
             this.DeleteColumnCommand = new DelegateCommand(() => this.EventAggregator.GetEvent<DeleteColumnEvent>().Publish(this.Id));
-
-            this.Items.CollectionChanged += (o, e) => this.EventAggregator.GetEvent<RequestSaveEvent>().Publish();
         }
 
         public ObservableCollection<ItemViewModel> Items { get; } = new ObservableCollection<ItemViewModel>();
 
         public DragHandleBehavior DragHandler { get; }
+        public DropHandleBehavior DropHandler { get; }
+        public HeaderDropHandleBehavior HeaderDropHandler { get; }
 
         public ICommand AddItemCommand { get; }
         public ICommand DeleteColumnCommand { get; }
@@ -69,6 +71,12 @@ namespace KanbanBoard.Presentation.ViewModels
 
         public bool Unchanged => this.Title == Resources.Board_NewColumnName && this.Items.Count <= 0;
 
+        public void AddItem(IItemViewModelFactory itemFactory)
+        {
+            this.Items.Add(itemFactory.CreateItem());
+            this.EventAggregator.GetEvent<RequestSaveEvent>().Publish();
+        }
+
         private void DeleteItem(Guid itemId)
         {
             var itemToDelete = this.Items.FirstOrDefault(item => item.Id == itemId);
@@ -77,6 +85,7 @@ namespace KanbanBoard.Presentation.ViewModels
             this.Items.Remove(itemToDelete);
 
             this.logger.Log("Item deleted", Category.Debug, Priority.None);
+            this.EventAggregator.GetEvent<RequestSaveEvent>().Publish();
         }
 
         public override string ToString()

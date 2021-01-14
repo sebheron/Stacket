@@ -3,14 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:dd="urn:gong-wpf-dragdrop"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:behaviors="clr-namespace:KanbanBoard.Presentation.Behaviors"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:enums="clr-namespace:KanbanBoard.Logic.Enums;assembly=KanbanBoard.Logic"
-             xmlns:converters="clr-namespace:KanbanBoard.Presentation.Converters"
              mc:Ignorable="d"
-             d:DesignWidth="300">
+             d:DesignWidth="300"
+             IsHitTestVisible="{Binding IsItemEnabled}">
 
     <UserControl.Resources>
         <ObjectDataProvider x:Key="ItemTypes" MethodName="GetValues" ObjectType="{x:Type system:Enum}">
@@ -18,39 +17,38 @@
                 <x:Type TypeName="enums:ItemTypes" />
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
-
-        <converters:ColorToScreenColorConverter x:Key="ColorToScreenColor" />
-        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
 
-    <Border Background="LightGray" CornerRadius="15" Margin="10,5" FocusVisualStyle="{x:Null}">
-        <StackPanel>
-            <Border Background="{Binding ItemColor, Converter={StaticResource ColorToScreenColor}}" CornerRadius="4" MinHeight="30" FocusVisualStyle="{x:Null}">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition Width="30" />
-                        <ColumnDefinition Width="30" />
-                        <ColumnDefinition Width="30" />
-                    </Grid.ColumnDefinitions>
+    <Grid>
+        <Border Background="LightGray" CornerRadius="15" Margin="10,5" FocusVisualStyle="{x:Null}"
+                Visibility="{Binding IsItemEnabled, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter={StaticResource HiddenVisibility}}">
+            <StackPanel>
+                <Border Background="{Binding ItemColor, Converter={StaticResource ColorToScreenColor}}" CornerRadius="4" MinHeight="30" FocusVisualStyle="{x:Null}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="30" />
+                            <ColumnDefinition Width="30" />
+                            <ColumnDefinition Width="30" />
+                        </Grid.ColumnDefinitions>
 
-                    <TextBox Margin="6 5 0 6" MaxLines="3" Grid.Row="1" dd:DragDrop.IsDropTarget="True" Text="{Binding Title}"
+                    <TextBox IsHitTestVisible="{Binding NotDragging}" Margin="6 5 0 6" MaxLines="3" Grid.Row="1" dd:DragDrop.IsDropTarget="True" Text="{Binding Title}"
                              VerticalContentAlignment="Top" HorizontalContentAlignment="Left" HorizontalAlignment="Left"
                              Visibility="{Binding IsChecked, ElementName=Lock, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <b:Interaction.Behaviors>
                             <behaviors:TextBoxFocusBehavior />
                         </b:Interaction.Behaviors>
 
-                        <TextBox.Style>
-                            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource CappedHiddenTextBox}">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding NewlyCreatedItem}" Value="True">
-                                        <Setter Property="FocusManager.FocusedElement" Value="{Binding RelativeSource={RelativeSource Mode=Self}}" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBox.Style>
-                    </TextBox>
+                            <TextBox.Style>
+                                <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource CappedHiddenTextBox}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding NewlyCreatedItem}" Value="True">
+                                            <Setter Property="FocusManager.FocusedElement" Value="{Binding RelativeSource={RelativeSource Mode=Self}}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
 
                     <TextBlock Margin="6 5 0 6" Grid.Row="1" dd:DragDrop.IsDropTarget="True"
                              Text="{Binding Title}"
@@ -64,16 +62,14 @@
                                   VerticalAlignment="Top"
                                   Height="30"
                                   IsChecked="{Binding DescriptionVisible, Mode=TwoWay}"
-                                  FocusVisualStyle="{x:Null}"
-                                  Visibility="{Binding IsChecked, ElementName=Lock, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                  FocusVisualStyle="{x:Null}" />
 
-                    <ComboBox Style="{StaticResource TransparentRoundComboBox}"
+                        <ComboBox Style="{StaticResource TransparentRoundComboBox}"
                               Grid.Column="2"
                               SelectedValue="{Binding ItemTypeView}"
                               ItemsSource="{Binding Source={StaticResource ItemTypes}}"
                               VerticalAlignment="Top"
-                              Height="30"
-                              Visibility="{Binding IsChecked, ElementName=Lock, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                              Height="30" />
 
                     <Border Grid.ColumnSpan="4" Margin="-1" IsHitTestVisible="{Binding IsChecked, ElementName=OptionsToggle}" Style="{StaticResource FadeOutAndIn}" Opacity="0" Background="#DCBCBCBC" CornerRadius="4">
                         <Grid>
@@ -114,12 +110,25 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
-                <TextBox Grid.Column="1" Grid.Row="1" dd:DragDrop.IsDropTarget="True" Style="{StaticResource HiddenTextBox}" Text="{Binding Description}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left">
-                    <b:Interaction.Behaviors>
-                        <behaviors:TextBoxFocusBehavior />
-                    </b:Interaction.Behaviors>
-                </TextBox>
-            </Grid>
-        </StackPanel>
-    </Border>
+                    <TextBox IsHitTestVisible="{Binding NotDragging}" Grid.Column="1" Grid.Row="1" Style="{StaticResource HiddenTextBox}" Text="{Binding Description}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left">
+                        <b:Interaction.Behaviors>
+                            <behaviors:TextBoxFocusBehavior />
+                        </b:Interaction.Behaviors>
+                    </TextBox>
+                </Grid>
+            </StackPanel>
+        </Border>
+        <Border CornerRadius="5" Margin="10,5"
+                Visibility="{Binding IsItemEnabled,
+                                     Converter={StaticResource BooleanToVisibilityConverter},
+                                     ConverterParameter={StaticResource InvertVisibility}}"
+                BorderBrush="{StaticResource FlatReverse3DBorderBrush}" BorderThickness="2">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0, 0" EndPoint="1, 1" Opacity="0.3">
+                    <GradientStop Color="Gray" Offset="0" />
+                    <GradientStop Color="#737373" Offset="1" />
+                </LinearGradientBrush>
+            </Border.Background>
+        </Border>
+    </Grid>
 </UserControl>
