@@ -72,7 +72,8 @@
                               VerticalAlignment="Top"
                               Height="30" />
 
-                        <Border Grid.ColumnSpan="4" Margin="-1" IsHitTestVisible="{Binding OptionsShown}" Style="{StaticResource FadeOutAndIn}" Opacity="0" Background="#E1A0A0A0" CornerRadius="4">
+                        <Border Grid.ColumnSpan="4" Margin="-1" IsHitTestVisible="{Binding OptionsShown}" Style="{StaticResource FadeOutAndIn}" Opacity="0" Background="#E1A0A0A0" CornerRadius="4"
+                                BorderBrush="#494949" BorderThickness="1">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition />
@@ -123,7 +124,7 @@
                 </Grid>
             </StackPanel>
         </Border>
-        <Border CornerRadius="5" Margin="10,5"
+        <Border CornerRadius="8" Margin="10,5"
                 Visibility="{Binding IsItemEnabled,
                                      Converter={StaticResource BooleanToVisibilityConverter},
                                      ConverterParameter={StaticResource InvertVisibility}}"
