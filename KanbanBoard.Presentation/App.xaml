@@ -409,13 +409,13 @@
                                 <Setter TargetName="border" Property="BorderThickness" Value="3" />
                             </Trigger>
                             <Trigger Property="IsChecked" Value="False">
-                                <Setter TargetName="img" Property="Source" Value="{StaticResource lock-filled}" />
+                                <Setter TargetName="img" Property="Source" Value="{StaticResource lock-open}" />
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="border" Property="Background" Value="#6BE6E6E6" />
                             </Trigger>
                             <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="img" Property="Source" Value="{StaticResource lock-open}" />
+                                <Setter TargetName="img" Property="Source" Value="{StaticResource lock-filled}" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>

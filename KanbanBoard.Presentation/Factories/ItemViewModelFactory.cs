@@ -43,8 +43,9 @@ namespace KanbanBoard.Presentation.Factories
             // var itemDueDate = DateTime.Parse(parsedItemData[4]).Date;
 
             bool.TryParse(parsedItemData[5], out var itemDescriptionVisible);
+            bool.TryParse(parsedItemData[6], out var itemLocked);
 
-            return new ItemViewModel(this.eventAggregator, itemId, itemTitle, itemDescription, itemDescriptionVisible, itemType);
+            return new ItemViewModel(this.eventAggregator, itemId, itemTitle, itemDescription, itemDescriptionVisible, itemType, itemLocked);
         }
     }
 }

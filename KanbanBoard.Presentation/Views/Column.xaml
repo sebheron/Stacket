@@ -15,7 +15,7 @@
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
 
-    <Border Margin="0,4" Padding="1 3 1 1"
+    <Border Margin="0,4"
             BorderBrush="DimGray"
             CornerRadius="8"
             BorderThickness="0 0 1 0"
@@ -64,11 +64,9 @@
                             </ToggleButton>
                         </Grid>
                     </Border>
-                    <Border DockPanel.Dock="Top" Margin="-2 -4 -2 0" IsHitTestVisible="{Binding IsChecked, ElementName=OptionsToggle}" Style="{StaticResource FadeOutAndIn}" Background="#DCBCBCBC" CornerRadius="8 8 0 0" />
                 </Grid>
 
                 <Grid>
-                    <Border Margin="-2 0 -2 -2" IsHitTestVisible="{Binding IsChecked, ElementName=OptionsToggle}" Style="{StaticResource FadeOutAndIn}" Background="#DCBCBCBC" CornerRadius="0 0 8 8" />
                     <ScrollViewer Visibility="{Binding ColumnVisible, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                         <ItemsControl Background="#01000000"
                               ItemsSource="{Binding Items}"
@@ -108,6 +106,9 @@
                     <ColumnDefinition Width="30" />
                     <ColumnDefinition Width="30" />
                 </Grid.ColumnDefinitions>
+
+                <Border Grid.ColumnSpan="4" Margin="-1" IsHitTestVisible="{Binding IsChecked, ElementName=OptionsToggle}" Style="{StaticResource FadeOutAndIn}" Background="#E1A0A0A0" CornerRadius="8 8 8 8" />
+                
                 <Border Grid.Column="2" VerticalAlignment="Top" Height="30" IsHitTestVisible="{Binding IsChecked, ElementName=OptionsToggle}" Style="{StaticResource FadeOutAndIn}">
                     <Button Style="{StaticResource TransparentRoundFlat3DButton}"
                                     Command="{Binding DeleteColumnCommand}"

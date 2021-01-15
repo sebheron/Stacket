@@ -18,6 +18,9 @@ namespace KanbanBoard.Presentation.ViewModels
         private Color itemColor;
         private bool newlyCreatedItem;
         private bool isItemEnabled;
+        private bool isLocked;
+        private bool optionsShown;
+        private double itemWidth;
 
         public ItemViewModel(
             IEventAggregator eventAggregator,
@@ -25,15 +28,17 @@ namespace KanbanBoard.Presentation.ViewModels
             string title = null,
             string description = null,
             bool descriptionVisible = false,
-            ItemTypes? itemType = null)
+            ItemTypes? itemType = null,
+            bool isLocked = false)
             : base(id, title ?? Resources.Board_NewItemName, eventAggregator)
         {
             // Loading an item.
             this.Description = description;
             this.DescriptionVisible = descriptionVisible;
             this.ItemType = itemType ?? Settings.Default.LastItemType;
-
+            this.IsLocked = isLocked;
             this.IsItemEnabled = true;
+            this.OptionsShown = false;
 
             this.DeleteItemCommand = new DelegateCommand(() => this.EventAggregator.GetEvent<DeleteColumnEvent>().Publish(this.Id));
         }
@@ -48,7 +53,6 @@ namespace KanbanBoard.Presentation.ViewModels
                 if (this.description == value) return;
 
                 this.SetProperty(ref this.description, value);
-                this.EventAggregator.GetEvent<RequestSaveEvent>().Publish();
             }
         }
 
@@ -96,6 +100,22 @@ namespace KanbanBoard.Presentation.ViewModels
             set => this.SetProperty(ref this.isItemEnabled, value);
         }
 
+        public bool IsLocked
+        {
+            get => this.isLocked;
+            set
+            {
+                this.OptionsShown = false;
+                this.SetProperty(ref this.isLocked, value);
+            }
+        }
+
+        public bool OptionsShown
+        {
+            get => this.optionsShown;
+            set => this.SetProperty(ref this.optionsShown, value);
+        }
+
         public bool Unchanged => this.Title == Resources.Board_NewItemName && string.IsNullOrEmpty(this.Description);
 
         private void SetColor(ItemTypes item)
@@ -128,7 +148,7 @@ namespace KanbanBoard.Presentation.ViewModels
         {
             return this.Id + Properties.Resources.NewItemData + this.Title + Properties.Resources.NewItemData + this.Description
                    + Properties.Resources.NewItemData + this.ItemType + Properties.Resources.NewItemData + DateTime.Now.ToShortDateString() 
-                   + Properties.Resources.NewItemData + this.DescriptionVisible;
+                   + Properties.Resources.NewItemData + this.DescriptionVisible + Properties.Resources.NewItemData + this.IsLocked;
         }
     }
 }
