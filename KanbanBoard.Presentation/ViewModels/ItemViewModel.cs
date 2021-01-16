@@ -103,11 +103,7 @@ namespace KanbanBoard.Presentation.ViewModels
         public bool IsLocked
         {
             get => this.isLocked;
-            set
-            {
-                this.OptionsShown = false;
-                this.SetProperty(ref this.isLocked, value);
-            }
+            set => this.SetProperty(ref this.isLocked, value);
         }
 
         public bool OptionsShown

@@ -62,6 +62,9 @@
                                       IsChecked="{Binding ColumnVisible, Mode=TwoWay}"
                                       FocusVisualStyle="{x:Null}">
                             </ToggleButton>
+
+                            <Border Grid.ColumnSpan="4" Margin="-1" BorderBrush="#494949" BorderThickness="1" IsHitTestVisible="{Binding IsChecked, ElementName=OptionsToggle}"
+                                Style="{StaticResource FadeOutAndIn}" Background="#E1A0A0A0" CornerRadius="8" Opacity="0" />
                         </Grid>
                     </Border>
                 </Grid>
@@ -106,10 +109,7 @@
                     <ColumnDefinition Width="30" />
                     <ColumnDefinition Width="30" />
                 </Grid.ColumnDefinitions>
-
-                <Border Grid.ColumnSpan="4" Margin="-1" BorderBrush="#494949" BorderThickness="1" IsHitTestVisible="{Binding IsChecked, ElementName=OptionsToggle}"
-                        Style="{StaticResource FadeOutAndIn}" Background="#E1A0A0A0" CornerRadius="8" Opacity="0" />
-                
+               
                 <Border Grid.Column="2" VerticalAlignment="Top" Height="30" IsHitTestVisible="{Binding IsChecked, ElementName=OptionsToggle}" Style="{StaticResource FadeOutAndIn}">
                     <Button Style="{StaticResource TransparentRoundFlat3DButton}"
                                     Command="{Binding DeleteColumnCommand}"
