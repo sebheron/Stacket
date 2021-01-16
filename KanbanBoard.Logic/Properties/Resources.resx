@@ -193,14 +193,6 @@
     <value>Remove column</value>
     <comment>The title for the remove column dialog.</comment>
   </data>
-  <data name="Dialog_RemoveItem_Message" xml:space="preserve">
-    <value>Are you sure you want to remove this item?</value>
-    <comment>The message to display when removing an item.</comment>
-  </data>
-  <data name="Dialog_RemoveItem_Title" xml:space="preserve">
-    <value>Remove Item</value>
-    <comment>The title for the remove items dialog.</comment>
-  </data>
   <data name="Dialog_SaveChanges_Message" xml:space="preserve">
     <value>Do you want to save changes to the current board?</value>
     <comment>The message for the save changes dialog.</comment>

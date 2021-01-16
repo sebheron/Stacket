@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dd="urn:gong-wpf-dragdrop"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:behaviors="clr-namespace:KanbanBoard.Presentation.Behaviors"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
@@ -32,7 +33,9 @@
                             <ColumnDefinition Width="30" />
                         </Grid.ColumnDefinitions>
 
-                        <TextBox IsHitTestVisible="{Binding NotDragging}" Margin="6 5 0 6" MaxLines="3" Text="{Binding Title}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left" HorizontalAlignment="Left">
+                        <TextBox IsHitTestVisible="{Binding NotDragging}" Margin="6 5 0 6" MaxLines="3" Grid.Row="1" dd:DragDrop.IsDropTarget="True" Text="{Binding Title}"
+                             VerticalContentAlignment="Top" HorizontalContentAlignment="Left" HorizontalAlignment="Left"
+                             Visibility="{Binding IsLocked, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter={StaticResource InvertVisibility}}">
                             <b:Interaction.Behaviors>
                                 <behaviors:TextBoxFocusBehavior />
                             </b:Interaction.Behaviors>
@@ -48,25 +51,53 @@
                             </TextBox.Style>
                         </TextBox>
 
-                        <ToggleButton Grid.Column="1"
+                        <TextBlock Margin="6 5 0 6" Grid.Row="1" dd:DragDrop.IsDropTarget="True"
+                             Text="{Binding Title}"
+                             TextAlignment="Left" HorizontalAlignment="Left"
+                             TextWrapping="Wrap" TextTrimming="WordEllipsis" behaviors:MaxLinesBehavior.MaxLines="3"
+                             Visibility="{Binding IsLocked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        </TextBlock>
+
+                        <ToggleButton Grid.Column="1" Visibility="{Binding IsLocked, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter={StaticResource InvertVisibility}}"
                                   Style="{StaticResource TransparentRoundFlat3DDescriptionButton}"
                                   VerticalAlignment="Top"
                                   Height="30"
                                   IsChecked="{Binding DescriptionVisible, Mode=TwoWay}"
                                   FocusVisualStyle="{x:Null}" />
 
-                        <ComboBox Style="{StaticResource TransparentRoundComboBox}"
+                        <ComboBox Style="{StaticResource TransparentRoundComboBox}" Visibility="{Binding IsLocked, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter={StaticResource InvertVisibility}}"
                               Grid.Column="2"
                               SelectedValue="{Binding ItemTypeView}"
                               ItemsSource="{Binding Source={StaticResource ItemTypes}}"
                               VerticalAlignment="Top"
                               Height="30" />
 
-                        <Button Grid.Column="3" Style="{StaticResource TransparentRoundFlat3DButton}" VerticalAlignment="Top" Height="30"
-                            Command="{Binding DeleteItemCommand}"
-                            FocusVisualStyle="{x:Null}">
-                            <Image Source="{StaticResource cancel}" Width="13" />
-                        </Button>
+                        <Border Grid.ColumnSpan="4" Margin="-1" IsHitTestVisible="{Binding OptionsShown}" Style="{StaticResource FadeOutAndIn}" Opacity="0" Background="#E1A0A0A0" CornerRadius="4"
+                                BorderBrush="#494949" BorderThickness="1">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="30" />
+                                    <ColumnDefinition Width="30" />
+                                    <ColumnDefinition Width="30" />
+                                </Grid.ColumnDefinitions>
+                                <ToggleButton Grid.Column="1" Style="{StaticResource TransparentRoundFlat3DLockButton}"
+                                IsChecked="{Binding IsLocked}"
+                                VerticalAlignment="Top" Height="30"
+                                FocusVisualStyle="{x:Null}"/>
+                                <Button Grid.Column="2" Style="{StaticResource TransparentRoundFlat3DButton}"
+                                VerticalAlignment="Top" Height="30"
+                                Command="{Binding DeleteItemCommand}"
+                                FocusVisualStyle="{x:Null}">
+                                    <Image Source="{StaticResource trash}" Width="13" />
+                                </Button>
+                            </Grid>
+                        </Border>
+
+                        <ToggleButton Grid.Column="3" Style="{StaticResource TransparentRoundFlat3DShowOptionsButton}"
+                            VerticalAlignment="Top" Height="30"
+                            FocusVisualStyle="{x:Null}"
+                            IsChecked="{Binding OptionsShown}" />
                     </Grid>
                 </Border>
 
@@ -81,15 +112,19 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
 
-                    <TextBox IsHitTestVisible="{Binding NotDragging}" Grid.Column="1" Grid.Row="1" Style="{StaticResource HiddenTextBox}" Text="{Binding Description}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left">
+                    <TextBox IsHitTestVisible="{Binding NotDragging}" Grid.Column="1" Grid.Row="1" Visibility="{Binding IsLocked, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter={StaticResource InvertVisibility}}"
+                             Style="{StaticResource HiddenTextBox}" Text="{Binding Description}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left">
                         <b:Interaction.Behaviors>
                             <behaviors:TextBoxFocusBehavior />
                         </b:Interaction.Behaviors>
                     </TextBox>
+
+                    <TextBlock IsHitTestVisible="{Binding NotDragging}" Grid.Column="1" Grid.Row="1" Text="{Binding Description}" VerticalAlignment="Top" HorizontalAlignment="Left"
+                               Visibility="{Binding IsLocked, Converter={StaticResource BooleanToVisibilityConverter}}" TextWrapping="Wrap" TextTrimming="WordEllipsis" />
                 </Grid>
             </StackPanel>
         </Border>
-        <Border CornerRadius="5" Margin="10,5"
+        <Border CornerRadius="8" Margin="10,5"
                 Visibility="{Binding IsItemEnabled,
                                      Converter={StaticResource BooleanToVisibilityConverter},
                                      ConverterParameter={StaticResource InvertVisibility}}"

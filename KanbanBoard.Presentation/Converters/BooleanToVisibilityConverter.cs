@@ -7,8 +7,6 @@ namespace KanbanBoard.Presentation.Converters
 {
     public class BooleanToVisibilityConverter : IValueConverter
     {
-        public bool InvertVisibility { get; set; }
-
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (targetType != typeof(Visibility))

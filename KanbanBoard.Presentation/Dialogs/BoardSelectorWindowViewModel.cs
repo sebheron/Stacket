@@ -50,7 +50,7 @@ namespace KanbanBoard.Presentation.Dialogs
 
         private void PopulateBoardFiles()
         {
-            this.BoardFiles.AddRange(Directory.GetFiles(FileLocations.BoardFileStorageLocation).Select(Path.GetFileNameWithoutExtension));
+            this.BoardFiles.AddRange(Directory.GetFiles(FileLocations.BoardFileStorageLocation).Where(file => file != Settings.Default.CurrentBoard).Select(Path.GetFileNameWithoutExtension));
             this.logger.Log("Populated board files list", Category.Debug, Priority.None);
         }
 
