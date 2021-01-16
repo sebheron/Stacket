@@ -10,6 +10,7 @@
              xmlns:enums="clr-namespace:KanbanBoard.Logic.Enums;assembly=KanbanBoard.Logic"
              mc:Ignorable="d"
              d:DesignWidth="300"
+             MaxWidth="{Binding Width}"
              IsHitTestVisible="{Binding IsItemEnabled}">
 
     <UserControl.Resources>

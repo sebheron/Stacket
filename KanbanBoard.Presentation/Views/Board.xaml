@@ -38,7 +38,7 @@
 
     <Grid>
         <Border Background="#01FFFFFF" dd:DragDrop.IsDropTarget="True" Visibility="{Binding DisableBackground, Converter={StaticResource BooleanToVisibilityConverter}}" />
-        <Grid Background="Transparent">
+        <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="28" />
                 <RowDefinition />
@@ -98,7 +98,7 @@
                 </Grid>
             </WrapPanel>
 
-            <StackPanel Name="MainPanel" Background="Transparent"
+            <StackPanel Name="MainPanel"
                     IsHitTestVisible="{Binding IsChecked, ElementName=MainWindowToggle}"
                     Style="{StaticResource FadeOutAndIn}"
                     Grid.Row="1"
