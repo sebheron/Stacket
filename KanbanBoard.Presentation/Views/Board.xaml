@@ -15,7 +15,7 @@
         WindowStyle="None" AllowsTransparency="True" ResizeMode="NoResize"
         ShowInTaskbar="False"
         Topmost="True" Tag="MainWindow"
-        Background="Black">
+        Background="Transparent">
 
     <Window.Resources>
         <ContextMenu x:Key="TrayMenu" x:Shared="true">
@@ -38,9 +38,9 @@
 
     <Grid>
         <Border Background="#01FFFFFF" dd:DragDrop.IsDropTarget="True" Visibility="{Binding DisableBackground, Converter={StaticResource BooleanToVisibilityConverter}}" />
-        <Grid>
+        <Grid Background="Transparent">
             <Grid.RowDefinitions>
-                <RowDefinition Height="30" />
+                <RowDefinition Height="28" />
                 <RowDefinition />
             </Grid.RowDefinitions>
             <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
@@ -50,7 +50,9 @@
                 <i:Interaction.Behaviors>
                     <beh:MoveableStackpanelBehavior />
                 </i:Interaction.Behaviors>
-                <ToggleButton Name="MainWindowToggle" Height="22" Width="80" Margin="0" Style="{StaticResource RoundFlat3DVerticalDropdownButton}" IsChecked="True" FocusVisualStyle="{x:Null}" ContextMenu="{StaticResource TrayMenu}" />
+                
+                <ToggleButton Name="MainWindowToggle" Height="22" Width="80" Style="{StaticResource RoundFlat3DVerticalDropdownButton}"
+                              IsChecked="True" FocusVisualStyle="{x:Null}" ContextMenu="{StaticResource TrayMenu}" />
 
                 <Grid HorizontalAlignment="Center" VerticalAlignment="Top"
                         IsHitTestVisible="{Binding IsChecked, ElementName=MainWindowToggle}"
@@ -96,7 +98,7 @@
                 </Grid>
             </WrapPanel>
 
-            <StackPanel Name="MainPanel"
+            <StackPanel Name="MainPanel" Background="Transparent"
                     IsHitTestVisible="{Binding IsChecked, ElementName=MainWindowToggle}"
                     Style="{StaticResource FadeOutAndIn}"
                     Grid.Row="1"
