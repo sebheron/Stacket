@@ -25,12 +25,14 @@ namespace KanbanBoard.Presentation.ViewModels
         private readonly IDialogService dialogService;
         private readonly ILoggerFacade logger;
         private readonly IEventAggregator eventAggregator;
+        private readonly bool ranOnce;
 
         private string filePath => Settings.Default.CurrentBoard;
         private bool loadEnabled = true;
         private bool newEnabled = true;
         private bool loadInProgress;
         private bool disableBackground;
+        private bool boardShown;
 
         public BoardViewModel(
             IColumnViewModelFactory columnFactory,
@@ -58,6 +60,8 @@ namespace KanbanBoard.Presentation.ViewModels
 
             this.AddColumnLeftCommand = new DelegateCommand(this.AddColumnLeft);
             this.AddColumnRightCommand = new DelegateCommand(this.AddColumnRight);
+
+            ranOnce = Settings.Default.RanOnce;
         }
 
         public ObservableCollection<ColumnViewModel> Columns { get; } = new ObservableCollection<ColumnViewModel>();
@@ -80,6 +84,12 @@ namespace KanbanBoard.Presentation.ViewModels
         {
             get => this.newEnabled;
             set => SetProperty(ref this.newEnabled, value);
+        }
+
+        public bool BoardShown
+        {
+            get => this.boardShown;
+            set => SetProperty(ref this.boardShown, value);
         }
 
         public double WindowWidth => SystemParameters.MaximizedPrimaryScreenWidth;
@@ -110,8 +120,11 @@ namespace KanbanBoard.Presentation.ViewModels
             this.logger.Log("Window successfully loaded", Category.Debug, Priority.None);
             this.LoadBoardFromFile();
             this.logger.Log("Board successfully loaded", Category.Debug, Priority.None);
-
             this.Columns.CollectionChanged += this.ColumnsChanged;
+            if (!ranOnce)
+            {
+                this.BoardShown = true;
+            }
         }
 
         private void ShowSettings()
