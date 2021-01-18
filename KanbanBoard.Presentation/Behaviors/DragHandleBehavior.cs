@@ -41,6 +41,9 @@ namespace KanbanBoard.Presentation.Behaviors
                 //Turn off new in items otherwise they'll refocus.
                 item.NewlyCreatedItem = false;
 
+                //Disable the options.
+                item.OptionsShown = false;
+
                 //Set the minimum width to the actual width. We have to do this as once its removed from the control it will resize and the adorner will take its size.
                 ((FrameworkElement)dragInfo.VisualSourceItem).MinWidth = ((FrameworkElement)dragInfo.VisualSourceItem).ActualWidth;
 
