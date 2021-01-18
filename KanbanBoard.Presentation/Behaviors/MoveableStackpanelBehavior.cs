@@ -23,7 +23,7 @@ namespace KanbanBoard.Presentation.Behaviors
         private Point prevPos;
 
         private double halfScreenWidth;
-        private bool locked;
+        private double halfToggleWidth;
 
         private double xPos;
         private readonly TranslateTransform transform = new TranslateTransform();
@@ -38,11 +38,11 @@ namespace KanbanBoard.Presentation.Behaviors
             this.xPos = this.transform.X = Settings.Default.TogglePosition;
             this.halfScreenWidth = SystemParameters.MaximizedPrimaryScreenWidth / 2;
             this.wrapPanel.Margin = new Thickness(this.halfScreenWidth, 0, 0, 0);
+            this.halfToggleWidth = 40;
 
             this.wrapPanel.PreviewMouseLeftButtonDown += this.AssociatedObject_PreviewMouseLeftButtonDown;
             this.wrapPanel.PreviewMouseLeftButtonUp += this.AssociatedObject_PreviewMouseLeftButtonUp;
             this.wrapPanel.PreviewMouseMove += this.AssociatedObject_PreviewMouseMove;
-            this.wrapPanel.SizeChanged += this.UpdatePanelPosition;
         }
 
         protected override void OnDetaching()
@@ -51,7 +51,6 @@ namespace KanbanBoard.Presentation.Behaviors
             this.wrapPanel.PreviewMouseLeftButtonDown -= this.AssociatedObject_PreviewMouseLeftButtonDown;
             this.wrapPanel.PreviewMouseLeftButtonUp -= this.AssociatedObject_PreviewMouseLeftButtonUp;
             this.wrapPanel.PreviewMouseMove -= this.AssociatedObject_PreviewMouseMove;
-            this.wrapPanel.SizeChanged -= this.UpdatePanelPosition;
         }
 
         private void AssociatedObject_PreviewMouseMove(object sender, MouseEventArgs e)
@@ -71,29 +70,21 @@ namespace KanbanBoard.Presentation.Behaviors
 
         private void UpdatePanelPosition(object sender, EventArgs e)
         {
-            if (e is SizeChangedEventArgs sce && locked)
+            if (this.xPos < -this.halfToggleWidth && this.xPos > -this.halfToggleWidth - SnapThreshold * 1.5)
             {
-                double sizeDiff = sce.PreviousSize.Width - sce.NewSize.Width;
-                this.xPos += sizeDiff;
+                this.transform.X = -SnapThreshold / 2 - this.halfToggleWidth;
             }
-
-            if (this.xPos < -40 + SnapThreshold && this.xPos > -40 - SnapThreshold)
+            else if (this.xPos > this.halfScreenWidth - this.wrapPanel.ActualWidth - SnapThreshold * 2)
             {
-                this.transform.X = -40;
+                this.transform.X = this.halfScreenWidth - this.wrapPanel.ActualWidth - SnapThreshold;
             }
-            else if (this.xPos > this.halfScreenWidth - this.wrapPanel.ActualWidth - SnapThreshold / 2)
+            else if (this.xPos < -this.halfScreenWidth + SnapThreshold)
             {
-                this.transform.X = this.halfScreenWidth - this.wrapPanel.ActualWidth - 2;
-                locked = true;
-            }
-            else if (this.xPos < -this.halfScreenWidth + SnapThreshold / 2)
-            {
-                this.transform.X = -this.halfScreenWidth + 2;
+                this.transform.X = -this.halfScreenWidth;
             }
             else
             {
                 this.transform.X = this.xPos;
-                locked = false;
             }
         }
 
