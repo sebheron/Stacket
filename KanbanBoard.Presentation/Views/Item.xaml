@@ -35,7 +35,7 @@
                             <ColumnDefinition Width="30" />
                         </Grid.ColumnDefinitions>
 
-                        <TextBox IsHitTestVisible="{Binding NotDragging}" Margin="6 5 0 6" MaxLines="3" Grid.Row="1" dd:DragDrop.IsDropTarget="True" Text="{Binding Title}"
+                        <TextBox IsHitTestVisible="{Binding NotDragging}" Margin="6 7 0 6" MaxLines="3" Grid.Row="1" dd:DragDrop.IsDropTarget="True" Text="{Binding Title}"
                              VerticalContentAlignment="Top" HorizontalContentAlignment="Left" HorizontalAlignment="Left"
                              Visibility="{Binding IsLocked, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter={StaticResource InvertVisibility}}">
                             <b:Interaction.Behaviors>
@@ -53,7 +53,7 @@
                             </TextBox.Style>
                         </TextBox>
 
-                        <TextBlock Margin="6 5 0 6" Grid.Row="1" dd:DragDrop.IsDropTarget="True"
+                        <TextBlock Margin="6 7 0 6" Grid.Row="1" dd:DragDrop.IsDropTarget="True"
                              Text="{Binding Title}"
                              TextAlignment="Left" HorizontalAlignment="Left"
                              TextWrapping="Wrap" TextTrimming="WordEllipsis" behaviors:MaxLinesBehavior.MaxLines="3"
