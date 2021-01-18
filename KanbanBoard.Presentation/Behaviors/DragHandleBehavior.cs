@@ -41,9 +41,6 @@ namespace KanbanBoard.Presentation.Behaviors
                 //Turn off new in items otherwise they'll refocus.
                 item.NewlyCreatedItem = false;
 
-                //Disable the options.
-                item.OptionsShown = false;
-
                 //Set the minimum width to the actual width. We have to do this as once its removed from the control it will resize and the adorner will take its size.
                 ((FrameworkElement)dragInfo.VisualSourceItem).MinWidth = ((FrameworkElement)dragInfo.VisualSourceItem).ActualWidth;
 
@@ -61,15 +58,17 @@ namespace KanbanBoard.Presentation.Behaviors
 
         public override void DragDropOperationFinished(DragDropEffects operationResult, IDragInfo dragInfo)
         {
-            if (dragInfo.SourceItem is ItemViewModel)
+            if (dragInfo.SourceItem is ItemViewModel item)
             {
                 //If we haven't been dropped we need to return back to our original place.
                 if (!this.dropped)
                 {
-                    var item = (ItemViewModel)dragInfo.SourceItem;
                     ((IList<ItemViewModel>)((ItemsControl)dragInfo.VisualSource).ItemsSource).Insert(dragInfo.SourceIndex, item);
                     this.dropped = false;
                 }
+
+                //Disable the options.
+                item.OptionsShown = false;
 
                 //Set back the minimum width so columns can be added and the items will size accordingly.
                 ((FrameworkElement)dragInfo.VisualSourceItem).MinWidth = 0;
