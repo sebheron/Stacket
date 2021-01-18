@@ -9,6 +9,7 @@
     <Application.Resources>
         <system:Int32 x:Key="InvertVisibility">1</system:Int32>
         <system:Int32 x:Key="HiddenVisibility">2</system:Int32>
+        <system:Int32 x:Key="DarkenColor">80</system:Int32>
         
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <converters:ColorToScreenColorConverter x:Key="ColorToScreenColor" />
