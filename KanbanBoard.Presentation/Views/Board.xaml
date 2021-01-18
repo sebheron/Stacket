@@ -52,10 +52,11 @@
                 </i:Interaction.Behaviors>
                 
                 <ToggleButton Name="MainWindowToggle" Height="22" Width="80" Style="{StaticResource RoundFlat3DVerticalDropdownButton}"
-                              IsChecked="True" FocusVisualStyle="{x:Null}" ContextMenu="{StaticResource TrayMenu}" />
+                              IsChecked="False" FocusVisualStyle="{x:Null}" ContextMenu="{StaticResource TrayMenu}" />
 
                 <Grid HorizontalAlignment="Center" VerticalAlignment="Top"
                         IsHitTestVisible="{Binding IsChecked, ElementName=MainWindowToggle}"
+                        Opacity="0"
                         Style="{StaticResource FadeOutAndIn}" Height="22">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition MaxWidth="30" />
@@ -100,6 +101,7 @@
 
             <StackPanel Name="MainPanel"
                     IsHitTestVisible="{Binding IsChecked, ElementName=MainWindowToggle}"
+                    Opacity="0"
                     Style="{StaticResource FadeOutAndIn}"
                     Grid.Row="1"
                     HorizontalAlignment="Center"
