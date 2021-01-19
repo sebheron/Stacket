@@ -61,7 +61,7 @@ namespace KanbanBoard.Presentation.ViewModels
             this.AddColumnLeftCommand = new DelegateCommand(this.AddColumnLeft);
             this.AddColumnRightCommand = new DelegateCommand(this.AddColumnRight);
 
-            ranOnce = Settings.Default.RanOnce;
+            this.ranOnce = Settings.Default.RanOnce;
         }
 
         public ObservableCollection<ColumnViewModel> Columns { get; } = new ObservableCollection<ColumnViewModel>();
