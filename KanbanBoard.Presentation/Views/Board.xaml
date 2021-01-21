@@ -9,6 +9,7 @@
         xmlns:prism="http://prismlibrary.com/"
         xmlns:tb="http://www.hardcodet.net/taskbar"
         xmlns:views="clr-namespace:KanbanBoard.Presentation.Views"
+        xmlns:ui="clr-namespace:KanbanBoard.Presentation.UI"
         prism:ViewModelLocator.AutoWireViewModel="True"
         mc:Ignorable="d"
         Title="Board" WindowState="Maximized"
@@ -129,7 +130,7 @@
                     </Button>
                 </Grid>
 
-                <ItemsControl ItemsSource="{Binding Columns}"
+                <ui:CustomItemsControl ItemsSource="{Binding Columns}"
                           Focusable="False"
                           dd:DragDrop.IsDragSource="True"
                           dd:DragDrop.IsDropTarget="True"
@@ -140,18 +141,18 @@
                           dd:DragDrop.DragMouseAnchorPoint="{Binding DragHandler.DragPosition}"
                           dd:DragDrop.DragHandler="{Binding DragHandler}"
                           FocusVisualStyle="{x:Null}">
-                    <ItemsControl.ItemTemplate>
+                    <ui:CustomItemsControl.ItemTemplate>
                         <DataTemplate>
                             <views:Column Width="{Binding DataContext.ColumnWidth, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Margin="1 0 1 0" />
                         </DataTemplate>
-                    </ItemsControl.ItemTemplate>
+                    </ui:CustomItemsControl.ItemTemplate>
 
-                    <ItemsControl.ItemsPanel>
+                    <ui:CustomItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" />
                         </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                </ItemsControl>
+                    </ui:CustomItemsControl.ItemsPanel>
+                </ui:CustomItemsControl>
 
                 <Grid Width="30" Height="45" VerticalAlignment="Top" Margin="-1 0 0 0">
                     <Button FontSize="16"

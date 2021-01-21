@@ -8,6 +8,7 @@
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:behaviors="clr-namespace:KanbanBoard.Presentation.Behaviors"
              xmlns:converters="clr-namespace:KanbanBoard.Presentation.Converters"
+             xmlns:ui="clr-namespace:KanbanBoard.Presentation.UI"
              mc:Ignorable="d"
              d:DesignWidth="400">
 
@@ -71,7 +72,7 @@
 
                 <Grid>
                     <ScrollViewer Visibility="{Binding ColumnVisible, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                        <ItemsControl Background="#01000000"
+                        <ui:CustomItemsControl Background="#01000000"
                               ItemsSource="{Binding Items}"
                               dd:DragDrop.IsDragSource="True"
                               dd:DragDrop.IsDropTarget="True"
@@ -87,18 +88,18 @@
                               Focusable="False"
                               Padding="0,0,0,10"
                               FocusVisualStyle="{x:Null}">
-                            <ItemsControl.ItemTemplate>
+                            <ui:CustomItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <local:Item />
                                 </DataTemplate>
-                            </ItemsControl.ItemTemplate>
+                            </ui:CustomItemsControl.ItemTemplate>
 
-                            <ItemsControl.ItemsPanel>
+                            <ui:CustomItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <StackPanel VerticalAlignment="Top" Orientation="Vertical" />
                                 </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                        </ItemsControl>
+                            </ui:CustomItemsControl.ItemsPanel>
+                        </ui:CustomItemsControl>
                     </ScrollViewer>
                 </Grid>
             </DockPanel>
