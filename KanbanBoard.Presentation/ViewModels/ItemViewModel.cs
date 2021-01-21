@@ -20,7 +20,7 @@ namespace KanbanBoard.Presentation.ViewModels
         private bool isItemEnabled;
         private bool isLocked;
         private bool optionsShown;
-        private double itemWidth;
+        private double width;
 
         public ItemViewModel(
             IEventAggregator eventAggregator,
@@ -111,6 +111,8 @@ namespace KanbanBoard.Presentation.ViewModels
             get => this.optionsShown;
             set => this.SetProperty(ref this.optionsShown, value);
         }
+
+        public double Width => (SystemParameters.MaximizedPrimaryScreenWidth - 120) / 5;
 
         public bool Unchanged => this.Title == Resources.Board_NewItemName && string.IsNullOrEmpty(this.Description);
 

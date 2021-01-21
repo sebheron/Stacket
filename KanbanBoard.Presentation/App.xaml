@@ -9,6 +9,7 @@
     <Application.Resources>
         <system:Int32 x:Key="InvertVisibility">1</system:Int32>
         <system:Int32 x:Key="HiddenVisibility">2</system:Int32>
+        <system:Int32 x:Key="DarkenColor">80</system:Int32>
         
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <converters:ColorToScreenColorConverter x:Key="ColorToScreenColor" />
@@ -457,7 +458,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ToggleButton">
-                        <Border Name="border" Background="#7BFCFCFC" BorderBrush="{StaticResource FlatReverse3DBorderBrush}" BorderThickness="0" CornerRadius="8" Margin="3">
+                        <Border Name="border" Background="#7BFCFCFC" BorderBrush="{StaticResource FlatReverse3DBorderBrush}" BorderThickness="0" CornerRadius="8">
                             <Grid>
                                 <Image Name="img" Width="15" />
                             </Grid>
@@ -484,11 +485,10 @@
         </Style>
 
         <Style x:Key="RoundFlat3DHorizontalMenuBarButton" TargetType="{x:Type ToggleButton}">
-            <Setter Property="Margin" Value="3" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ToggleButton">
-                        <Border Name="border" Width="30" Background="#4FE6E6E6" BorderBrush="{StaticResource FlatReverse3DBorderBrush}" BorderThickness="0" CornerRadius="8" Margin="{TemplateBinding Margin}">
+                        <Border Name="border" Background="#4FE6E6E6" BorderBrush="{StaticResource FlatReverse3DBorderBrush}" BorderThickness="0" CornerRadius="8" Margin="{TemplateBinding Margin}">
                             <Grid>
                                 <Image Name="img" Height="13" />
                             </Grid>
@@ -501,16 +501,12 @@
                             </Trigger>
                             <Trigger Property="IsChecked" Value="False">
                                 <Setter TargetName="img" Property="Source" Value="{StaticResource right-open}" />
-                                <Setter TargetName="img" Property="Margin" Value="0" />
-                                <Setter TargetName="border" Property="Width" Value="30" />
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="border" Property="Background" Value="#6BE6E6E6" />
                             </Trigger>
                             <Trigger Property="IsChecked" Value="True">
                                 <Setter TargetName="img" Property="Source" Value="{StaticResource left-open}" />
-                                <Setter TargetName="img" Property="Margin" Value="0 0 7.5 0" />
-                                <Setter TargetName="border" Property="Width" Value="40" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -764,69 +760,21 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
-        <Style x:Key="MainFadeOutAndIn" TargetType="FrameworkElement">
-            <Style.Triggers>
-                <Trigger Property="IsHitTestVisible" Value="False">
-                    <Trigger.EnterActions>
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.2" />
-                                <BooleanAnimationUsingKeyFrames BeginTime="0:0:0.2" Duration="0:0:0" Storyboard.TargetProperty="IsEnabled">
-                                    <DiscreteBooleanKeyFrame Value="False" />
-                                </BooleanAnimationUsingKeyFrames>
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </Trigger.EnterActions>
-                    <Trigger.ExitActions>
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <DoubleAnimation Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.2" />
-                                <BooleanAnimationUsingKeyFrames BeginTime="0:0:0.2" Duration="0:0:0" Storyboard.TargetProperty="IsEnabled">
-                                    <DiscreteBooleanKeyFrame Value="True" />
-                                </BooleanAnimationUsingKeyFrames>
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </Trigger.ExitActions>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        
+
         <Style x:Key="FadeOutAndIn" TargetType="FrameworkElement">
             <Style.Triggers>
                 <Trigger Property="IsHitTestVisible" Value="False">
                     <Trigger.EnterActions>
                         <BeginStoryboard>
                             <Storyboard>
-                                <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.2" />
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.18" />
                             </Storyboard>
                         </BeginStoryboard>
                     </Trigger.EnterActions>
                     <Trigger.ExitActions>
                         <BeginStoryboard>
                             <Storyboard>
-                                <DoubleAnimation Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.2" />
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </Trigger.ExitActions>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <Style x:Key="GrowAndShrinkWidth" TargetType="FrameworkElement">
-            <Style.Triggers>
-                <Trigger Property="IsHitTestVisible" Value="False">
-                    <Trigger.EnterActions>
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)" To="0" Duration="0:0:0.2" />
-                            </Storyboard>
-                        </BeginStoryboard>
-                    </Trigger.EnterActions>
-                    <Trigger.ExitActions>
-                        <BeginStoryboard>
-                            <Storyboard>
-                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)" To="1" Duration="0:0:0.2" />
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.18" />
                             </Storyboard>
                         </BeginStoryboard>
                     </Trigger.ExitActions>

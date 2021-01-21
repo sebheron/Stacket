@@ -58,15 +58,17 @@ namespace KanbanBoard.Presentation.Behaviors
 
         public override void DragDropOperationFinished(DragDropEffects operationResult, IDragInfo dragInfo)
         {
-            if (dragInfo.SourceItem is ItemViewModel)
+            if (dragInfo.SourceItem is ItemViewModel item)
             {
                 //If we haven't been dropped we need to return back to our original place.
                 if (!this.dropped)
                 {
-                    var item = (ItemViewModel)dragInfo.SourceItem;
                     ((IList<ItemViewModel>)((ItemsControl)dragInfo.VisualSource).ItemsSource).Insert(dragInfo.SourceIndex, item);
                     this.dropped = false;
                 }
+
+                //Disable the options.
+                item.OptionsShown = false;
 
                 //Set back the minimum width so columns can be added and the items will size accordingly.
                 ((FrameworkElement)dragInfo.VisualSourceItem).MinWidth = 0;
