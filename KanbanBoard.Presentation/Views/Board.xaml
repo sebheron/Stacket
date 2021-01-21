@@ -51,11 +51,12 @@
                     <beh:MoveableStackpanelBehavior />
                 </i:Interaction.Behaviors>
                 
-                <ToggleButton Name="MainWindowToggle" Height="22" Width="80" Style="{StaticResource RoundFlat3DVerticalDropdownButton}"
-                              IsChecked="True" FocusVisualStyle="{x:Null}" ContextMenu="{StaticResource TrayMenu}" />
+                <ToggleButton Height="22" Width="80" Style="{StaticResource RoundFlat3DVerticalDropdownButton}"
+                              IsChecked="{Binding BoardShown}" FocusVisualStyle="{x:Null}" ContextMenu="{StaticResource TrayMenu}" />
 
                 <Grid HorizontalAlignment="Center" VerticalAlignment="Top"
-                        IsHitTestVisible="{Binding IsChecked, ElementName=MainWindowToggle}"
+                        IsHitTestVisible="{Binding BoardShown, Mode=OneWay}"
+                        Opacity="0"
                         Style="{StaticResource FadeOutAndIn}" Height="22">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition MaxWidth="30" />
@@ -99,7 +100,8 @@
             </WrapPanel>
 
             <StackPanel Name="MainPanel"
-                    IsHitTestVisible="{Binding IsChecked, ElementName=MainWindowToggle}"
+                    IsHitTestVisible="{Binding BoardShown, Mode=OneWay}"
+                    Opacity="0"
                     Style="{StaticResource FadeOutAndIn}"
                     Grid.Row="1"
                     HorizontalAlignment="Center"
