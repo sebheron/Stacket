@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using GongSolutions.Wpf.DragDrop;
@@ -14,13 +16,15 @@ namespace KanbanBoard.Presentation.Behaviors
 {
     public class DropHandleBehavior : DefaultDropHandler
     {
+        private Task task;
+
         private int insertIndex;
 
         private ItemViewModel separator;
 
         private ItemsControl container;
 
-        private IList items;
+        private ObservableCollection<ItemViewModel> items;
 
         public DropHandleBehavior()
         {
@@ -47,7 +51,7 @@ namespace KanbanBoard.Presentation.Behaviors
                     //If the items aren't referenced, get them.
                     if (this.items == null)
                     {
-                        this.items = ((IList)this.container.ItemsSource);
+                        this.items = ((ObservableCollection<ItemViewModel>)this.container.ItemsSource);
                     }
                     else
                     {
@@ -57,8 +61,17 @@ namespace KanbanBoard.Presentation.Behaviors
                             this.items.Add(this.separator);
                         }
 
+                        if (this.task == null ||this.task.IsCompleted)
+                        {
+                            this.task = Task.Run(() => this.insertIndex = this.GetDropIndex(dropInfo.DropPosition.Y));
+                        }
+
+                        var currentIndex = this.items.IndexOf(this.separator);
                         //Get the drop index, this is usually used for the adorner.
-                        this.insertIndex = this.InsertDropSeparator(this.container, dropInfo.DropPosition.Y, this.separator);
+                        if (currentIndex != this.insertIndex)
+                        {
+                            this.items.Move(currentIndex, this.insertIndex);
+                        }
                     }
                 }
                 dropInfo.DropTargetAdorner = null;
@@ -134,19 +147,18 @@ namespace KanbanBoard.Presentation.Behaviors
         {
             if (this.container != null && this.container.Items.Contains(separator))
             {
-                ((IList<ItemViewModel>)this.container.ItemsSource).Remove(separator);
+                this.items.Remove(separator);
             }
         }
 
-        private int InsertDropSeparator(ItemsControl itemsControl, double mouseY, ItemViewModel separator)
+        private int GetDropIndex(double mouseY)
         {
-            //This method is similar to the one used by gong but doesn't check for greater than the mouseY, improving speed and appearance.
-            this.items.Remove(separator);
             double totalHeight = 0;
             int i = 0;
-            while (i < itemsControl.Items.Count)
+            foreach (ItemViewModel item in this.container.Items)
             {
-                var newHeight = totalHeight + ((UIElement)itemsControl.ItemContainerGenerator.ContainerFromIndex(i)).RenderSize.Height;
+                if (item == this.separator) continue;
+                var newHeight = totalHeight + ((UIElement)this.container.ItemContainerGenerator.ContainerFromItem(item)).RenderSize.Height;
                 if (newHeight < mouseY)
                 {
                     totalHeight = newHeight;
@@ -154,11 +166,9 @@ namespace KanbanBoard.Presentation.Behaviors
                 }
                 else
                 {
-                    this.items.Insert(i, separator);
-                    return i;
+                    break;
                 }
             }
-            this.items.Insert(i, separator);
             return i;
         }
     }
