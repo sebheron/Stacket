@@ -56,7 +56,7 @@
                               IsChecked="{Binding BoardShown}" FocusVisualStyle="{x:Null}" ContextMenu="{StaticResource TrayMenu}" />
 
                 <Grid HorizontalAlignment="Center" VerticalAlignment="Top"
-                        IsHitTestVisible="{Binding BoardShown, Mode=OneWay}"
+                        IsEnabled="{Binding BoardShown, Mode=OneWay}"
                         Opacity="0"
                         Style="{StaticResource FadeOutAndIn}" Height="22">
                     <Grid.ColumnDefinitions>
@@ -69,7 +69,7 @@
 
                     <ToggleButton Width="30" Margin="0" Name="MenuToggle" Style="{StaticResource RoundFlat3DHorizontalMenuBarButton}" IsChecked="True" FocusVisualStyle="{x:Null}" />
 
-                    <Grid Grid.Column="1" Grid.ColumnSpan="4" IsHitTestVisible="{Binding IsChecked, ElementName=MenuToggle}" Style="{StaticResource FadeOutAndIn}">
+                    <Grid Grid.Column="1" Grid.ColumnSpan="4" IsEnabled="{Binding IsChecked, ElementName=MenuToggle}" Style="{StaticResource FadeOutAndIn}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="30" />
                             <ColumnDefinition Width="30" />
@@ -101,7 +101,7 @@
             </WrapPanel>
 
             <StackPanel Name="MainPanel"
-                    IsHitTestVisible="{Binding BoardShown, Mode=OneWay}"
+                    IsEnabled="{Binding BoardShown, Mode=OneWay}"
                     Opacity="0"
                     Style="{StaticResource FadeOutAndIn}"
                     Grid.Row="1"

@@ -74,7 +74,7 @@
                               VerticalAlignment="Top"
                               Height="30" />
 
-                        <Border Grid.ColumnSpan="4" Margin="0 0 -2 -3" IsHitTestVisible="{Binding OptionsShown}" Style="{StaticResource FadeOutAndIn}" Opacity="0" Background="#E1A0A0A0" CornerRadius="4"
+                        <Border Grid.ColumnSpan="4" Margin="0 0 -2 -3" IsEnabled="{Binding OptionsShown}" Style="{StaticResource FadeOutAndIn}" Opacity="0" Background="#E1A0A0A0" CornerRadius="4"
                                 BorderBrush="#494949" BorderThickness="1 1 2 3">
                             <Grid>
                                 <Grid.ColumnDefinitions>
