@@ -20,7 +20,7 @@ namespace KanbanBoard.Presentation.ViewModels
         private bool isItemEnabled;
         private bool isLocked;
         private bool optionsShown;
-        private double height;
+        private double width;
 
         public ItemViewModel(
             IEventAggregator eventAggregator,
@@ -51,19 +51,15 @@ namespace KanbanBoard.Presentation.ViewModels
             set
             {
                 if (this.description == value) return;
+
                 this.SetProperty(ref this.description, value);
-                this.EventAggregator.GetEvent<RequestSaveEvent>().Publish();
             }
         }
 
         public bool DescriptionVisible
         {
             get => this.descriptionVisible;
-            set
-            {
-                this.SetProperty(ref this.descriptionVisible, value);
-                this.EventAggregator.GetEvent<RequestSaveEvent>().Publish();
-            }
+            set => this.SetProperty(ref this.descriptionVisible, value);
         }
 
         public ItemTypes ItemType
@@ -73,7 +69,6 @@ namespace KanbanBoard.Presentation.ViewModels
             {
                 this.SetColor(value);
                 this.SetProperty(ref this.itemType, value);
-                this.EventAggregator.GetEvent<RequestSaveEvent>().Publish();
             }
         }
 
@@ -108,12 +103,7 @@ namespace KanbanBoard.Presentation.ViewModels
         public bool IsLocked
         {
             get => this.isLocked;
-            set
-            {
-                this.SetProperty(ref this.isLocked, value);
-
-                this.EventAggregator.GetEvent<RequestSaveEvent>().Publish();
-            }
+            set => this.SetProperty(ref this.isLocked, value);
         }
 
         public bool OptionsShown
@@ -122,13 +112,9 @@ namespace KanbanBoard.Presentation.ViewModels
             set => this.SetProperty(ref this.optionsShown, value);
         }
 
-        public double Height
-        {
-            get => this.height;
-            set => this.SetProperty(ref this.height, value);
-        }
-
         public double Width => (SystemParameters.MaximizedPrimaryScreenWidth - 120) / 5;
+
+        public bool Unchanged => this.Title == Resources.Board_NewItemName && string.IsNullOrEmpty(this.Description);
 
         private void SetColor(ItemTypes item)
         {
