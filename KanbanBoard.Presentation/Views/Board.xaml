@@ -45,9 +45,7 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
-                <WrapPanel.Effect>
-                    <DropShadowEffect Direction="275" Color="Gray" Opacity="0.5" />
-                </WrapPanel.Effect>
+
                 <i:Interaction.Behaviors>
                     <beh:MoveableStackpanelBehavior />
                 </i:Interaction.Behaviors>
@@ -108,9 +106,7 @@
                     HorizontalAlignment="Center"
                     Orientation="Horizontal"
                     Margin="15,0,15,15">
-                <StackPanel.Effect>
-                    <DropShadowEffect Direction="275" Color="Gray" Opacity="0.5" />
-                </StackPanel.Effect>
+                
                 <tb:TaskbarIcon Visibility="Visible"
                             ToolTipText="Stacket"
                             IconSource="..\icon.ico"
