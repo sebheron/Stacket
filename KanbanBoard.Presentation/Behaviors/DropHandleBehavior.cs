@@ -51,12 +51,6 @@ namespace KanbanBoard.Presentation.Behaviors
                     }
                     else
                     {
-                        //Make sure to add the separator if it isn't currently in the items.
-                        if (!this.items.Contains(separator))
-                        {
-                            this.items.Add(this.separator);
-                        }
-
                         //Get the drop index, this is usually used for the adorner.
                         this.insertIndex = this.InsertDropSeparator(this.container, dropInfo.DropPosition.Y, this.separator);
                     }
@@ -141,7 +135,10 @@ namespace KanbanBoard.Presentation.Behaviors
         private int InsertDropSeparator(ItemsControl itemsControl, double mouseY, ItemViewModel separator)
         {
             //This method is similar to the one used by gong but doesn't check for greater than the mouseY, improving speed and appearance.
-            this.items.Remove(separator);
+            if (this.items.Contains(separator))
+            {
+                this.items.Remove(separator);
+            }
             double totalHeight = 0;
             int i = 0;
             while (i < itemsControl.Items.Count)
@@ -154,8 +151,7 @@ namespace KanbanBoard.Presentation.Behaviors
                 }
                 else
                 {
-                    this.items.Insert(i, separator);
-                    return i;
+                    break;
                 }
             }
             this.items.Insert(i, separator);
