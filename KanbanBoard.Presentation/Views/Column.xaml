@@ -17,9 +17,9 @@
     </UserControl.Resources>
 
     <Border Margin="0,4"
-            BorderBrush="DimGray"
+            BorderThickness="0 0 2 3"
+            BorderBrush="{StaticResource Flat3DBorderBrush}"
             CornerRadius="8"
-            BorderThickness="0 0 1 0"
             VerticalAlignment="Top"
             Background="#BFD3D3D3"
             FocusVisualStyle="{x:Null}">

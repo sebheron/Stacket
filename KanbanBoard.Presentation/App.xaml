@@ -225,6 +225,13 @@
             <GradientStop Color="#AAA" Offset="0.99" />
             <GradientStop Color="#888" Offset="1" />
         </LinearGradientBrush>
+        
+        <LinearGradientBrush x:Key="Flat3DBorderBrush" StartPoint="0.499,0" EndPoint="0.501,1" Opacity="0.7">
+            <GradientStop Color="#AAA" Offset="0" />
+            <GradientStop Color="#888" Offset="0.01" />
+            <GradientStop Color="#666" Offset="0.99" />
+            <GradientStop Color="#555" Offset="1" />
+        </LinearGradientBrush>
 
         <Style x:Key="RoundFlatCheckbox" TargetType="CheckBox">
             <Setter Property="FocusVisualStyle" Value="{x:Null}" />
@@ -265,13 +272,14 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Name="border" Background="{TemplateBinding Background}" BorderBrush="{StaticResource FlatReverse3DBorderBrush}" BorderThickness="0" CornerRadius="8" Margin="{TemplateBinding Margin}">
+                        <Border Name="border" Background="{TemplateBinding Background}" BorderBrush="{StaticResource Flat3DBorderBrush}" BorderThickness="0 0 2 3" CornerRadius="8" Margin="{TemplateBinding Margin}">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Border>
 
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsPressed" Value="True">
                                 <Setter TargetName="border" Property="Background" Value="#6BB8B8B8" />
+                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource FlatReverse3DBorderBrush}"/>
                                 <Setter TargetName="border" Property="BorderThickness" Value="3" />
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
@@ -458,7 +466,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ToggleButton">
-                        <Border Name="border" Background="#7BFCFCFC" BorderBrush="{StaticResource FlatReverse3DBorderBrush}" BorderThickness="0" CornerRadius="8">
+                        <Border Name="border" Background="#7BFCFCFC" BorderBrush="{StaticResource Flat3DBorderBrush}" BorderThickness="0 0 2 3" CornerRadius="8">
                             <Grid>
                                 <Image Name="img" Width="15" />
                             </Grid>
@@ -467,6 +475,7 @@
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsPressed" Value="True">
                                 <Setter TargetName="border" Property="Background" Value="#6BB8B8B8" />
+                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource FlatReverse3DBorderBrush}"/>
                                 <Setter TargetName="border" Property="BorderThickness" Value="3" />
                             </Trigger>
                             <Trigger Property="IsChecked" Value="False">
@@ -488,7 +497,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ToggleButton">
-                        <Border Name="border" Background="#4FE6E6E6" BorderBrush="{StaticResource FlatReverse3DBorderBrush}" BorderThickness="0" CornerRadius="8" Margin="{TemplateBinding Margin}">
+                        <Border Name="border" Background="#4FE6E6E6" BorderBrush="{StaticResource Flat3DBorderBrush}" BorderThickness="0 0 2 3" CornerRadius="8" Margin="{TemplateBinding Margin}">
                             <Grid>
                                 <Image Name="img" Height="13" />
                             </Grid>
@@ -497,6 +506,7 @@
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsPressed" Value="True">
                                 <Setter TargetName="border" Property="Background" Value="#6BB8B8B8" />
+                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource FlatReverse3DBorderBrush}"/>
                                 <Setter TargetName="border" Property="BorderThickness" Value="3" />
                             </Trigger>
                             <Trigger Property="IsChecked" Value="False">
@@ -525,13 +535,15 @@
                             </Grid.ColumnDefinitions>
 
                             <!--Left Bottom Right Top -->
-                            <Border Name="borderA" Background="#BFD3D3D3" BorderBrush="{StaticResource FlatReverse3DBorderBrush}" BorderThickness="0" Grid.Column="1" />
-                            <Border Grid.Column="0" Name="borderB" Background="#BFD3D3D3" BorderBrush="{StaticResource FlatReverse3DBorderBrush}" BorderThickness="0" CornerRadius="45 0 0 45" />
+                            <Border Name="borderA" Background="#BFD3D3D3" BorderBrush="{StaticResource Flat3DBorderBrush}" BorderThickness="0 0 0 3" Grid.Column="1" />
+                            <Border Grid.Column="0" Name="borderB" Background="#BFD3D3D3" BorderBrush="{StaticResource Flat3DBorderBrush}" BorderThickness="0 0 0 3" CornerRadius="45 0 0 45" />
                             <ContentPresenter Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Grid>
 
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="borderA" Property="BorderBrush" Value="{StaticResource FlatReverse3DBorderBrush}"/>
+                                <Setter TargetName="borderB" Property="BorderBrush" Value="{StaticResource FlatReverse3DBorderBrush}"/>
                                 <Setter TargetName="borderA" Property="BorderThickness" Value="0 3 3 3" />
                                 <Setter TargetName="borderB" Property="BorderThickness" Value="3 3 0 3" />
                             </Trigger>
@@ -578,13 +590,15 @@
                             </Grid.ColumnDefinitions>
 
                             <!--Left Bottom Right Top -->
-                            <Border Name="borderA" Background="#BFD3D3D3" BorderBrush="{StaticResource FlatReverse3DBorderBrush}" BorderThickness="0" />
-                            <Border Name="borderB" Background="#BFD3D3D3" BorderBrush="{StaticResource FlatReverse3DBorderBrush}" BorderThickness="0" CornerRadius="0 45 45 0" Grid.Column="1" />
+                            <Border Name="borderA" Background="#BFD3D3D3" BorderBrush="{StaticResource Flat3DBorderBrush}" BorderThickness="0 0 0 3" />
+                            <Border Name="borderB" Background="#BFD3D3D3" BorderBrush="{StaticResource Flat3DBorderBrush}" BorderThickness="0 0 2 3" CornerRadius="0 45 45 0" Grid.Column="1" />
                             <ContentPresenter Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Grid>
 
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="borderA" Property="BorderBrush" Value="{StaticResource FlatReverse3DBorderBrush}"/>
+                                <Setter TargetName="borderB" Property="BorderBrush" Value="{StaticResource FlatReverse3DBorderBrush}"/>
                                 <Setter TargetName="borderA" Property="BorderThickness" Value="3 3 0 3" />
                                 <Setter TargetName="borderB" Property="BorderThickness" Value="0 3 3 3" />
                             </Trigger>
