@@ -46,10 +46,13 @@ namespace KanbanBoard.Presentation.Services
             else if (!string.IsNullOrEmpty(Settings.Default.CurrentBoard) && !Settings.Default.AskedUserForStartup)
             {
                 var result = this.dialogService.ShowYesNo(Resources.Dialog_Startup_Message, Resources.Stacket);
-                if (!result.HasValue || !result.Value) return;
+                if (!result.HasValue) return;
 
-                this.registryService.SetValue(Resources.StartupRegistryLocation, Resources.Stacket,
-                        Process.GetCurrentProcess().MainModule.FileName);
+                if (result.Value)
+                {
+                    this.registryService.SetValue(Resources.StartupRegistryLocation, Resources.Stacket,
+                            Process.GetCurrentProcess().MainModule.FileName);
+                }
 
                 Settings.Default.AskedUserForStartup = true;
             }

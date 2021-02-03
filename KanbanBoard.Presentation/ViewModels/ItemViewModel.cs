@@ -19,7 +19,6 @@ namespace KanbanBoard.Presentation.ViewModels
         private bool newlyCreatedItem;
         private bool isLocked;
         private bool optionsShown;
-        private double itemWidth;
 
         public ItemViewModel(
             IEventAggregator eventAggregator,
@@ -53,13 +52,18 @@ namespace KanbanBoard.Presentation.ViewModels
                 if (this.description == value) return;
 
                 this.SetProperty(ref this.description, value);
+                this.EventAggregator.GetEvent<RequestSaveEvent>().Publish();
             }
         }
 
         public bool DescriptionVisible
         {
             get => this.descriptionVisible;
-            set => this.SetProperty(ref this.descriptionVisible, value);
+            set
+            {
+                this.SetProperty(ref this.descriptionVisible, value);
+                this.EventAggregator.GetEvent<RequestSaveEvent>().Publish();
+            }
         }
 
         public ItemTypes ItemType
@@ -69,6 +73,7 @@ namespace KanbanBoard.Presentation.ViewModels
             {
                 this.SetColor(value);
                 this.SetProperty(ref this.itemType, value);
+                this.EventAggregator.GetEvent<RequestSaveEvent>().Publish();
             }
         }
 
@@ -97,7 +102,11 @@ namespace KanbanBoard.Presentation.ViewModels
         public bool IsLocked
         {
             get => this.isLocked;
-            set => this.SetProperty(ref this.isLocked, value);
+            set
+            {
+                this.SetProperty(ref this.isLocked, value);
+                this.EventAggregator.GetEvent<RequestSaveEvent>().Publish();
+            }
         }
 
         public bool OptionsShown
@@ -106,7 +115,7 @@ namespace KanbanBoard.Presentation.ViewModels
             set => this.SetProperty(ref this.optionsShown, value);
         }
 
-        public bool Unchanged => this.Title == Resources.Board_NewItemName && string.IsNullOrEmpty(this.Description);
+        public double Width => (SystemParameters.MaximizedPrimaryScreenWidth - 120) / 5;
 
         private void SetColor(ItemTypes item)
         {

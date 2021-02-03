@@ -8,18 +8,18 @@
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:behaviors="clr-namespace:KanbanBoard.Presentation.Behaviors"
              xmlns:converters="clr-namespace:KanbanBoard.Presentation.Converters"
+             xmlns:ui="clr-namespace:KanbanBoard.Presentation.UI"
              mc:Ignorable="d"
              d:DesignWidth="400">
 
     <UserControl.Resources>
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
-
-    <Grid>
-        <Border Margin="0,4"
-            BorderBrush="DimGray"
+<Grid>
+    <Border Margin="0,4"
+            BorderThickness="0 0 2 3"
+            BorderBrush="{StaticResource Flat3DBorderBrush}"
             CornerRadius="8"
-            BorderThickness="0 0 1 0"
             VerticalAlignment="Top"
             Background="#BFD3D3D3"
             FocusVisualStyle="{x:Null}"
@@ -50,12 +50,12 @@
                                         <RowDefinition />
                                     </Grid.RowDefinitions>
 
-                                    <TextBox MaxLines="3" Grid.Row="1" IsHitTestVisible="{Binding NotDragging}" dd:DragDrop.IsDropTarget="True" Style="{StaticResource CappedHiddenTextBox}" Text="{Binding Title}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left">
-                                        <b:Interaction.Behaviors>
-                                            <behaviors:TextBoxFocusBehavior />
-                                        </b:Interaction.Behaviors>
-                                    </TextBox>
-                                </Grid>
+                                <TextBox MaxLines="3" Grid.Row="1" IsHitTestVisible="{Binding NotDragging}" Style="{StaticResource CappedHiddenTextBox}" Text="{Binding Title}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left">
+                                    <b:Interaction.Behaviors>
+                                        <behaviors:TextBoxFocusBehavior />
+                                    </b:Interaction.Behaviors>
+                                </TextBox>
+                            </Grid>
 
                                 <ToggleButton Grid.Column="2"
                                       Style="{StaticResource TransparentRoundFlat3DOnOffButton}"
@@ -65,15 +65,15 @@
                                       FocusVisualStyle="{x:Null}">
                                 </ToggleButton>
 
-                                <Border Grid.ColumnSpan="4" Margin="-1" BorderBrush="#494949" BorderThickness="1" IsHitTestVisible="{Binding IsChecked, ElementName=OptionsToggle}"
+                            <Border Grid.ColumnSpan="4" Margin="-1" BorderBrush="#494949" BorderThickness="1" IsEnabled="{Binding IsChecked, ElementName=OptionsToggle}"
                                 Style="{StaticResource FadeOutAndIn}" Background="#E1A0A0A0" CornerRadius="8" Opacity="0" />
                             </Grid>
                         </Border>
                     </Grid>
 
-                    <Grid>
-                        <ScrollViewer Visibility="{Binding ColumnVisible, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                            <ItemsControl Background="#01000000"
+                <Grid>
+                    <ScrollViewer Visibility="{Binding ColumnVisible, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                        <ui:CustomItemsControl Background="#01000000"
                               ItemsSource="{Binding Items}"
                               dd:DragDrop.IsDragSource="True"
                               dd:DragDrop.IsDropTarget="True"
@@ -89,31 +89,31 @@
                               Focusable="False"
                               Padding="0,0,0,10"
                               FocusVisualStyle="{x:Null}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <local:Item />
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
+                            <ui:CustomItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <local:Item />
+                                </DataTemplate>
+                            </ui:CustomItemsControl.ItemTemplate>
 
-                                <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <StackPanel VerticalAlignment="Top" Orientation="Vertical" />
-                                    </ItemsPanelTemplate>
-                                </ItemsControl.ItemsPanel>
-                            </ItemsControl>
-                        </ScrollViewer>
-                    </Grid>
-                </DockPanel>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition Width="30" />
-                        <ColumnDefinition Width="30" />
-                        <ColumnDefinition Width="30" />
-                    </Grid.ColumnDefinitions>
+                            <ui:CustomItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel VerticalAlignment="Top" Orientation="Vertical" />
+                                </ItemsPanelTemplate>
+                            </ui:CustomItemsControl.ItemsPanel>
+                        </ui:CustomItemsControl>
+                    </ScrollViewer>
+                </Grid>
+            </DockPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="30" />
+                    <ColumnDefinition Width="30" />
+                    <ColumnDefinition Width="30" />
+                </Grid.ColumnDefinitions>
 
-                    <Border Grid.Column="2" VerticalAlignment="Top" Height="30" IsHitTestVisible="{Binding IsChecked, ElementName=OptionsToggle}" Style="{StaticResource FadeOutAndIn}">
-                        <Button Style="{StaticResource TransparentRoundFlat3DButton}"
+                <Border Grid.Column="2" VerticalAlignment="Top" Height="30" IsEnabled="{Binding IsChecked, ElementName=OptionsToggle}" Style="{StaticResource FadeOutAndIn}">
+                    <Button Style="{StaticResource TransparentRoundFlat3DButton}"
                                     Command="{Binding DeleteColumnCommand}"
                                     FocusVisualStyle="{x:Null}" Height="30" VerticalAlignment="Top">
                             <Image Source="{StaticResource trash}" Width="13" />

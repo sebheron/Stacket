@@ -9,6 +9,7 @@
         xmlns:prism="http://prismlibrary.com/"
         xmlns:tb="http://www.hardcodet.net/taskbar"
         xmlns:views="clr-namespace:KanbanBoard.Presentation.Views"
+        xmlns:ui="clr-namespace:KanbanBoard.Presentation.UI"
         prism:ViewModelLocator.AutoWireViewModel="True"
         mc:Ignorable="d"
         Title="Board" WindowState="Maximized"
@@ -40,21 +41,22 @@
         <Border Background="#01FFFFFF" dd:DragDrop.IsDropTarget="True" Visibility="{Binding DisableBackground, Converter={StaticResource BooleanToVisibilityConverter}}" />
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="30" />
+                <RowDefinition Height="28" />
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
-                <WrapPanel.Effect>
-                    <DropShadowEffect Direction="275" Color="Gray" Opacity="0.5" />
-                </WrapPanel.Effect>
+            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top">
+
                 <i:Interaction.Behaviors>
                     <beh:MoveableStackpanelBehavior />
                 </i:Interaction.Behaviors>
-                <ToggleButton Name="MainWindowToggle" Width="80" Height="25" Style="{StaticResource RoundFlat3DVerticalDropdownButton}" IsChecked="True" FocusVisualStyle="{x:Null}" ContextMenu="{StaticResource TrayMenu}" />
+                
+                <ToggleButton Height="22" Width="80" Style="{StaticResource RoundFlat3DVerticalDropdownButton}"
+                              IsChecked="{Binding BoardShown}" FocusVisualStyle="{x:Null}" ContextMenu="{StaticResource TrayMenu}" />
 
-                <Grid HorizontalAlignment="Center"
-                        IsHitTestVisible="{Binding IsEnabled, ElementName=MainPanel}"
-                        Style="{StaticResource FadeOutAndIn}">
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Top"
+                        IsEnabled="{Binding BoardShown, Mode=OneWay}"
+                        Opacity="0"
+                        Style="{StaticResource FadeOutAndIn}" Height="22">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition MaxWidth="30" />
                         <ColumnDefinition MaxWidth="30" />
@@ -63,52 +65,48 @@
                         <ColumnDefinition MaxWidth="30" />
                     </Grid.ColumnDefinitions>
 
-                    <ToggleButton HorizontalAlignment="Left" Width="30" Margin="0 3" Name="MenuToggle" Height="25" Style="{StaticResource RoundFlat3DHorizontalMenuBarButton}" IsChecked="True" FocusVisualStyle="{x:Null}" />
+                    <ToggleButton Width="30" Margin="0" Name="MenuToggle" Style="{StaticResource RoundFlat3DHorizontalMenuBarButton}" IsChecked="True" FocusVisualStyle="{x:Null}" />
 
-                    <Grid Grid.Column="1" Grid.ColumnSpan="4" Width="120" IsHitTestVisible="{Binding IsChecked, ElementName=MenuToggle}" Style="{StaticResource GrowAndShrinkWidth}">
-                        <Grid.RenderTransform>
-                            <ScaleTransform ScaleX="1" />
-                        </Grid.RenderTransform>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition MaxWidth="30" />
-                        <ColumnDefinition MaxWidth="30" />
-                        <ColumnDefinition MaxWidth="30" />
-                        <ColumnDefinition MaxWidth="30" />
-                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="1" Grid.ColumnSpan="4" IsEnabled="{Binding IsChecked, ElementName=MenuToggle}" Style="{StaticResource FadeOutAndIn}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="30" />
+                            <ColumnDefinition Width="30" />
+                            <ColumnDefinition Width="30" />
+                            <ColumnDefinition Width="30" />
+                        </Grid.ColumnDefinitions>
 
-                    <Button Width="40" Margin="0 3" Height="25" Background="#4FE6E6E6" Style="{StaticResource RoundFlat3DButton}" FocusVisualStyle="{x:Null}"
-                    Grid.Column="0" Command="{Binding NewBoardCommand}" ToolTip="New" FontSize="2" HorizontalAlignment="Center">
-                        <Image Source="{StaticResource doc-add}" Width="12" />
-                    </Button>
+                        <Button Background="#4FE6E6E6" Style="{StaticResource RoundFlat3DButton}" FocusVisualStyle="{x:Null}"
+                    Grid.Column="0" Command="{Binding NewBoardCommand}" ToolTip="New" Margin="0">
+                            <Image Source="{StaticResource doc-add}" Width="12" />
+                        </Button>
 
-                    <Button Width="40" Margin="0 3" Height="25" Background="#4FE6E6E6" Style="{StaticResource RoundFlat3DButton}" FocusVisualStyle="{x:Null}"
-                    Grid.Column="1" Command="{Binding LoadBoardCommand}" ToolTip="Load" HorizontalAlignment="Center">
-                        <Image Source="{StaticResource folder}" Width="15" />
-                    </Button>
+                        <Button Background="#4FE6E6E6" Style="{StaticResource RoundFlat3DButton}" FocusVisualStyle="{x:Null}"
+                    Grid.Column="1" Command="{Binding LoadBoardCommand}" ToolTip="Load" Margin="0">
+                            <Image Source="{StaticResource folder}" Width="15" />
+                        </Button>
 
-                    <Button Width="40" Margin="0 3" Height="25" Background="#4FE6E6E6" Style="{StaticResource RoundFlat3DButton}" FocusVisualStyle="{x:Null}"
-                    Grid.Column="2" Command="{Binding ShowSettingsCommand}" ToolTip="Settings" HorizontalAlignment="Center">
-                        <Image Source="{StaticResource cog-alt}" Width="15" />
-                    </Button>
+                        <Button Background="#4FE6E6E6" Style="{StaticResource RoundFlat3DButton}" FocusVisualStyle="{x:Null}"
+                    Grid.Column="2" Command="{Binding ShowSettingsCommand}" ToolTip="Settings" Margin="0">
+                            <Image Source="{StaticResource cog-alt}" Width="15" />
+                        </Button>
 
-                    <Button Width="40" Margin="0 3" Height="25" Background="#4FE6E6E6" Style="{StaticResource RoundFlat3DButton}" FocusVisualStyle="{x:Null}"
-                    Grid.Column="3" Command="{Binding ExitCommand}" ToolTip="Close" HorizontalAlignment="Right">
-                        <Image Source="{StaticResource cancel}" Width="11" Margin="7.5 0 0 0" />
-                    </Button>
+                        <Button Background="#4FE6E6E6" Style="{StaticResource RoundFlat3DButton}" FocusVisualStyle="{x:Null}"
+                    Grid.Column="3" Command="{Binding ExitCommand}" ToolTip="Close" Margin="0">
+                            <Image Source="{StaticResource cancel}" Width="11" />
+                        </Button>
+                    </Grid>
                 </Grid>
-            </Grid>
-        </WrapPanel>
+            </WrapPanel>
 
-        <StackPanel Name="MainPanel"
-                    IsHitTestVisible="{Binding IsChecked, ElementName=MainWindowToggle}"
-                    Style="{StaticResource MainFadeOutAndIn}"
+            <StackPanel Name="MainPanel"
+                    IsEnabled="{Binding BoardShown, Mode=OneWay}"
+                    Opacity="0"
+                    Style="{StaticResource FadeOutAndIn}"
                     Grid.Row="1"
                     HorizontalAlignment="Center"
                     Orientation="Horizontal"
                     Margin="15,0,15,15">
-                <StackPanel.Effect>
-                    <DropShadowEffect Direction="275" Color="Gray" Opacity="0.5" />
-                </StackPanel.Effect>
+                
                 <tb:TaskbarIcon Visibility="Visible"
                             ToolTipText="Stacket"
                             IconSource="..\icon.ico"
@@ -128,7 +126,7 @@
                     </Button>
                 </Grid>
 
-                <ItemsControl ItemsSource="{Binding Columns}"
+                <ui:CustomItemsControl ItemsSource="{Binding Columns}"
                           Focusable="False"
                           dd:DragDrop.IsDragSource="True"
                           dd:DragDrop.IsDropTarget="True"
@@ -140,18 +138,18 @@
                           dd:DragDrop.DragHandler="{Binding DragHandler}"
                           dd:DragDrop.DropHandler="{Binding DropHandler}"
                           FocusVisualStyle="{x:Null}">
-                    <ItemsControl.ItemTemplate>
+                    <ui:CustomItemsControl.ItemTemplate>
                         <DataTemplate>
                             <views:Column Width="{Binding DataContext.ColumnWidth, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Margin="1 0 1 0" />
                         </DataTemplate>
-                    </ItemsControl.ItemTemplate>
+                    </ui:CustomItemsControl.ItemTemplate>
 
-                    <ItemsControl.ItemsPanel>
+                    <ui:CustomItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" />
                         </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                </ItemsControl>
+                    </ui:CustomItemsControl.ItemsPanel>
+                </ui:CustomItemsControl>
 
                 <Grid Width="30" Height="45" VerticalAlignment="Top" Margin="-1 0 0 0">
                     <Button FontSize="16"
