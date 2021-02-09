@@ -66,10 +66,12 @@ namespace KanbanBoard.Presentation.ViewModels
         public bool ColumnVisible
         {
             get => columnVisible;
-            set => SetProperty(ref columnVisible, value);
+            set
+            {
+                SetProperty(ref columnVisible, value);
+                this.EventAggregator.GetEvent<RequestSaveEvent>().Publish();
+            }
         }
-
-        public bool Unchanged => this.Title == Resources.Board_NewColumnName && this.Items.Count <= 0;
 
         public void AddItem(IItemViewModelFactory itemFactory)
         {

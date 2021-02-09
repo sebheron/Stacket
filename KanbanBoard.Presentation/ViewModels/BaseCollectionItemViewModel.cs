@@ -22,13 +22,6 @@ namespace KanbanBoard.Presentation.ViewModels
             this.Id = id ?? Guid.NewGuid();
             this.title = title;
             this.NotDragging = true;
-
-            this.PropertyChanged += ItemPropertyChanged;
-        }
-
-        private void ItemPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            this.EventAggregator.GetEvent<RequestSaveEvent>().Publish();
         }
 
         public Guid Id { get; }
@@ -41,6 +34,7 @@ namespace KanbanBoard.Presentation.ViewModels
                 if (string.IsNullOrEmpty(value)) return;
 
                 this.SetProperty(ref title, value);
+                this.EventAggregator.GetEvent<RequestSaveEvent>().Publish();
             }
         }
 

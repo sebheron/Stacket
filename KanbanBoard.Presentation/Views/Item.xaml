@@ -35,7 +35,7 @@
                             <ColumnDefinition Width="30" />
                         </Grid.ColumnDefinitions>
 
-                        <TextBox IsHitTestVisible="{Binding NotDragging}" Margin="6 7 0 6" MaxLines="3" Grid.Row="1" dd:DragDrop.IsDropTarget="True" Text="{Binding Title}"
+                        <TextBox IsHitTestVisible="{Binding NotDragging}" Margin="6 7 0 6" MaxLines="3" Grid.Row="1" Text="{Binding Title}"
                              VerticalContentAlignment="Top" HorizontalContentAlignment="Left" HorizontalAlignment="Left"
                              Visibility="{Binding IsLocked, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter={StaticResource InvertVisibility}}">
                             <b:Interaction.Behaviors>
@@ -53,7 +53,7 @@
                             </TextBox.Style>
                         </TextBox>
 
-                        <TextBlock Margin="6 7 0 6" Grid.Row="1" dd:DragDrop.IsDropTarget="True"
+                        <TextBlock Margin="6 7 0 6" Grid.Row="1" IsHitTestVisible="{Binding NotDragging}"
                              Text="{Binding Title}"
                              TextAlignment="Left" HorizontalAlignment="Left"
                              TextWrapping="Wrap" TextTrimming="WordEllipsis" behaviors:MaxLinesBehavior.MaxLines="3"
@@ -74,7 +74,7 @@
                               VerticalAlignment="Top"
                               Height="30" />
 
-                        <Border Grid.ColumnSpan="4" Margin="0 0 -2 -3" IsHitTestVisible="{Binding OptionsShown}" Style="{StaticResource FadeOutAndIn}" Opacity="0" Background="#E1A0A0A0" CornerRadius="4"
+                        <Border Grid.ColumnSpan="4" Margin="0 0 -2 -3" IsEnabled="{Binding OptionsShown}" Style="{StaticResource FadeOutAndIn}" Opacity="0" Background="#E1A0A0A0" CornerRadius="4"
                                 BorderBrush="#494949" BorderThickness="1 1 2 3">
                             <Grid>
                                 <Grid.ColumnDefinitions>
