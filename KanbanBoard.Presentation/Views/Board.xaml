@@ -109,7 +109,7 @@
                 
                 <tb:TaskbarIcon Visibility="Visible"
                             ToolTipText="Stacket"
-                            IconSource="..\icon.ico"
+                            IconSource="..\stacket_icon.ico"
                             ContextMenu="{StaticResource TrayMenu}"
                             MenuActivation="LeftOrRightClick"
                             TrayToolTip="{StaticResource TrayToolTip}" />
