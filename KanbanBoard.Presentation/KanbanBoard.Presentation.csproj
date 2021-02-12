@@ -55,7 +55,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>stacket_icon.ico</ApplicationIcon>
+    <ApplicationIcon>new_icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>0A0E55F2BC85765E7CF4FBA25CCAEA0D51AD9BC3</ManifestCertificateThumbprint>
@@ -288,7 +288,7 @@
     <Resource Include="Cursors\grab.cur" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="stacket_icon.ico" />
+    <Resource Include="new_icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
