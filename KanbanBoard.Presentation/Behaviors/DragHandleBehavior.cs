@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using GongSolutions.Wpf.DragDrop;
@@ -58,11 +60,21 @@ namespace KanbanBoard.Presentation.Behaviors
 
         public override void DragDropOperationFinished(DragDropEffects operationResult, IDragInfo dragInfo)
         {
+
             //If we haven't been dropped we need to return back to our original place.
             if (!this.dropped)
             {
-                ((IList)((ItemsControl)dragInfo.VisualSource).ItemsSource).Insert(dragInfo.SourceIndex, dragInfo.SourceItem);
+                sourceItems.Insert(dragInfo.SourceIndex, (BaseCollectionItemViewModel)dragInfo.SourceItem);
                 this.dropped = false;
+
+                //In the case of columns the separator will still be present too.
+                for (int i = 0; i < sourceItems.Count; i++)
+                {
+                    if (!((BaseCollectionItemViewModel)sourceItems[i]).IsItemEnabled) {
+                        sourceItems.RemoveAt(i);
+                        break;
+                    }
+                }
             }
 
             //Turn options off.
