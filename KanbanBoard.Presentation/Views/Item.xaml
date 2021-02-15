@@ -10,8 +10,7 @@
              xmlns:enums="clr-namespace:KanbanBoard.Logic.Enums;assembly=KanbanBoard.Logic"
              mc:Ignorable="d"
              d:DesignWidth="300"
-             MaxWidth="{Binding Width}"
-             IsHitTestVisible="{Binding IsItemEnabled}">
+             MaxWidth="{Binding Width}">
 
     <UserControl.Resources>
         <ObjectDataProvider x:Key="ItemTypes" MethodName="GetValues" ObjectType="{x:Type system:Enum}">
@@ -22,7 +21,7 @@
     </UserControl.Resources>
 
     <Grid>
-        <Border Background="LightGray" CornerRadius="15" Margin="10,5" FocusVisualStyle="{x:Null}"
+        <Border Background="LightGray" CornerRadius="15" Margin="10,5" FocusVisualStyle="{x:Null}" Style="{StaticResource FadeIn}"
                 Visibility="{Binding IsItemEnabled, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter={StaticResource HiddenVisibility}}">
             <StackPanel>
                 <Border Background="{Binding ItemColor, Converter={StaticResource ColorToScreenColor}}" CornerRadius="4" MinHeight="30" FocusVisualStyle="{x:Null}"
@@ -74,8 +73,8 @@
                               VerticalAlignment="Top"
                               Height="30" />
 
-                        <Border Grid.ColumnSpan="4" Margin="0 0 -2 -3" IsEnabled="{Binding OptionsShown}" Style="{StaticResource FadeOutAndIn}" Opacity="0" Background="#E1A0A0A0" CornerRadius="4"
-                                BorderBrush="#494949" BorderThickness="1 1 2 3">
+                        <Border Grid.ColumnSpan="4" Margin="0 0 -1 -2" IsEnabled="{Binding OptionsShown}" Style="{StaticResource FadeOutAndIn}" Opacity="0" Background="#E1A0A0A0" CornerRadius="4"
+                                BorderBrush="#494949" BorderThickness="0 0 1 2">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition />
@@ -103,7 +102,8 @@
                     </Grid>
                 </Border>
 
-                <Grid Visibility="{Binding DescriptionVisible, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}" MinHeight="60">
+                <Grid IsHitTestVisible="{Binding DescriptionVisible}" Style="{StaticResource GrowAndShrink}"
+                      Visibility="{Binding DescriptionVisible, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}" MinHeight="60">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="6" />
                         <RowDefinition />
@@ -130,7 +130,8 @@
                 Visibility="{Binding IsItemEnabled,
                                      Converter={StaticResource BooleanToVisibilityConverter},
                                      ConverterParameter={StaticResource InvertVisibility}}"
-                BorderBrush="{StaticResource FlatReverse3DBorderBrush}" BorderThickness="2">
+                BorderBrush="{StaticResource FlatReverse3DBorderBrush}" BorderThickness="2"
+                IsHitTestVisible="{Binding IsItemEnabled}">
             <Border.Background>
                 <LinearGradientBrush StartPoint="0, 0" EndPoint="1, 1" Opacity="0.3">
                     <GradientStop Color="Gray" Offset="0" />
