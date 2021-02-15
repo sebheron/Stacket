@@ -36,10 +36,9 @@ namespace KanbanBoard.Presentation.Behaviors
             dragInfo.Effects = DragDropEffects.Move;
             dragInfo.Data = dragInfo.SourceItem;
 
-            //Only perform the fancy drag on Items (for now).
+            //Remove newly created tag.
             if (dragInfo.SourceItem is ItemViewModel item)
             {
-                //Turn off new in items otherwise they'll refocus.
                 item.NewlyCreatedItem = false;
             }
 
@@ -66,11 +65,14 @@ namespace KanbanBoard.Presentation.Behaviors
                 this.dropped = false;
             }
 
-                //Disable the options.
+            //Turn options off.
+            if (dragInfo.SourceItem is ItemViewModel item)
+            {
                 item.OptionsShown = false;
+            }
 
-                //Set back the minimum width so columns can be added and the items will size accordingly.
-                ((FrameworkElement)dragInfo.VisualSourceItem).MinWidth = 0;
+            //Set back the minimum width so columns can be added and the items will size accordingly.
+            ((FrameworkElement)dragInfo.VisualSourceItem).MinWidth = 0;
 
             //Tell the application we've stopped dragging and save.
             this.eventAggregator.GetEvent<IsDraggingEvent>().Publish(false);

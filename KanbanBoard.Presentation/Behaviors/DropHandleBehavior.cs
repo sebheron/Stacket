@@ -132,7 +132,7 @@ namespace KanbanBoard.Presentation.Behaviors
 
         private void DragLeave(object sender, DragEventArgs e)
         {
-            if (this.container != null && this.container.Items.Contains(separator))
+            if (this.container != null && this.container.Items.Contains(separator) && this.separator is ItemViewModel)
             {
                 ((IList)this.container.ItemsSource).Remove(separator);
             }
