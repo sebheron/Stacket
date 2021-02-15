@@ -141,6 +141,11 @@ namespace KanbanBoard.Presentation.ViewModels
 
             var input = this.dialogService.GetInput(Resources.Dialog_NewBoard_Message, Resources.Dialog_NewBoard_Title);
 
+            while (File.Exists(Path.Combine(FileLocations.BoardFileStorageLocation, input + Resources.BoardFileExtension)))
+            {
+                input = this.dialogService.GetInput(Resources.Dialog_NewBoard_Error + Environment.NewLine + Resources.Dialog_NewBoard_Message, Resources.Dialog_NewBoard_Title);
+            }
+
             this.NewEnabled = true;
             this.LoadEnabled = true;
 

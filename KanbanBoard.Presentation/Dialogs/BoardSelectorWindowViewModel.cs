@@ -17,6 +17,8 @@ namespace KanbanBoard.Presentation.Dialogs
         private readonly IDialogService dialogService;
         private readonly ILoggerFacade logger;
 
+        private string[] fileLocations;
+
         private string selectedBoard;
 
         public BoardSelectorWindowViewModel(IDialogService dialogService, ILoggerFacade logger, Action closeDialog)
@@ -50,7 +52,8 @@ namespace KanbanBoard.Presentation.Dialogs
 
         private void PopulateBoardFiles()
         {
-            this.BoardFiles.AddRange(Directory.GetFiles(FileLocations.BoardFileStorageLocation).Where(file => file != Settings.Default.CurrentBoard).Select(Path.GetFileNameWithoutExtension));
+            this.fileLocations = Directory.GetFiles(FileLocations.BoardFileStorageLocation);
+            this.BoardFiles.AddRange(this.fileLocations.Where(file => file != Settings.Default.CurrentBoard).Select(Path.GetFileNameWithoutExtension));
             this.logger.Log("Populated board files list", Category.Debug, Priority.None);
         }
 
@@ -58,9 +61,13 @@ namespace KanbanBoard.Presentation.Dialogs
         {
             this.logger.Log("New board requested", Category.Debug, Priority.None);
             var input = this.dialogService.GetInput(Resources.Dialog_NewBoard_Message, Resources.Dialog_NewBoard_Title);
+            while (this.fileLocations.Select(Path.GetFileNameWithoutExtension).Contains(input))
+            {
+                input = this.dialogService.GetInput(Resources.Dialog_NewBoard_Error + Environment.NewLine + Resources.Dialog_NewBoard_Message, Resources.Dialog_NewBoard_Title);
+            }
             if (string.IsNullOrEmpty(input)) return;
-
             this.BoardLocation = Path.Combine(FileLocations.BoardFileStorageLocation, input + Resources.BoardFileExtension);
+
             this.CloseDialog();
         }
 

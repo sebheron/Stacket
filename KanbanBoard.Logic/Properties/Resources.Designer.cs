@@ -178,6 +178,15 @@ namespace KanbanBoard.Logic.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Board title already in use..
+        /// </summary>
+        public static string Dialog_NewBoard_Error {
+            get {
+                return ResourceManager.GetString("Dialog_NewBoard_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name for the new board:.
         /// </summary>
         public static string Dialog_NewBoard_Message {
