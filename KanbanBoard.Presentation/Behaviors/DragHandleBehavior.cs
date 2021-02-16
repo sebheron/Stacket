@@ -60,6 +60,8 @@ namespace KanbanBoard.Presentation.Behaviors
 
         public override void DragDropOperationFinished(DragDropEffects operationResult, IDragInfo dragInfo)
         {
+            //Get the source items.
+            IList sourceItems = ((IList)((ItemsControl)dragInfo.VisualSource).ItemsSource);
 
             //If we haven't been dropped we need to return back to our original place.
             if (!this.dropped)
