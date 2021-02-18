@@ -17,7 +17,6 @@ namespace KanbanBoard.Presentation.ViewModels
         private ItemTypes itemType;
         private Color itemColor;
         private bool newlyCreatedItem;
-        private bool isItemEnabled;
         private bool isLocked;
         private bool optionsShown;
 
@@ -31,12 +30,13 @@ namespace KanbanBoard.Presentation.ViewModels
             bool isLocked = false)
             : base(id, title ?? Resources.Board_NewItemName, eventAggregator)
         {
+            if (eventAggregator == null) return;
+
             // Loading an item.
             this.Description = description;
             this.DescriptionVisible = descriptionVisible;
             this.ItemType = itemType ?? Settings.Default.LastItemType;
             this.IsLocked = isLocked;
-            this.IsItemEnabled = true;
             this.OptionsShown = false;
 
             this.DeleteItemCommand = new DelegateCommand(() => this.EventAggregator.GetEvent<DeleteColumnEvent>().Publish(this.Id));
@@ -99,12 +99,6 @@ namespace KanbanBoard.Presentation.ViewModels
             set => this.SetProperty(ref this.newlyCreatedItem, value);
         }
 
-        public bool IsItemEnabled
-        {
-            get => this.isItemEnabled;
-            set => this.SetProperty(ref this.isItemEnabled, value);
-        }
-
         public bool IsLocked
         {
             get => this.isLocked;
@@ -152,7 +146,7 @@ namespace KanbanBoard.Presentation.ViewModels
         public override string ToString()
         {
             return this.Id + Resources.NewItemData + this.Title + Resources.NewItemData + this.Description
-                   + Resources.NewItemData + this.ItemType + Resources.NewItemData + DateTime.Now.ToShortDateString() 
+                   + Resources.NewItemData + this.ItemType + Resources.NewItemData + DateTime.Now.ToShortDateString()
                    + Resources.NewItemData + this.DescriptionVisible + Resources.NewItemData + this.IsLocked;
         }
     }

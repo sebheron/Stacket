@@ -15,64 +15,65 @@
     <UserControl.Resources>
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
-
-    <Border Margin="0,4"
+    <Grid>
+        <Border Margin="0,4"
             BorderThickness="0 0 2 3"
             BorderBrush="{StaticResource Flat3DBorderBrush}"
             CornerRadius="8"
             VerticalAlignment="Top"
             Background="#BFD3D3D3"
-            FocusVisualStyle="{x:Null}">
-        <Grid>
-            <DockPanel>
-                <Grid DockPanel.Dock="Top">
-                    <Border CornerRadius="8" MinHeight="30" Margin="0 0 0 3">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="30" />
-                                <ColumnDefinition />
-                                <ColumnDefinition Width="30" />
-                                <ColumnDefinition Width="30" />
-                            </Grid.ColumnDefinitions>
+            FocusVisualStyle="{x:Null}"
+            Visibility="{Binding IsItemEnabled, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid>
+                <DockPanel>
+                    <Grid DockPanel.Dock="Top">
+                        <Border CornerRadius="8" MinHeight="30" Margin="0 0 0 3">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="30" />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="30" />
+                                    <ColumnDefinition Width="30" />
+                                </Grid.ColumnDefinitions>
 
-                            <Button Style="{StaticResource TransparentRoundFlat3DButton}"
+                                <Button Style="{StaticResource TransparentRoundFlat3DButton}"
                                 VerticalAlignment="Top"
                                 Height="30"
                                 Command="{Binding AddItemCommand}"
                                 FocusVisualStyle="{x:Null}">
-                                <Image Source="{StaticResource plus}" Width="13" />
-                            </Button>
+                                    <Image Source="{StaticResource plus}" Width="13" />
+                                </Button>
 
-                            <Grid Grid.Column="1" HorizontalAlignment="Left">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="6" />
-                                    <RowDefinition />
-                                </Grid.RowDefinitions>
+                                <Grid Grid.Column="1" HorizontalAlignment="Left">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="6" />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
 
-                                <TextBox MaxLines="3" Grid.Row="1" IsHitTestVisible="{Binding NotDragging}" Style="{StaticResource CappedHiddenTextBox}" Text="{Binding Title}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left">
-                                    <b:Interaction.Behaviors>
-                                        <behaviors:TextBoxFocusBehavior />
-                                    </b:Interaction.Behaviors>
-                                </TextBox>
-                            </Grid>
+                                    <TextBox MaxLines="3" Grid.Row="1" IsHitTestVisible="{Binding NotDragging}" Style="{StaticResource CappedHiddenTextBox}" Text="{Binding Title}" VerticalContentAlignment="Top" HorizontalContentAlignment="Left">
+                                        <b:Interaction.Behaviors>
+                                            <behaviors:TextBoxFocusBehavior />
+                                        </b:Interaction.Behaviors>
+                                    </TextBox>
+                                </Grid>
 
-                            <ToggleButton Grid.Column="2"
+                                <ToggleButton Grid.Column="2"
                                       Style="{StaticResource TransparentRoundFlat3DOnOffButton}"
                                       VerticalAlignment="Top"
                                       Height="30"
                                       IsChecked="{Binding ColumnVisible, Mode=TwoWay}"
                                       FocusVisualStyle="{x:Null}">
-                            </ToggleButton>
+                                </ToggleButton>
 
-                            <Border Grid.ColumnSpan="4" Margin="-1" BorderBrush="#494949" BorderThickness="1" IsEnabled="{Binding IsChecked, ElementName=OptionsToggle}"
+                                <Border Grid.ColumnSpan="4" Margin="-1" BorderBrush="#494949" BorderThickness="1" IsEnabled="{Binding IsChecked, ElementName=OptionsToggle}"
                                 Style="{StaticResource FadeOutAndIn}" Background="#E1A0A0A0" CornerRadius="8" Opacity="0" />
-                        </Grid>
-                    </Border>
-                </Grid>
+                            </Grid>
+                        </Border>
+                    </Grid>
 
-                <Grid>
-                    <ScrollViewer Visibility="{Binding ColumnVisible, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                        <ui:CustomItemsControl Background="#01000000"
+                    <Grid>
+                        <ScrollViewer Visibility="{Binding ColumnVisible, Converter={StaticResource BooleanToVisibilityConverter}}" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                            <ui:CustomItemsControl Background="#01000000"
                               ItemsSource="{Binding Items}"
                               dd:DragDrop.IsDragSource="True"
                               dd:DragDrop.IsDropTarget="True"
@@ -88,41 +89,54 @@
                               Focusable="False"
                               Padding="0,0,0,10"
                               FocusVisualStyle="{x:Null}">
-                            <ui:CustomItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <local:Item />
-                                </DataTemplate>
-                            </ui:CustomItemsControl.ItemTemplate>
+                                <ui:CustomItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <local:Item />
+                                    </DataTemplate>
+                                </ui:CustomItemsControl.ItemTemplate>
 
-                            <ui:CustomItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel VerticalAlignment="Top" Orientation="Vertical" />
-                                </ItemsPanelTemplate>
-                            </ui:CustomItemsControl.ItemsPanel>
-                        </ui:CustomItemsControl>
-                    </ScrollViewer>
-                </Grid>
-            </DockPanel>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition Width="30" />
-                    <ColumnDefinition Width="30" />
-                    <ColumnDefinition Width="30" />
-                </Grid.ColumnDefinitions>
+                                <ui:CustomItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel VerticalAlignment="Top" Orientation="Vertical" />
+                                    </ItemsPanelTemplate>
+                                </ui:CustomItemsControl.ItemsPanel>
+                            </ui:CustomItemsControl>
+                        </ScrollViewer>
+                    </Grid>
+                </DockPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="30" />
+                        <ColumnDefinition Width="30" />
+                        <ColumnDefinition Width="30" />
+                    </Grid.ColumnDefinitions>
 
-                <Border Grid.Column="2" VerticalAlignment="Top" Height="30" IsEnabled="{Binding IsChecked, ElementName=OptionsToggle}" Style="{StaticResource FadeOutAndIn}">
-                    <Button Style="{StaticResource TransparentRoundFlat3DButton}"
+                    <Border Grid.Column="2" VerticalAlignment="Top" Height="30" IsEnabled="{Binding IsChecked, ElementName=OptionsToggle}" Style="{StaticResource FadeOutAndIn}">
+                        <Button Style="{StaticResource TransparentRoundFlat3DButton}"
                                     Command="{Binding DeleteColumnCommand}"
                                     FocusVisualStyle="{x:Null}" Height="30" VerticalAlignment="Top">
-                        <Image Source="{StaticResource trash}" Width="13" />
-                    </Button>
-                </Border>
-                <ToggleButton Name="OptionsToggle" Grid.Column="3" Style="{StaticResource TransparentRoundFlat3DShowOptionsButton}"
+                            <Image Source="{StaticResource trash}" Width="13" />
+                        </Button>
+                    </Border>
+                    <ToggleButton Name="OptionsToggle" Grid.Column="3" Style="{StaticResource TransparentRoundFlat3DShowOptionsButton}"
                             VerticalAlignment="Top" Height="30"
                             FocusVisualStyle="{x:Null}"
                             IsChecked="False" />
+                </Grid>
             </Grid>
-        </Grid>
-    </Border>
+        </Border>
+        <Border CornerRadius="8" Margin="0 4 0 0" IsHitTestVisible="False" Height="30" VerticalAlignment="Top"
+                Visibility="{Binding IsItemEnabled,
+                                     Converter={StaticResource BooleanToVisibilityConverter},
+                                     ConverterParameter={StaticResource InvertVisibility}}"
+                BorderBrush="{StaticResource FlatReverse3DBorderBrush}" BorderThickness="2">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0, 0" EndPoint="1, 1" Opacity="0.3">
+                    <GradientStop Color="Gray" Offset="0" />
+                    <GradientStop Color="#737373" Offset="1" />
+                </LinearGradientBrush>
+            </Border.Background>
+        </Border>
+    </Grid>
 </UserControl>

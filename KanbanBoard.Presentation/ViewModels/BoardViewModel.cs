@@ -50,6 +50,7 @@ namespace KanbanBoard.Presentation.ViewModels
 
             this.DragHandler = new DragHandleBehavior(this.eventAggregator);
             this.DragHandler.DragStarted += () => this.RaisePropertyChanged(nameof(this.DragHandler));
+            this.DropHandler = new DropHandleBehavior(new ColumnViewModel(null, null, null, null));
 
             this.OnLoadedCommand = new DelegateCommand(this.OnWindowLoaded);
             this.ShowSettingsCommand = new DelegateCommand(this.ShowSettings);
@@ -66,6 +67,7 @@ namespace KanbanBoard.Presentation.ViewModels
         public ObservableCollection<ColumnViewModel> Columns { get; } = new ObservableCollection<ColumnViewModel>();
 
         public DragHandleBehavior DragHandler { get; }
+        public DropHandleBehavior DropHandler { get; }
 
         public bool DisableBackground
         {

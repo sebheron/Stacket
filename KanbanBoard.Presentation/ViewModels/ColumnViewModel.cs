@@ -31,12 +31,14 @@ namespace KanbanBoard.Presentation.ViewModels
             IEnumerable<ItemViewModel> items = null)
             : base(id, title ?? Resources.Board_NewColumnName, eventAggregator)
         {
+            if (eventAggregator == null) return;
+
             // Loading a column.
             this.EventAggregator.GetEvent<DeleteColumnEvent>().Subscribe(this.DeleteItem);
 
             this.DragHandler = new DragHandleBehavior(this.EventAggregator);
             this.DragHandler.DragStarted += () => this.RaisePropertyChanged(nameof(this.DragHandler));
-            this.DropHandler = new DropHandleBehavior();
+            this.DropHandler = new DropHandleBehavior(new ItemViewModel(null));
             this.HeaderDropHandler = new HeaderDropHandleBehavior(this.Items);
 
             this.dialogService = dialogService;
