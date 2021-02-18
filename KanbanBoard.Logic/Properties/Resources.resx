@@ -169,6 +169,10 @@
     <value>Missing Board File</value>
     <comment>The title for the missing board dialog.</comment>
   </data>
+  <data name="Dialog_NewBoard_Error" xml:space="preserve">
+    <value>Board title already in use.</value>
+    <comment>The prefix message for the new board dialog when the name entered is already in use.</comment>
+  </data>
   <data name="Dialog_NewBoard_Message" xml:space="preserve">
     <value>Name for the new board:</value>
     <comment>The message for the new board dialog.</comment>
