@@ -14,7 +14,6 @@ using KanbanBoard.Presentation.Factories;
 using KanbanBoard.Presentation.Services;
 using Prism.Commands;
 using Prism.Events;
-using Prism.Logging;
 using Prism.Mvvm;
 
 namespace KanbanBoard.Presentation.ViewModels
@@ -23,7 +22,7 @@ namespace KanbanBoard.Presentation.ViewModels
     {
         private readonly IColumnViewModelFactory columnFactory;
         private readonly IDialogService dialogService;
-        private readonly ILoggerFacade logger;
+        private readonly IStringLogger logger;
         private readonly IEventAggregator eventAggregator;
         private readonly bool ranOnce;
 
@@ -37,7 +36,7 @@ namespace KanbanBoard.Presentation.ViewModels
         public BoardViewModel(
             IColumnViewModelFactory columnFactory,
             IDialogService dialogService,
-            ILoggerFacade logger,
+            IStringLogger logger,
             IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
@@ -117,9 +116,9 @@ namespace KanbanBoard.Presentation.ViewModels
 
         private void OnWindowLoaded()
         {
-            this.logger.Log("Window successfully loaded", Category.Debug, Priority.None);
+            this.logger.Log("Window successfully loaded");
             this.LoadBoardFromFile();
-            this.logger.Log("Board successfully loaded", Category.Debug, Priority.None);
+            this.logger.Log("Board successfully loaded");
             this.Columns.CollectionChanged += this.ColumnsChanged;
             if (!ranOnce)
             {
@@ -134,7 +133,7 @@ namespace KanbanBoard.Presentation.ViewModels
 
         private void NewBoard()
         {
-            this.logger.Log("New board requested", Category.Debug, Priority.None);
+            this.logger.Log("New board requested");
 
             this.NewEnabled = false;
             this.LoadEnabled = false;
@@ -154,12 +153,12 @@ namespace KanbanBoard.Presentation.ViewModels
             Settings.Default.CurrentBoard = Path.Combine(FileLocations.BoardFileStorageLocation, input + Resources.BoardFileExtension);
             this.LoadBoardFromFile();
 
-            this.logger.Log("New board created and loaded", Category.Debug, Priority.None);
+            this.logger.Log("New board created and loaded");
         }
 
         private void LoadBoard()
         {
-            this.logger.Log("Load board requested", Category.Debug, Priority.None);
+            this.logger.Log("Load board requested");
 
             this.NewEnabled = false;
             this.LoadEnabled = false;
@@ -174,7 +173,7 @@ namespace KanbanBoard.Presentation.ViewModels
             Settings.Default.CurrentBoard = newBoard;
             this.LoadBoardFromFile();
 
-            this.logger.Log("Board successfully loaded", Category.Debug, Priority.None);
+            this.logger.Log("Board successfully loaded");
         }
 
         private void LoadBoardFromFile()
@@ -184,7 +183,7 @@ namespace KanbanBoard.Presentation.ViewModels
 
             if (File.Exists(this.filePath))
             {
-                this.logger.Log("File exists, loading from file", Category.Debug, Priority.None);
+                this.logger.Log("File exists, loading from file");
 
                 // For each version in future releases migration will occur here! Via Assembly information check.
                 var lines = File.ReadAllLines(this.filePath);
@@ -198,7 +197,7 @@ namespace KanbanBoard.Presentation.ViewModels
             }
             else
             {
-                this.logger.Log("File doesn't exist, creating default board", Category.Debug, Priority.None);
+                this.logger.Log("File doesn't exist, creating default board");
 
                 this.Columns.Add(this.columnFactory.CreateColumn(Resources.ColumnName_New));
                 this.Columns.Add(this.columnFactory.CreateColumn(Resources.ColumnName_InProgress));
@@ -221,7 +220,7 @@ namespace KanbanBoard.Presentation.ViewModels
 
             File.WriteAllLines(this.filePath, boardData.ToArray());
 
-            this.logger.Log("Board successfully saved", Category.Debug, Priority.None);
+            this.logger.Log("Board successfully saved");
         }
 
         private void AddColumnLeft()
@@ -229,7 +228,7 @@ namespace KanbanBoard.Presentation.ViewModels
             this.Columns.Insert(0, this.columnFactory.CreateColumn());
             this.RaisePropertyChanged(nameof(this.ColumnWidth));
 
-            this.logger.Log("New left column created", Category.Debug, Priority.None);
+            this.logger.Log("New left column created");
         }
 
         private void AddColumnRight()
@@ -237,7 +236,7 @@ namespace KanbanBoard.Presentation.ViewModels
             this.Columns.Add(this.columnFactory.CreateColumn());
             RaisePropertyChanged(nameof(this.ColumnWidth));
 
-            this.logger.Log("New right column created", Category.Debug, Priority.None);
+            this.logger.Log("New right column created");
         }
 
         private void DeleteColumn(Guid columnId)
@@ -257,7 +256,7 @@ namespace KanbanBoard.Presentation.ViewModels
             if (!result.HasValue) return; //Cancelled selected on the dialog.
 
             this.Columns.Remove(columnToDelete);
-            this.logger.Log("Column deleted", Category.Debug, Priority.None);
+            this.logger.Log("Column deleted");
 
             if (!result.Value) return; //No selected on the dialog or there's no items to move across.
 
@@ -266,7 +265,7 @@ namespace KanbanBoard.Presentation.ViewModels
                 this.Columns[0].Items.Add(item);
             }
 
-            this.logger.Log("Items migrated to left-most column", Category.Debug, Priority.None);
+            this.logger.Log("Items migrated to left-most column");
         }
 
         private void ColumnsChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -278,7 +277,7 @@ namespace KanbanBoard.Presentation.ViewModels
 
         private void OnClosing()
         {
-            this.logger.Log("Stacket closing", Category.Debug, Priority.None);
+            this.logger.Log("Stacket closing");
 
             Application.Current.Shutdown();
         }

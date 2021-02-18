@@ -7,7 +7,7 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <ItemsControl.Resources>
         <ResourceDictionary>
-            <Cursor x:Key="GrabCursor">../Cursors/grab.cur</Cursor>
+            <Cursor x:Key="GrabCursor">../grab.cur</Cursor>
         </ResourceDictionary>
     </ItemsControl.Resources>
 </ItemsControl>

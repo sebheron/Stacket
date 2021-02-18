@@ -293,5 +293,27 @@ namespace KanbanBoard.Logic.Properties {
                 return ResourceManager.GetString("StartupRegistryLocation", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to #&amp;&lt;NEWITEM&gt;&amp;#.
+        /// </summary>
+        public static string NewItemBreak
+        {
+            get
+            {
+                return ResourceManager.GetString("NewItemBreak", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to $%&lt;NEWITEMDATA&gt;%$.
+        /// </summary>
+        public static string NewItemData
+        {
+            get
+            {
+                return ResourceManager.GetString("NewItemData", resourceCulture);
+            }
+        }
     }
 }

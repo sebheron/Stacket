@@ -7,7 +7,6 @@ using KanbanBoard.Presentation.Factories;
 using KanbanBoard.Presentation.Services;
 using KanbanBoard.Presentation.Views;
 using Prism.Ioc;
-using Prism.Logging;
 
 namespace KanbanBoard.Presentation
 {
@@ -29,8 +28,7 @@ namespace KanbanBoard.Presentation
             if (args.ExceptionObject is Exception e)
             {
                 MainWindow.Hide();
-                var logger = Container.Resolve<ILoggerFacade>() as StringLogger;
-                logger.Log(e.Message + e.StackTrace, Category.Exception, Priority.None);
+                var logger = Container.Resolve<IStringLogger>() as StringLogger;
                 Container.Resolve<CrashService>().SendCrash(logger.Builder.ToString());
             }
         }
@@ -49,7 +47,7 @@ namespace KanbanBoard.Presentation
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.RegisterInstance<ILoggerFacade>(new StringLogger());
+            containerRegistry.RegisterInstance<IStringLogger>(new StringLogger());
             containerRegistry.Register<IRegistryService, RegistryService>();
             containerRegistry.Register<IDialogService, DialogService>();
             containerRegistry.Register<IStartupService, StartupService>();

@@ -1,7 +1,7 @@
 using System;
 using System.Windows.Input;
 using Prism.Commands;
-using Prism.Logging;
+using KanbanBoard.Presentation.Services;
 using Prism.Mvvm;
 
 namespace KanbanBoard.Presentation.Dialogs
@@ -9,9 +9,9 @@ namespace KanbanBoard.Presentation.Dialogs
     public class InputBoxWindowViewModel : BindableBase
     {
         private readonly Action closeDialog;
-        private readonly ILoggerFacade logger;
+        private readonly IStringLogger logger;
 
-        public InputBoxWindowViewModel(string text, string caption, Action closeDialog, ILoggerFacade logger)
+        public InputBoxWindowViewModel(string text, string caption, Action closeDialog, IStringLogger logger)
         {
             this.closeDialog = closeDialog;
             this.logger = logger;
@@ -31,14 +31,14 @@ namespace KanbanBoard.Presentation.Dialogs
 
         private void Cancel()
         {
-            this.logger.Log("Cancel selected", Category.Debug, Priority.None);
+            this.logger.Log("Cancel selected");
             this.Input = string.Empty;
             this.closeDialog.Invoke();
         }
 
         private void Ok()
         {
-            this.logger.Log("Ok selected", Category.Debug, Priority.None);
+            this.logger.Log("Ok selected");
             this.closeDialog.Invoke();
         }
     }
