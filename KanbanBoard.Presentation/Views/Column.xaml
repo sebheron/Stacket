@@ -126,7 +126,7 @@
                 </Grid>
             </Grid>
         </Border>
-        <Border CornerRadius="8" Margin="0 4 0 0" IsHitTestVisible="False"
+        <Border CornerRadius="8" Margin="0 4 0 0" IsHitTestVisible="False" Height="30" VerticalAlignment="Top"
                 Visibility="{Binding IsItemEnabled,
                                      Converter={StaticResource BooleanToVisibilityConverter},
                                      ConverterParameter={StaticResource InvertVisibility}}"
