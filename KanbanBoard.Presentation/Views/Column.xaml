@@ -15,8 +15,8 @@
     <UserControl.Resources>
         <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </UserControl.Resources>
-    <Grid>
-        <Border Margin="0,4"
+<Grid>
+    <Border Margin="0,4"
             BorderThickness="0 0 2 3"
             BorderBrush="{StaticResource Flat3DBorderBrush}"
             CornerRadius="8"
