@@ -136,6 +136,7 @@
                           dd:DragDrop.UseVisualSourceItemSizeForDragAdorner="True"
                           dd:DragDrop.DragMouseAnchorPoint="{Binding DragHandler.DragPosition}"
                           dd:DragDrop.DragHandler="{Binding DragHandler}"
+                          dd:DragDrop.DropHandler="{Binding DropHandler}"
                           FocusVisualStyle="{x:Null}">
                     <ui:CustomItemsControl.ItemTemplate>
                         <DataTemplate>

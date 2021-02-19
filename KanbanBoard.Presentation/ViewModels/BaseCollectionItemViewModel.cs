@@ -13,8 +13,12 @@ namespace KanbanBoard.Presentation.ViewModels
 
         private bool notDragging;
 
+        private bool isItemEnabled;
+
         protected BaseCollectionItemViewModel(Guid? id, string title, IEventAggregator eventAggregator)
         {
+            if (eventAggregator == null) return;
+
             this.EventAggregator = eventAggregator;
 
             this.EventAggregator.GetEvent<IsDraggingEvent>().Subscribe((d) => this.NotDragging = !d);
@@ -22,6 +26,7 @@ namespace KanbanBoard.Presentation.ViewModels
             this.Id = id ?? Guid.NewGuid();
             this.title = title;
             this.NotDragging = true;
+            this.IsItemEnabled = true;
         }
 
         public Guid Id { get; }
@@ -42,6 +47,12 @@ namespace KanbanBoard.Presentation.ViewModels
         {
             get => this.notDragging;
             set => this.SetProperty(ref this.notDragging, value);
+        }
+
+        public bool IsItemEnabled
+        {
+            get => this.isItemEnabled;
+            set => this.SetProperty(ref this.isItemEnabled, value);
         }
     }
 }

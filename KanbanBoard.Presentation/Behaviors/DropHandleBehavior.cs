@@ -16,18 +16,27 @@ namespace KanbanBoard.Presentation.Behaviors
     {
         private int insertIndex;
 
-        private ItemViewModel separator;
+        private BaseCollectionItemViewModel separator;
 
         private ItemsControl container;
 
         private IList items;
 
-        public DropHandleBehavior()
+        public DropHandleBehavior(BaseCollectionItemViewModel collectionViewModel)
         {
-            //Create the separator, just an empty ItemViewModel.
             //Decided against passing in the real aggregator so we don't start publishing to the rest of the application.
-            this.separator = new ItemViewModel(new EventAggregator());
+            this.separator = collectionViewModel;
             this.separator.IsItemEnabled = false;
+        }
+
+        public void DragStarted(IDragInfo dragInfo)
+        {
+            if (this.container == null)
+            {
+                this.SetupContainer(dragInfo.VisualSource);
+            }
+            this.items.Remove(this.separator);
+            this.items.Insert(dragInfo.SourceIndex, this.separator);
         }
 
         public override void DragOver(IDropInfo dropInfo)
@@ -39,20 +48,18 @@ namespace KanbanBoard.Presentation.Behaviors
                 //Also a dragleave function will be added to hide the separator when no columns are hovered over.
                 if (this.container == null)
                 {
-                    this.container = dropInfo.VisualTarget as ItemsControl;
-                    this.container.DragLeave += DragLeave;
+                    this.SetupContainer(dropInfo.VisualTarget);
                 }
                 else
                 {
-                    //If the items aren't referenced, get them.
-                    if (this.items == null)
+                    //Get the drop index, this is usually used for the adorner.
+                    if (this.separator is ItemViewModel item)
                     {
-                        this.items = ((IList)this.container.ItemsSource);
+                        this.insertIndex = this.InsertDropSeparator(this.container, dropInfo.DropPosition.Y, item);
                     }
-                    else
+                    else if (this.separator is ColumnViewModel column)
                     {
-                        //Get the drop index, this is usually used for the adorner.
-                        this.insertIndex = this.InsertDropSeparator(this.container, dropInfo.DropPosition.Y, this.separator);
+                        this.insertIndex = this.InsertDropSeparator(this.container, dropInfo.DropPosition.X, column);
                     }
                 }
                 dropInfo.DropTargetAdorner = null;
@@ -126,19 +133,17 @@ namespace KanbanBoard.Presentation.Behaviors
 
         private void DragLeave(object sender, DragEventArgs e)
         {
-            if (this.container != null && this.container.Items.Contains(separator))
+            if (this.container != null && this.container.Items.Contains(separator) && this.separator is ItemViewModel)
             {
-                ((IList<ItemViewModel>)this.container.ItemsSource).Remove(separator);
+                ((IList)this.container.ItemsSource).Remove(separator);
             }
         }
 
         private int InsertDropSeparator(ItemsControl itemsControl, double mouseY, ItemViewModel separator)
         {
             //This method is similar to the one used by gong but doesn't check for greater than the mouseY, improving speed and appearance.
-            if (this.items.Contains(separator))
-            {
-                this.items.Remove(separator);
-            }
+            this.items.Remove(separator);
+
             double totalHeight = 0;
             int i = 0;
             while (i < itemsControl.Items.Count)
@@ -156,6 +161,37 @@ namespace KanbanBoard.Presentation.Behaviors
             }
             this.items.Insert(i, separator);
             return i;
+        }
+
+        private int InsertDropSeparator(ItemsControl itemsControl, double mouseX, ColumnViewModel separator)
+        {
+            //This method is similar to the one used by gong but doesn't check for greater than the mouseX, improving speed and appearance.
+            this.items.Remove(separator);
+            double totalWidth = 0;
+            int i = 0;
+            while (i < itemsControl.Items.Count)
+            {
+                var newWidth = totalWidth + ((UIElement)itemsControl.ItemContainerGenerator.ContainerFromIndex(i)).RenderSize.Width;
+                if (newWidth < mouseX)
+                {
+                    totalWidth = newWidth;
+                    i++;
+                }
+                else
+                {
+                    this.items.Insert(i, separator);
+                    return i;
+                }
+            }
+            this.items.Insert(i, separator);
+            return i;
+        }
+
+        private void SetupContainer(UIElement container)
+        {
+            this.container = container as ItemsControl;
+            this.container.DragLeave += DragLeave;
+            this.items = ((IList)this.container.ItemsSource);
         }
     }
 }
