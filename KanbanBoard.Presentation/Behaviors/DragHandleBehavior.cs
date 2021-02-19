@@ -17,7 +17,7 @@ namespace KanbanBoard.Presentation.Behaviors
 
         private bool dropped;
 
-        public delegate void DragEventHandler();
+        public delegate void DragEventHandler(IDragInfo dragInfo);
 
         public event DragEventHandler DragStarted;
 
@@ -33,7 +33,7 @@ namespace KanbanBoard.Presentation.Behaviors
             var position = dragInfo.PositionInDraggedItem;
             this.DragPosition = new Point(position.X / dragInfo.VisualSourceItem.RenderSize.Width, position.Y / dragInfo.VisualSourceItem.RenderSize.Height);
 
-            this.DragStarted?.Invoke();
+            this.DragStarted?.Invoke(dragInfo);
 
             dragInfo.Effects = DragDropEffects.Move;
             dragInfo.Data = dragInfo.SourceItem;
@@ -66,24 +66,29 @@ namespace KanbanBoard.Presentation.Behaviors
             //If we haven't been dropped we need to return back to our original place.
             if (!this.dropped)
             {
-                sourceItems.Insert(dragInfo.SourceIndex, (BaseCollectionItemViewModel)dragInfo.SourceItem);
-                this.dropped = false;
+                var index = dragInfo.SourceIndex;
 
-                //In the case of columns the separator will still be present too.
+                //We'll use the starting index by default, but if a separator is present we'll use that index.
                 for (int i = 0; i < sourceItems.Count; i++)
                 {
                     if (!((BaseCollectionItemViewModel)sourceItems[i]).IsItemEnabled) {
                         sourceItems.RemoveAt(i);
+                        index = i;
                         break;
                     }
                 }
+
+                sourceItems.Insert(index, (BaseCollectionItemViewModel)dragInfo.SourceItem);
             }
 
             //Turn options off.
             if (dragInfo.SourceItem is ItemViewModel item)
             {
+                
                 item.OptionsShown = false;
             }
+
+            this.dropped = false;
 
             //Set back the minimum width so columns can be added and the items will size accordingly.
             ((FrameworkElement)dragInfo.VisualSourceItem).MinWidth = 0;
