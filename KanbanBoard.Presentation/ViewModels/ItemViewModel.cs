@@ -145,9 +145,9 @@ namespace KanbanBoard.Presentation.ViewModels
 
         public override string ToString()
         {
-            return this.Id + Properties.Resources.NewItemData + this.Title + Properties.Resources.NewItemData + this.Description
-                   + Properties.Resources.NewItemData + this.ItemType + Properties.Resources.NewItemData + DateTime.Now.ToShortDateString() 
-                   + Properties.Resources.NewItemData + this.DescriptionVisible + Properties.Resources.NewItemData + this.IsLocked;
+            return this.Id + Resources.NewItemData + this.Title + Resources.NewItemData + this.Description
+                   + Resources.NewItemData + this.ItemType + Resources.NewItemData + DateTime.Now.ToShortDateString()
+                   + Resources.NewItemData + this.DescriptionVisible + Resources.NewItemData + this.IsLocked;
         }
     }
 }

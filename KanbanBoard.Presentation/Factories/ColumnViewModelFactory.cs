@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using KanbanBoard.Presentation.Services;
 using KanbanBoard.Presentation.ViewModels;
+using KanbanBoard.Logic.Properties;
 using Prism.Events;
-using Prism.Logging;
 
 namespace KanbanBoard.Presentation.Factories
 {
@@ -11,13 +11,13 @@ namespace KanbanBoard.Presentation.Factories
     {
         private readonly IItemViewModelFactory itemFactory;
         private readonly IDialogService dialogService;
-        private readonly ILoggerFacade logger;
+        private readonly IStringLogger logger;
         private readonly IEventAggregator eventAggregator;
 
         public ColumnViewModelFactory(
             IItemViewModelFactory itemFactory, 
             IDialogService dialogService, 
-            ILoggerFacade logger, 
+            IStringLogger logger, 
             IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator;
@@ -41,7 +41,7 @@ namespace KanbanBoard.Presentation.Factories
 
         public ColumnViewModel Load(string columnData)
         {
-            var parsedColumn = columnData.Split(new[] { Properties.Resources.NewItemBreak }, StringSplitOptions.None);
+            var parsedColumn = columnData.Split(new[] { Resources.NewItemBreak }, StringSplitOptions.None);
             var containsVisibilityData = bool.TryParse(parsedColumn[2], out var columnVisible);
 
             var items = new List<ItemViewModel>();

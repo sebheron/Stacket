@@ -213,6 +213,12 @@
     <value>Should Stacket start on Windows startup?</value>
     <comment>The message for the startup dialog.</comment>
   </data>
+  <data name="NewItemBreak" xml:space="preserve">
+    <value>#&amp;&lt;NEWITEM&gt;&amp;#</value>
+  </data>
+  <data name="NewItemData" xml:space="preserve">
+    <value>$%&lt;NEWITEMDATA&gt;%$</value>
+  </data>
   <data name="Stacket" xml:space="preserve">
     <value>Stacket</value>
     <comment>The name of the startup registry entry.</comment>

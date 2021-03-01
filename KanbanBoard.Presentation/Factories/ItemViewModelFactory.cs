@@ -1,5 +1,6 @@
 ﻿using System;
 using KanbanBoard.Logic.Enums;
+using KanbanBoard.Logic.Properties;
 using KanbanBoard.Presentation.ViewModels;
 using Prism.Events;
 
@@ -33,7 +34,7 @@ namespace KanbanBoard.Presentation.Factories
 
         public ItemViewModel Load(string itemData)
         {
-            var parsedItemData = itemData.Split(new[] { Properties.Resources.NewItemData }, StringSplitOptions.None);
+            var parsedItemData = itemData.Split(new[] { Resources.NewItemData }, StringSplitOptions.None);
             var itemId = Guid.Parse(parsedItemData[0]);
             var itemTitle = parsedItemData[1];
             var itemDescription = parsedItemData[2];

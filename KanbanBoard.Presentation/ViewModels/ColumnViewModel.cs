@@ -10,21 +10,20 @@ using KanbanBoard.Presentation.Factories;
 using KanbanBoard.Presentation.Services;
 using Prism.Commands;
 using Prism.Events;
-using Prism.Logging;
 
 namespace KanbanBoard.Presentation.ViewModels
 {
     public class ColumnViewModel : BaseCollectionItemViewModel
     {
         private readonly IDialogService dialogService;
-        private readonly ILoggerFacade logger;
+        private readonly IStringLogger logger;
 
         private bool columnVisible;
 
         public ColumnViewModel(
             IItemViewModelFactory itemFactory,
             IDialogService dialogService,
-            ILoggerFacade logger,
+            IStringLogger logger,
             IEventAggregator eventAggregator,
             Guid? id = null,
             string title = null,
@@ -88,14 +87,14 @@ namespace KanbanBoard.Presentation.ViewModels
 
             this.Items.Remove(itemToDelete);
 
-            this.logger.Log("Item deleted", Category.Debug, Priority.None);
+            this.logger.Log("Item deleted");
             this.EventAggregator.GetEvent<RequestSaveEvent>().Publish();
         }
 
         public override string ToString()
         {
-            var columnData = $"{this.Id + Properties.Resources.NewItemBreak + this.Title + Properties.Resources.NewItemBreak + this.ColumnVisible + Properties.Resources.NewItemBreak}";
-            return this.Items.Aggregate(columnData, (current, item) => current + item + Properties.Resources.NewItemBreak);
+            var columnData = $"{this.Id + Resources.NewItemBreak + this.Title + Resources.NewItemBreak + this.ColumnVisible + Resources.NewItemBreak}";
+            return this.Items.Aggregate(columnData, (current, item) => current + item + Resources.NewItemBreak);
         }
     }
 }

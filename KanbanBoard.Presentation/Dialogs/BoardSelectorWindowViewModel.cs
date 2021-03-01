@@ -6,7 +6,6 @@ using System.Windows.Input;
 using KanbanBoard.Logic.Properties;
 using KanbanBoard.Presentation.Services;
 using Prism.Commands;
-using Prism.Logging;
 using Prism.Mvvm;
 
 namespace KanbanBoard.Presentation.Dialogs
@@ -15,13 +14,13 @@ namespace KanbanBoard.Presentation.Dialogs
     {
         private readonly Action closeDialog;
         private readonly IDialogService dialogService;
-        private readonly ILoggerFacade logger;
+        private readonly IStringLogger logger;
 
         private string[] fileLocations;
 
         private string selectedBoard;
 
-        public BoardSelectorWindowViewModel(IDialogService dialogService, ILoggerFacade logger, Action closeDialog)
+        public BoardSelectorWindowViewModel(IDialogService dialogService, IStringLogger logger, Action closeDialog)
         {
             this.dialogService = dialogService;
             this.logger = logger;
@@ -54,12 +53,12 @@ namespace KanbanBoard.Presentation.Dialogs
         {
             this.fileLocations = Directory.GetFiles(FileLocations.BoardFileStorageLocation);
             this.BoardFiles.AddRange(this.fileLocations.Where(file => file != Settings.Default.CurrentBoard).Select(Path.GetFileNameWithoutExtension));
-            this.logger.Log("Populated board files list", Category.Debug, Priority.None);
+            this.logger.Log("Populated board files list");
         }
 
         private void NewButton()
         {
-            this.logger.Log("New board requested", Category.Debug, Priority.None);
+            this.logger.Log("New board requested");
             var input = this.dialogService.GetInput(Resources.Dialog_NewBoard_Message, Resources.Dialog_NewBoard_Title);
             while (this.fileLocations.Select(Path.GetFileNameWithoutExtension).Contains(input))
             {
@@ -73,7 +72,7 @@ namespace KanbanBoard.Presentation.Dialogs
 
         private void OpenButton()
         {
-            this.logger.Log("Open board requested", Category.Debug, Priority.None);
+            this.logger.Log("Open board requested");
             this.BoardLocation = Path.Combine(FileLocations.BoardFileStorageLocation, this.SelectedBoard + Resources.BoardFileExtension);
             this.CloseDialog();
         }
@@ -85,7 +84,7 @@ namespace KanbanBoard.Presentation.Dialogs
 
             File.Delete(Path.Combine(FileLocations.BoardFileStorageLocation, this.SelectedBoard + Resources.BoardFileExtension));
             this.BoardFiles.Remove(this.SelectedBoard);
-            this.logger.Log("Board deleted", Category.Debug, Priority.None);
+            this.logger.Log("Board deleted");
         }
 
         private bool IsFileSelected()

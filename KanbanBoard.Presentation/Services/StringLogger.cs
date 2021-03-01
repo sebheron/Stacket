@@ -1,11 +1,10 @@
-﻿using Prism.Logging;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Text;
 
 namespace KanbanBoard.Presentation.Services
 {
-    public class StringLogger : ILoggerFacade
+    public class StringLogger : IStringLogger
     {
         public readonly StringBuilder Builder;
 
@@ -14,12 +13,9 @@ namespace KanbanBoard.Presentation.Services
             Builder = new StringBuilder();
         }
 
-        public void Log(string message, Category category, Priority priority)
+        public void Log(string message)
         {
-            if (category == Category.Debug)
-            {
-                Debug.WriteLine(message);
-            }
+            Debug.WriteLine(message);
             Builder.Append(message);
             Builder.Append("%0D%0A");
         }

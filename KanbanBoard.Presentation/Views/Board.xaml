@@ -49,7 +49,7 @@
                 <i:Interaction.Behaviors>
                     <beh:MoveableStackpanelBehavior />
                 </i:Interaction.Behaviors>
-                
+
                 <ToggleButton Height="22" Width="80" Style="{StaticResource RoundFlat3DVerticalDropdownButton}"
                               IsChecked="{Binding BoardShown}" FocusVisualStyle="{x:Null}" ContextMenu="{StaticResource TrayMenu}" />
 
@@ -106,13 +106,6 @@
                     HorizontalAlignment="Center"
                     Orientation="Horizontal"
                     Margin="15,0,15,15">
-                
-                <tb:TaskbarIcon Visibility="Visible"
-                            ToolTipText="Stacket"
-                            IconSource="..\new_icon.ico"
-                            ContextMenu="{StaticResource TrayMenu}"
-                            MenuActivation="LeftOrRightClick"
-                            TrayToolTip="{StaticResource TrayToolTip}" />
 
                 <Grid Width="30" Height="45" VerticalAlignment="Top" Margin="0 0 -1 0">
                     <Button FontSize="18"
