@@ -5,6 +5,7 @@ using Prism.Mvvm;
 using KanbanBoard.Logic.Properties;
 using System.Net;
 using System.IO;
+using System.Diagnostics;
 
 namespace KanbanBoard.Presentation.Dialogs
 {
@@ -17,6 +18,7 @@ namespace KanbanBoard.Presentation.Dialogs
             this.closeDialog = closeDialog;
 
             this.OkCommand = new DelegateCommand(this.CloseDialog);
+            this.OpenWebpageCommand = new DelegateCommand<string>(this.OpenWebpage);
         }
 
         public string Version => $"Stacket V{System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()}";
@@ -42,10 +44,16 @@ namespace KanbanBoard.Presentation.Dialogs
         public string Caption => Resources.Stacket;
 
         public ICommand OkCommand { get; }
+        public ICommand OpenWebpageCommand { get; }
 
         private void CloseDialog()
         {
             this.closeDialog.Invoke();
+        }
+
+        private void OpenWebpage(string url)
+        {
+            Process.Start(new ProcessStartInfo("cmd", $"/c start {url}") { CreateNoWindow = true });
         }
     }
 }

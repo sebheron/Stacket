@@ -3,8 +3,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Windows;
 using KanbanBoard.Logic.Properties;
 using Onova;
+using Onova.Models;
 using Onova.Services;
 
 namespace KanbanBoard.Presentation.Services
@@ -15,11 +17,16 @@ namespace KanbanBoard.Presentation.Services
         private readonly IRegistryService registryService;
         private readonly IStringLogger logger;
 
+        private IPackageResolver resolver;
+        private IPackageExtractor extractor;
+
         public StartupService(IDialogService dialogService, IRegistryService registryService, IStringLogger logger)
         {
             this.dialogService = dialogService;
             this.registryService = registryService;
             this.logger = logger;
+            this.resolver = new WebPackageResolver(new HttpClient(), "https://swegrock.github.io/stacket/update.txt");
+            this.extractor = new ZipPackageExtractor();
         }
 
         public bool Initialize()
@@ -97,20 +104,25 @@ namespace KanbanBoard.Presentation.Services
                     return false;
                 }
             }
-
+            
             return true;
         }
 
         private async void CheckForUpdates()
         {
-            using HttpClient httpClient = new HttpClient();
-
-            IPackageResolver resolver = new WebPackageResolver(httpClient, "https://swegrock.github.io/stacket/update.txt");
-            IPackageExtractor extractor = new ZipPackageExtractor();
-
-            using (var manager = new UpdateManager(resolver, extractor))
+            using (var manager = new UpdateManager(this.resolver, this.extractor))
             {
-                await manager.CheckPerformUpdateAsync();
+                var result = await manager.CheckForUpdatesAsync();
+                if (result.CanUpdate)
+                {
+                    bool? update = false;
+                    Application.Current.Dispatcher.Invoke(() => update = dialogService.ShowYesNo($"An update for Stacket (V {result.LastVersion.ToString()}) is available, download and install it?", Resources.Stacket));
+                    if (!update.HasValue || !update.Value) return;
+
+                    await manager.PrepareUpdateAsync(result.LastVersion);
+                    manager.LaunchUpdater(result.LastVersion);
+                    Environment.Exit(0);
+                }
             }
         }
     }

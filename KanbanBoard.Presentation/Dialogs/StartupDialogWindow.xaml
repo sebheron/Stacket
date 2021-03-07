@@ -40,13 +40,13 @@
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <TextBlock HorizontalAlignment="Center">
-                        <Hyperlink NavigateUri="https://swegrock.github.io/stacket/">Website</Hyperlink>
+                        <Hyperlink Command="{Binding OpenWebpageCommand}" CommandParameter="https://swegrock.github.io/stacket/">Website</Hyperlink>
                         </TextBlock>
                         <TextBlock HorizontalAlignment="Center" Grid.Column="1">
-                        <Hyperlink NavigateUri="https://swegrock.github.io/stacket/">Wiki</Hyperlink>
+                        <Hyperlink Command="{Binding OpenWebpageCommand}" CommandParameter="https://swegrock.github.io/stacket/">Wiki</Hyperlink>
                         </TextBlock>
                         <TextBlock HorizontalAlignment="Center" Grid.Column="2">
-                        <Hyperlink NavigateUri="https://swegrock.github.io/stacket/">Changelog</Hyperlink>
+                        <Hyperlink Command="{Binding OpenWebpageCommand}" CommandParameter="https://swegrock.github.io/stacket/">Changelog</Hyperlink>
                         </TextBlock>
                     </Grid>
                     <TextBlock Margin="0 10 0 0" FontStyle="Italic" FontSize="10" TextWrapping="Wrap" Text="Hi, if you have any cool features be sure to post it on the comments on the site or email us, we'll try to fix bugs as quickly as possible." />
