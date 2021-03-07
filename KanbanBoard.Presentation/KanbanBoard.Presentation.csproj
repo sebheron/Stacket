@@ -9,6 +9,7 @@
     <Product>Stacket</Product>
     <Company>Stacket</Company>
     <Authors>Seb Heron, Aidan Horton</Authors>
+    <AssemblyName>Stacket</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
