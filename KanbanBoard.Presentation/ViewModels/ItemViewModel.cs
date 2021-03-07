@@ -126,7 +126,7 @@ namespace KanbanBoard.Presentation.ViewModels
                     break;
 
                 case ItemTypes.Investigation:
-                    this.ItemColor = Color.FromArgb(255, 64, 86, 161);
+                    this.ItemColor = Color.FromArgb(255, 82, 109, 204);
                     break;
 
                 case ItemTypes.Item:
