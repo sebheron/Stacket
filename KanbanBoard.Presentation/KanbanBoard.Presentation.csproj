@@ -7,8 +7,8 @@
     <ApplicationIcon>new_icon.ico</ApplicationIcon>
     <Version>0.1.0</Version>
     <Product>Stacket</Product>
-    <Company>Stacket Devs</Company>
-    <Authors>seb heron, aidan horton</Authors>
+    <Company>Stacket</Company>
+    <Authors>Seb Heron, Aidan Horton</Authors>
   </PropertyGroup>
 
   <ItemGroup>

@@ -61,7 +61,7 @@ namespace KanbanBoard.Presentation.Services
                 }
                 else
                 {
-                    AutoUpdater.InstallationPath = AppDomain.CurrentDomain.BaseDirectory;
+                    AutoUpdater.RunUpdateAsAdmin = true;
                     AutoUpdater.Start("https://swegrock.github.io/stacket/update.xml");
                 }
             }
