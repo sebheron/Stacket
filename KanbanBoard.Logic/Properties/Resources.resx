@@ -213,6 +213,14 @@
     <value>Should Stacket start on Windows startup?</value>
     <comment>The message for the startup dialog.</comment>
   </data>
+  <data name="Dialog_Startup_RunningAlready" xml:space="preserve">
+    <value>Stacket is already running</value>
+    <comment>The message displayed when users try to run multiple instances.</comment>
+  </data>
+  <data name="Dialog_Update" xml:space="preserve">
+    <value>An update (version: {0}) for Stacket is available. Install it now?</value>
+    <comment>The message displayed when an update is available.</comment>
+  </data>
   <data name="NewItemBreak" xml:space="preserve">
     <value>#&amp;&lt;NEWITEM&gt;&amp;#</value>
   </data>

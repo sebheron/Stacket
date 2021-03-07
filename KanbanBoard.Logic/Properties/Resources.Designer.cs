@@ -275,7 +275,27 @@ namespace KanbanBoard.Logic.Properties {
                 return ResourceManager.GetString("Dialog_Startup_Message", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Stacket is already running?.
+        /// </summary>
+        public static string Dialog_Startup_RunningAlready
+        {
+            get {
+                return ResourceManager.GetString("Dialog_Startup_RunningAlready", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to An update (version: {0}) for Stacket is available. Install it now?.
+        /// </summary>
+        public static string Dialog_Update
+        {
+            get {
+                return ResourceManager.GetString("Dialog_Update", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to Stacket.
         /// </summary>

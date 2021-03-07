@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using AutoUpdaterDotNET;
+using System.Net.Http;
+using System.Threading.Tasks;
 using KanbanBoard.Logic.Properties;
+using Onova;
+using Onova.Services;
 
 namespace KanbanBoard.Presentation.Services
 {
@@ -32,7 +35,7 @@ namespace KanbanBoard.Presentation.Services
         {
             if (Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName).Length > 1)
             {
-                dialogService.ShowMessage("Stacket is already running", Resources.Stacket);
+                dialogService.ShowMessage(Resources.Dialog_Startup_RunningAlready, Resources.Stacket);
                 return true;
             }
             return false;
@@ -61,8 +64,7 @@ namespace KanbanBoard.Presentation.Services
                 }
                 else
                 {
-                    AutoUpdater.RunUpdateAsAdmin = true;
-                    AutoUpdater.Start("https://swegrock.github.io/stacket/update.xml");
+                    Task.Run(CheckForUpdates);
                 }
             }
         }
@@ -96,6 +98,31 @@ namespace KanbanBoard.Presentation.Services
             }
 
             return true;
+        }
+
+        private async void CheckForUpdates()
+        {
+            using HttpClient httpClient = new HttpClient();
+
+            IPackageResolver resolver = new WebPackageResolver(httpClient, "https://swegrock.github.io/stacket/update.txt");
+            IPackageExtractor extractor = new ZipPackageExtractor();
+
+            using (var manager = new UpdateManager(resolver, extractor))
+            {
+                var result = await manager.CheckForUpdatesAsync();
+                if (result.CanUpdate)
+                {
+                    var dialog = dialogService.ShowYesNo(string.Format(Resources.Dialog_Update, result.LastVersion.ToString()),
+                        Resources.Stacket);
+                    if (!dialog.HasValue && !dialog.Value) return;
+
+                    await manager.PrepareUpdateAsync(result.LastVersion);
+
+                    manager.LaunchUpdater(result.LastVersion);
+
+                    Environment.Exit(0);
+                }
+            }
         }
     }
 }
