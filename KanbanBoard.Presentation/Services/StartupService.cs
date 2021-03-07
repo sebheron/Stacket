@@ -35,7 +35,7 @@ namespace KanbanBoard.Presentation.Services
         {
             if (Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName).Length > 1)
             {
-                dialogService.ShowMessage(Resources.Dialog_Startup_RunningAlready, Resources.Stacket);
+                dialogService.ShowMessage("Stacket is already running.", Resources.Stacket);
                 return true;
             }
             return false;
@@ -46,6 +46,7 @@ namespace KanbanBoard.Presentation.Services
             if (!Settings.Default.RanOnce)
             {
                 Settings.Default.RanOnce = true;
+                this.dialogService.ShowStartup();
             }
             else if (!string.IsNullOrEmpty(Settings.Default.CurrentBoard))
             {
@@ -109,19 +110,7 @@ namespace KanbanBoard.Presentation.Services
 
             using (var manager = new UpdateManager(resolver, extractor))
             {
-                var result = await manager.CheckForUpdatesAsync();
-                if (result.CanUpdate)
-                {
-                    var dialog = dialogService.ShowYesNo(string.Format(Resources.Dialog_Update, result.LastVersion.ToString()),
-                        Resources.Stacket);
-                    if (!dialog.HasValue && !dialog.Value) return;
-
-                    await manager.PrepareUpdateAsync(result.LastVersion);
-
-                    manager.LaunchUpdater(result.LastVersion);
-
-                    Environment.Exit(0);
-                }
+                await manager.CheckPerformUpdateAsync();
             }
         }
     }
