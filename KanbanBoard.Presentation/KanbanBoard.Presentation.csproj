@@ -5,6 +5,10 @@
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>new_icon.ico</ApplicationIcon>
+    <Version>0.1.0</Version>
+    <Product>Stacket</Product>
+    <Company>Stacket Devs</Company>
+    <Authors>seb heron, aidan horton</Authors>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autoupdater.NET.Official" Version="1.6.4" />
     <PackageReference Include="CommonServiceLocator" Version="2.0.6" />
     <PackageReference Include="GDD-Modified" Version="2.0.0" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.31" />

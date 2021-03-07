@@ -1,5 +1,7 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
+using AutoUpdaterDotNET;
 using KanbanBoard.Logic.Properties;
 
 namespace KanbanBoard.Presentation.Services
@@ -42,18 +44,26 @@ namespace KanbanBoard.Presentation.Services
             {
                 Settings.Default.RanOnce = true;
             }
-            else if (!string.IsNullOrEmpty(Settings.Default.CurrentBoard) && !Settings.Default.AskedUserForStartup)
+            else if (!string.IsNullOrEmpty(Settings.Default.CurrentBoard))
             {
-                var result = this.dialogService.ShowYesNo(Resources.Dialog_Startup_Message, Resources.Stacket);
-                if (!result.HasValue) return;
-
-                if (result.Value)
+                if (!Settings.Default.AskedUserForStartup)
                 {
-                    this.registryService.SetValue(Resources.StartupRegistryLocation, Resources.Stacket,
-                            Process.GetCurrentProcess().MainModule.FileName);
-                }
+                    var result = this.dialogService.ShowYesNo(Resources.Dialog_Startup_Message, Resources.Stacket);
+                    if (!result.HasValue) return;
 
-                Settings.Default.AskedUserForStartup = true;
+                    if (result.Value)
+                    {
+                        this.registryService.SetValue(Resources.StartupRegistryLocation, Resources.Stacket,
+                                Process.GetCurrentProcess().MainModule.FileName);
+                    }
+
+                    Settings.Default.AskedUserForStartup = true;
+                }
+                else
+                {
+                    AutoUpdater.InstallationPath = AppDomain.CurrentDomain.BaseDirectory;
+                    AutoUpdater.Start("https://swegrock.github.io/stacket/update.xml");
+                }
             }
         }
 
