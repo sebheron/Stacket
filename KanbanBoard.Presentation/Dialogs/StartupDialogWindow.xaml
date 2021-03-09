@@ -1,7 +1,7 @@
 ﻿<Window x:Class="KanbanBoard.Presentation.Dialogs.StartupDialogWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:res="clr-namespace:KanbanBoard.Logic.Properties;assembly=KanbanBoard.Logic"
         mc:Ignorable="d" Topmost="True" ShowInTaskbar="False"
@@ -25,34 +25,39 @@
                     <Button Grid.Column="1" Style="{StaticResource TransparentRoundFlat3DButton}" Command="{Binding OkCommand}">
                         <Image Source="{StaticResource cancel}" Width="11" />
                     </Button>
-                    <TextBlock Grid.Column="0" Margin="5" Text="{Binding Caption}" />
+                    <TextBlock Grid.Column="0" Margin="5" Text="{x:Static res:Resources.Stacket}" />
                 </Grid>
             </Border>
             <ScrollViewer Grid.Row="1" Grid.ColumnSpan="3" Margin="10,9.6" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                 <StackPanel>
                     <TextBlock HorizontalAlignment="Center" FontSize="20" Text="Thanks for downloading" TextWrapping="Wrap" />
                     <TextBlock HorizontalAlignment="Center" FontSize="20" Text="{Binding Version}" TextWrapping="Wrap" />
-                    <TextBlock Text="{Binding Changelog}"/>
+                    <TextBlock Text="{Binding Changelog}" Margin="0 0 0 10" />
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
                         </Grid.ColumnDefinitions>
+
                         <TextBlock HorizontalAlignment="Center">
-                        <Hyperlink Command="{Binding OpenWebpageCommand}" CommandParameter="https://swegrock.github.io/stacket/">Website</Hyperlink>
+                            <Hyperlink Command="{Binding OpenWebpageCommand}" CommandParameter="https://swegrock.github.io/stacket/">Website</Hyperlink>
                         </TextBlock>
+
                         <TextBlock HorizontalAlignment="Center" Grid.Column="1">
-                        <Hyperlink Command="{Binding OpenWebpageCommand}" CommandParameter="https://swegrock.github.io/stacket/">Wiki</Hyperlink>
+                            <Hyperlink Command="{Binding OpenWebpageCommand}" CommandParameter="https://swegrock.github.io/stacket/">Wiki</Hyperlink>
                         </TextBlock>
+
                         <TextBlock HorizontalAlignment="Center" Grid.Column="2">
-                        <Hyperlink Command="{Binding OpenWebpageCommand}" CommandParameter="https://swegrock.github.io/stacket/">Changelog</Hyperlink>
+                            <Hyperlink Command="{Binding OpenWebpageCommand}" CommandParameter="https://swegrock.github.io/stacket/">Changelog</Hyperlink>
                         </TextBlock>
                     </Grid>
+
                     <TextBlock Margin="0 10 0 0" FontStyle="Italic" FontSize="10" TextWrapping="Wrap" Text="Hi, if you have any cool features be sure to post it on the comments on the site or email us, we'll try to fix bugs as quickly as possible." />
                     <TextBlock FontSize="10" Text=" - The Devs" />
                 </StackPanel>
             </ScrollViewer>
+
             <Button Grid.Row="2" Content="Continue" Margin="3,1,3,3" Style="{StaticResource TransparentRoundFlat3DButton}" Command="{Binding OkCommand}" IsDefault="True" />
         </Grid>
     </Border>

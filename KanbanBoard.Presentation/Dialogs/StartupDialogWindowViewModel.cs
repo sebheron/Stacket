@@ -2,7 +2,6 @@
 using System.Windows.Input;
 using Prism.Commands;
 using Prism.Mvvm;
-using KanbanBoard.Logic.Properties;
 using System.Net;
 using System.IO;
 using System.Diagnostics;
@@ -11,6 +10,7 @@ namespace KanbanBoard.Presentation.Dialogs
 {
     public class StartupDialogWindowViewModel : BindableBase
     {
+        private string changelog, version;
         private readonly Action closeDialog;
 
         public StartupDialogWindowViewModel(Action closeDialog)
@@ -19,29 +19,22 @@ namespace KanbanBoard.Presentation.Dialogs
 
             this.OkCommand = new DelegateCommand(this.CloseDialog);
             this.OpenWebpageCommand = new DelegateCommand<string>(this.OpenWebpage);
+
+            this.Changelog = this.GetChangelog();
+            this.Version = this.GetVersionString();
         }
 
-        public string Version => $"Stacket V{System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()}";
+        public string Version
+        {
+            get => this.version;
+            set => this.SetProperty(ref this.version, value);
+        }
         
         public string Changelog
         {
-            get
-            {
-                try
-                {
-                    WebClient client = new WebClient();
-                    Stream stream = client.OpenRead("https://swegrock.github.io/stacket/changelog.txt");
-                    StreamReader reader = new StreamReader(stream);
-                    return reader.ReadToEnd();
-                }
-                catch (WebException)
-                {
-                    return string.Empty;
-                }
-            }
+            get => this.changelog;
+            set => this.SetProperty(ref this.changelog, value);
         }
-
-        public string Caption => Resources.Stacket;
 
         public ICommand OkCommand { get; }
         public ICommand OpenWebpageCommand { get; }
@@ -49,6 +42,27 @@ namespace KanbanBoard.Presentation.Dialogs
         private void CloseDialog()
         {
             this.closeDialog.Invoke();
+        }
+
+        private string GetVersionString()
+        {
+            string version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            return $"Stacket V{version}";
+        }
+
+        private string GetChangelog()
+        {
+            try
+            {
+                WebClient client = new WebClient();
+                Stream stream = client.OpenRead("https://swegrock.github.io/stacket/changelog.txt");
+                StreamReader reader = new StreamReader(stream);
+                return reader.ReadToEnd();
+            }
+            catch (WebException)
+            {
+                return string.Empty;
+            }
         }
 
         private void OpenWebpage(string url)
