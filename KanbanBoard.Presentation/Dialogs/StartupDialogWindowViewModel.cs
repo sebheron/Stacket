@@ -20,8 +20,8 @@ namespace KanbanBoard.Presentation.Dialogs
             this.OkCommand = new DelegateCommand(this.CloseDialog);
             this.OpenWebpageCommand = new DelegateCommand<string>(this.OpenWebpage);
 
-            this.Changelog = this.GetChangelog();
             this.Version = this.GetVersionString();
+            this.Changelog = this.GetChangelog();
         }
 
         public string Version
@@ -47,7 +47,7 @@ namespace KanbanBoard.Presentation.Dialogs
         private string GetVersionString()
         {
             string version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            return $"Stacket V{version}";
+            return $"Stacket V {version}";
         }
 
         private string GetChangelog()
