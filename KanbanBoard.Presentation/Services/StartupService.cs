@@ -52,6 +52,7 @@ namespace KanbanBoard.Presentation.Services
         {
             if (!Settings.Default.RanOnce)
             {
+                Settings.Default.Upgrade();
                 Settings.Default.RanOnce = true;
                 this.dialogService.ShowStartup();
             }
