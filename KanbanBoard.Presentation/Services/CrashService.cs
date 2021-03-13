@@ -17,9 +17,10 @@ namespace KanbanBoard.Presentation.Services
         {
             var result = this.dialogService.ShowYesNo(Resources.Crash_Message, Resources.Stacket);
             if (!result.HasValue || !result.Value) return;
-            Process.Start(Resources.Crash_Email_MailTo
+            var mail = Resources.Crash_Email_MailTo
                 + string.Format(Resources.Crash_Email_Subject, Assembly.GetExecutingAssembly().GetName().Version)
-                + string.Format(Resources.Crash_Email_Body, emailBody));
+                + string.Format(Resources.Crash_Email_Body, emailBody);
+            Process.Start(new ProcessStartInfo("cmd", $"/c start {mail}") { CreateNoWindow = true });
         }
     }
 }

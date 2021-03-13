@@ -275,7 +275,7 @@ namespace KanbanBoard.Logic.Properties {
                 return ResourceManager.GetString("Dialog_Startup_Message", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Stacket.
         /// </summary>

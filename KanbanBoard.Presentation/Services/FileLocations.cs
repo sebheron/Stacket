@@ -5,6 +5,6 @@ namespace KanbanBoard.Presentation.Services
 {
     public static class FileLocations
     {
-        public static string BoardFileStorageLocation => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Boards");
+        public static string BoardFileStorageLocation => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Stacket Boards");
     }
 }

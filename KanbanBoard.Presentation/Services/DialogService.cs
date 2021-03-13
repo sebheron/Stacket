@@ -13,6 +13,16 @@ namespace KanbanBoard.Presentation.Services
             this.logger = logger;
         }
 
+        public void ShowStartup()
+        {
+            this.logger.Log("Requested startup dialog");
+            var dialog = new StartupDialogWindow();
+            var dialogViewModel = new StartupDialogWindowViewModel(dialog.Close);
+            dialog.DataContext = dialogViewModel;
+
+            dialog.ShowDialog();
+        }
+
         public bool? ShowYesNo(string text, string caption)
         {
             this.logger.Log("Requested yes no dialog");
