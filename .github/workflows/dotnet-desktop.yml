@@ -57,5 +57,5 @@ jobs:
       with:
         upload_url: ${{ github.event.release.upload_url }}
         asset_path: ./out/Stacket.zip
-        asset_name: JazzNotes.zip
+        asset_name: Stacket.zip
         asset_content_type: application/zip
