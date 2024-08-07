@@ -1,0 +1,61 @@
+name: Stacket Build and Publish
+
+on:
+  release:
+    types: [created]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: '5.0.x'
+
+    - name: Install dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+
+    - name: Publish
+      run: dotnet publish -c Release -o out --no-restore
+
+    - name: Archive and Upload Build Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: app
+        path: out
+
+  release:
+    runs-on: windows-latest
+    needs: build
+    if: github.event_name == 'release'
+
+    steps:
+    - name: Download Build Artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: app
+        path: out
+
+    - name: Compress Build Artifacts
+      run: Compress-Archive -Path ./out/* -DestinationPath ./out/Stacket.zip
+
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: ./out/Stacket.zip
+        asset_name: JazzNotes.zip
+        asset_content_type: application/zip
